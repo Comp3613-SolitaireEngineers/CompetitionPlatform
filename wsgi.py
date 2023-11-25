@@ -6,7 +6,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import (add_results, get_user_rankings, get_competition_users, findCompUser, get_user_competitions, add_user_to_comp, create_competition, get_all_competitions, get_all_competitions_json, create_user, get_all_users_json, get_all_users )
+from App.controllers import *#(add_results, get_user_rankings, get_competition_users, findCompUser, get_user_competitions, add_user_to_comp, create_competition, get_all_competitions, get_all_competitions_json, create_user, get_all_users_json, get_all_users )
 
 
 
@@ -149,3 +149,62 @@ def get_comp_users(comp_id):
 
 
 app.cli.add_command(comps)
+
+
+'''
+Rank commands
+''' 
+
+rank = AppGroup('rank', help = 'commands for rank')
+
+@rank.command("create", help = 'create new rank')
+def create_rank_command():
+    competitor = click.prompt("Enter Competitor ID")
+    ranking = click.prompt("Enter Ranking")
+    rank = create_rank(competitor_id, ranking)
+    if rank:
+        print("Rank Created Successfully")
+    else:
+        print("Error adding rank")
+
+@rank.command("update_rank", help = 'update rank')
+def update_rank_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    ranking = click.prompt("Enter Ranking", type = int)
+    rank = update_rank(competitor_id, ranking)
+    if rank:
+        print("Rank Updated Successfully")
+    else:
+        print("Error updating rank")
+
+@rank.command("update_points", help = 'update points')
+def update_rank_points_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    points = click.prompt("Enter Points", type = int)
+    rank = update_rank_points(competitor_id, points)
+    if rank:
+        print("Rank Updated Successfully")
+    else:
+        print("Error updating points")
+
+
+@rank.command("list", help = 'list all ranks')
+def list_ranks():
+    ranks = get_all_ranks_json()
+    if ranks:
+        print(ranks)
+    else:
+        print("Error getting ranks")
+    
+@rank.command("get_rank_by_competitor_id", help = 'get rank by competitor id')
+def get_rank():
+    competitor_id = click.prompt("Enter Competitor ID")
+    rank = get_rank_by_competitor_id(competitor_id)
+    if rank:
+        print(rank)
+    else:
+        print("Error getting rank")
+
+
+app.cli.add_command(rank)
+
