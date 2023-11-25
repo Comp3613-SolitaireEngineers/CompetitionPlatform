@@ -185,8 +185,8 @@ def get_competitor():
         print("Error getting competitor")
 
 @competitor.command("get_competitor_json", help = 'get competitor by id')
-def get_competitor_json(id):
-    id - click.prompt("Enter id", type=str)
+def get_competitor_json():
+    id = click.prompt("Enter id", type=str)
     competitor = get_competitor_by_id(id)
     if competitor:
         print(competitor.get_json())
@@ -194,8 +194,8 @@ def get_competitor_json(id):
         print("Error getting competitor")
 
 @competitor.command("get_competitor_by_username", help = 'get competitor by username')
-@click.argument("username", default = "rick")
-def get_competitor_by_username(username):
+def get_competitor_by_username():
+    username = click.prompt("Enter username", type=str)
     competitor = get_competitor_by_username(username)
     if competitor:
         print(competitor)
