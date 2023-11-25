@@ -23,3 +23,17 @@ class ResultsCommand(Command):
             "executed_at": self.executed_at,
         } 
         return res
+    
+    def execute(self, admin_id, competition_id, results):
+        
+        admin = get_admin(admin_id)
+        competition = get_competition(competition_id)
+        
+        if admin:
+            if competition:
+                admin.add_results(competition_id, results)
+                admin.update_ranks()
+            else:
+                return ("Unable to add results")
+        else:
+            return ("Unable to add results")
