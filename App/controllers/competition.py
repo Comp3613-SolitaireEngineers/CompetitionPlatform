@@ -4,7 +4,6 @@ from App.database import db
 def create_competition(name, location):
     newcomp = Competition(name = name, location = location)
 
-
     try:
         db.session.add(newcomp)
         db.session.commit()
@@ -61,3 +60,11 @@ def get_competition_users(comp_id):
         compUsers = Comp.participants
         Participants = [User.query.get(part.user_id) for part in compUsers]
         print(Participants)
+
+
+def get_competition_details(self, competition_id):
+    competition = Competition.query.get(competition_id)
+    if competition:
+        return competition.toDict()
+    else:
+        return "Competition not found"
