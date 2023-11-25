@@ -1,14 +1,15 @@
 from App.database import db
+from datetime import datetime
 
 class Rank(db.Model):
     __tablename__ = 'rank'
     id = db.Column(db.Integer, primary_key=True)
     competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
     ranking = db.Column(db.Integer)
-    points = db.Column(db.Integer)
-    competitor = db.relationship('Competitor', backref=db.backref('rank', lazy=True))
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, default=db.func.current_timestamp(), onupdate=db.func.current_timestamp())
+    points = db.Column(db.Integer, default=0)
+    competitor = db.relationship('Competitor', back_populates='rank', uselist=False, cascade="all, delete-orphan", single_parent=True, lazy=True)    
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __init__(self, competitor_id, ranking):
         self.competitor_id = competitor_id
@@ -23,8 +24,8 @@ class Rank(db.Model):
             'competitor_id': self.competitor_id,
             'ranking': self.ranking,
             'points': self.points,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            'updated_at': self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
 
     def toDict(self):
@@ -34,7 +35,7 @@ class Rank(db.Model):
             "ranking": self.ranking,
             "points": self.points,
             "competitor": self.competitor.toDict() if self.competitor else "",
-            "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
         return res
