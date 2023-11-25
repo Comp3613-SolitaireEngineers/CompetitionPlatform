@@ -1,14 +1,17 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
 from App.database import db
+import uuid
+
+def generate_short_uuid():
+    return str(uuid.uuid4())[:8]
 
 class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
+    __abstract__ = True
+    __tablename__ = 'user'
+    id = db.Column(db.String(120), primary_key=True, default=generate_short_uuid, server_default='gen_random_uuid()')
     username =  db.Column(db.String, nullable=False, unique=True)
     password = db.Column(db.String(120), nullable=False)
-    # overall_rank = db.Column(db.Integer, default=0, nullable=False)
-
-    competitions = db.relationship("UserCompetition", lazy=True, backref=db.backref("competitions"), cascade="all, delete-orphan")
 
     def __init__(self, username, password):
         self.username = username
@@ -18,15 +21,8 @@ class User(db.Model, UserMixin):
         return{
             'id': self.id,
             'username': self.username
-            # 'competitions': self.competitions
         }
-        
-    def toDict(self):
-        return{
-            'id': self.id,
-            'username': self.username
-        }
-        
+
     def set_password(self, password):
         """Create hashed password."""
         self.password = generate_password_hash(password, method='sha256')
@@ -34,6 +30,3 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         """Check hashed password."""
         return check_password_hash(self.password, password)
-
-
-
