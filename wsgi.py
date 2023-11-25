@@ -152,6 +152,59 @@ app.cli.add_command(comps)
 
 
 '''
+Competitor commands
+'''
+
+competitor = AppGroup('competitor', help = 'commands for competitor')
+
+@competitor.command("create", help = 'create new competitor')
+@click.argument("username", default = "rick")
+@click.argument("password", default = "sanchez")
+def create_competitor_command(username, password):
+    competitor = create_competitor(username, password)
+    if competitor:
+        print("Competitor Created Successfully")
+    else:
+        print("Error adding competitor")
+
+@competitor.command("list", help = 'list all competitors')
+def list_competitors():
+    competitors = get_all_competitors_json()
+    if competitors:
+        print(competitors)
+    else:
+        print("Error getting competitors")
+
+@competitor.command("get_competitor", help = 'get competitor by id')
+def get_competitor():
+    id  = click.prompt("Enter id", type=str)
+    competitor = get_competitor_by_id(id)
+    if competitor:
+        print(competitor)
+    else:
+        print("Error getting competitor")
+
+@competitor.command("get_competitor_json", help = 'get competitor by id')
+def get_competitor_json():
+    id = click.prompt("Enter id", type=str)
+    competitor = get_competitor_by_id(id)
+    if competitor:
+        print(competitor.get_json())
+    else:
+        print("Error getting competitor")
+
+@competitor.command("get_competitor_by_username", help = 'get competitor by username')
+def get_competitor_by_username():
+    username = click.prompt("Enter username", type=str)
+    competitor = get_competitor_by_username(username)
+    if competitor:
+        print(competitor)
+    else:
+        print("Error getting competitor")
+
+app.cli.add_command(competitor)
+
+'''
 Rank commands
 ''' 
 
@@ -207,4 +260,3 @@ def get_rank():
 
 
 app.cli.add_command(rank)
-
