@@ -5,5 +5,9 @@ from .leaderboard_observer import *
 from .leaderboard_publisher import *
 from .competition import *
 from .competition_host import *
-from .UserCompetition import *
+from .user_competition import *
 from .competitor import *
+from .leaderboard import *
+from .rank import * 
+from .UserCompetition import *
+
