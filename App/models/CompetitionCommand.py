@@ -35,4 +35,4 @@ class CompetitionCommand(Command):
             else:
                 return ("Unable to add competition")
         else:
-            raise PermissionError("Only admins can execute this command.")
+            return ("Unable to add competition")
