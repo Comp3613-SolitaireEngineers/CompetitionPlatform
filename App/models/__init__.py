@@ -9,3 +9,5 @@ from .user_competition import *
 from .competitor import *
 from .leaderboard import *
 from .rank import * 
+from .UserCompetition import *
+
