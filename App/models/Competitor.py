@@ -1,14 +1,17 @@
 from App.database import db
-from .user import User
-from .leaderboard_observer import LeaderboardObserver
+from .User import User
+from .LeaderboardObserver import LeaderboardObserver
 
 
-class Competitor(User, LeaderBoardObserver):
+class Competitor(User, LeaderboardObserver):
     __tablename__ = 'competitor'
 
-    rank = db.Column(db.Integer, default=0, nullable=False)
+    id = db.Column(db.Integer, db.ForeignKey('leaderboard_observer.id'), nullable=False, primary_key=True)
     points = db.Column(db.Integer, default=0, nullable=False)
-    competitions = db.relationship('Competition', secondary ='competitor_competition', overlaps='competitors', lazy=True)
+    competitions = db.relationship('Competition', secondary='usercompetition', back_populates='participants')
+    
+    # rank_id = db.Column(db.Integer, db.ForeignKey('rank.id'), nullable=False)
+    rank = db.relationship('Rank', back_populates='competitor', uselist=False, cascade="all, delete-orphan", single_parent=True, lazy=True)
 
     def __init__(self, username, password, rank, points):
         super().__init__(username, password)
