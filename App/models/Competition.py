@@ -3,13 +3,11 @@ from App.database import db
 
 class Competition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name =  db.Column(db.String, nullable=False, unique=True)
-    date = db.Column(db.DateTime, default= datetime.utcnow)
-    # rank = db.Column(db.Integer)
+    name = db.Column(db.String, nullable=False, unique=True)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
     location = db.Column(db.String(120), nullable=False)
-
     hosts = db.relationship("CompetitionHost", lazy=True, backref=db.backref("hosts"), cascade="all, delete-orphan")
-    participants = db.relationship("UserCompetition", lazy=True, backref=db.backref("users"), cascade="all, delete-orphan")
+    participants = db.relationship("Competitor", secondary='usercompetition', back_populates='competitions')
 
 
     def __init__(self, name, location):
