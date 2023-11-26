@@ -212,7 +212,7 @@ rank = AppGroup('rank', help = 'commands for rank')
 
 @rank.command("create", help = 'create new rank')
 def create_rank_command():
-    competitor = click.prompt("Enter Competitor ID")
+    competitor_id = click.prompt("Enter Competitor ID")
     ranking = click.prompt("Enter Ranking")
     rank = create_rank(competitor_id, ranking)
     if rank:
