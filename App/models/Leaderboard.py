@@ -1,6 +1,6 @@
 from App.database import db
-
-class Leaderboard(LeaderBoardPublisher):
+from App.models import LeaderboardPublisher
+class Leaderboard(LeaderboardPublisher):
 
     def __init__(self):
         self._observers = []

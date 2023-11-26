@@ -1,7 +1,7 @@
 from App.database import db
 from abc import abstractmethod
 
-class LeaderBoardPublisher(db.Model):
+class LeaderboardPublisher(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     
     @abstractmethod
