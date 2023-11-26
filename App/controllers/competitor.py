@@ -4,17 +4,17 @@ from .rank import create_rank
 
 
 def create_competitor(username, password):
-    competitor = Competitor(username, password)
     try:
+        competitor = Competitor(username, password)
+        
         db.session.add(competitor)
         db.session.commit()
-
-        if competitor:
-            
+        
+        return competitor   
     except Exception as e:
+        print(e)
         db.session.rollback()
-        return False
-    return True
+    return None
 
 def get_all_competitors():
     competitors = Competitor.query.all()
