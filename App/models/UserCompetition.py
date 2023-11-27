@@ -4,7 +4,7 @@ class UserCompetition(db.Model):
     __tablename__ = 'usercompetition'
     id = db.Column(db.Integer, primary_key=True)
     comp_id = db.Column(db.Integer, db.ForeignKey('competition.id'), nullable=False)
-    competitor_id =  db.Column(db.Integer, db.ForeignKey('competitor.id'), nullable=False)
+    competitor_id =  db.Column(db.String(220), db.ForeignKey('competitor.id'), nullable=False)
     rank = db.Column(db.Integer, nullable=False)
 
     def toDict(self):
