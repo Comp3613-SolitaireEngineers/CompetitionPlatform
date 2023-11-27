@@ -33,22 +33,22 @@ User Commands
 user_cli = AppGroup('user', help='User object commands') 
 
 # Then define the command and any parameters and annotate it with the group (@)
-@user_cli.command("create", help="Creates a user")
-@click.argument("username", default="rob")
-@click.argument("password", default="robpass")
-def create_user_command(username, password):
-    create_user(username, password)
-    print(f'{username} created!')
+# @user_cli.command("create", help="Creates a user")
+# @click.argument("username", default="rob")
+# @click.argument("password", default="robpass")
+# def create_user_command(username, password):
+#     create_user(username, password)
+#     print(f'{username} created!')
 
 # this command will be : flask user create bob bobpass
 
-@user_cli.command("list", help="Lists users in the database")
-@click.argument("format", default="string")
-def list_user_command(format):
-    if format == 'string':
-        print(get_all_users())
-    else:
-        print(get_all_users_json())
+# @user_cli.command("list", help="Lists users in the database")
+# @click.argument("format", default="string")
+# def list_user_command(format):
+#     if format == 'string':
+#         print(get_all_users())
+#     else:
+#         print(get_all_users_json())
 
 app.cli.add_command(user_cli) # add the group to the cli
 
@@ -160,15 +160,15 @@ def create_competitor_command(username, password):
         print("Error adding competitor")
 
 @competitor.command("list", help = 'list all competitors')
-def list_competitors():
-    competitors = get_all_competitors_json()
+def list_competitors_command():
+    competitors = get_all_competitors()
     if competitors:
         print(competitors)
     else:
         print("Error getting competitors")
 
 @competitor.command("get_competitor", help = 'get competitor by id')
-def get_competitor():
+def get_competitor_command():
     id  = click.prompt("Enter id", type=str)
     competitor = get_competitor_by_id(id)
     if competitor:
@@ -177,7 +177,7 @@ def get_competitor():
         print("Error getting competitor")
 
 @competitor.command("get_competitor_json", help = 'get competitor by id')
-def get_competitor_json():
+def get_competitor_json_command():
     id = click.prompt("Enter id", type=str)
     competitor = get_competitor_by_id(id)
     if competitor:
@@ -186,7 +186,7 @@ def get_competitor_json():
         print("Error getting competitor")
 
 @competitor.command("get_competitor_by_username", help = 'get competitor by username')
-def get_competitor_by_username():
+def get_competitor_by_username_command():
     username = click.prompt("Enter username", type=str)
     competitor = get_competitor_by_username(username)
     if competitor:
@@ -234,7 +234,7 @@ def update_rank_points_command():
 
 
 @rank.command("list", help = 'list all ranks')
-def list_ranks():
+def list_ranks_command():
     ranks = get_all_ranks_json()
     if ranks:
         print(ranks)
@@ -242,7 +242,7 @@ def list_ranks():
         print("Error getting ranks")
     
 @rank.command("get_rank_by_competitor_id", help = 'get rank by competitor id')
-def get_rank():
+def get_rank_command():
     competitor_id = click.prompt("Enter Competitor ID")
     rank = get_rank_by_competitor_id(competitor_id)
     if rank:

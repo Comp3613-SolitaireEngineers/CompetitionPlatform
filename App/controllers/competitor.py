@@ -10,6 +10,9 @@ def create_competitor(username, password):
         db.session.add(competitor)
         db.session.commit()
         
+        # Create rank for competitor
+        rank = create_rank(competitor.id, -1)  
+               
         return competitor   
     except Exception as e:
         print(e)
