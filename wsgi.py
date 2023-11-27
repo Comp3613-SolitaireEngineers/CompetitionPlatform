@@ -6,7 +6,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.controllers import *#(add_results, get_user_rankings, get_competition_users, findCompUser, get_user_competitions, add_user_to_comp, create_competition, get_all_competitions, get_all_competitions_json, create_user, get_all_users_json, get_all_users )
+from App.controllers import *
 
 
 
@@ -19,8 +19,7 @@ migrate = get_migrate(app)
 @app.cli.command("init", help="Creates and initializes the database")
 def initialize():
     db.drop_all()
-    db.create_all()
-    create_user('bob', 'bobpass')
+    db.create_all()    
     print('database intialized')
 
 '''
@@ -69,10 +68,6 @@ def user_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "App"]))
 
-
-
-
-
 @test.command("competition", help = 'Testing Competition commands')
 @click.argument("type", default="all")
 def competition_tests_command(type):
@@ -82,9 +77,6 @@ def competition_tests_command(type):
         sys.exit(pytest.main(["-k", "CompIntegrationTests"]))
     else:
         print("deafult input, no test ran")
-
-
-
 
 app.cli.add_command(test)
 

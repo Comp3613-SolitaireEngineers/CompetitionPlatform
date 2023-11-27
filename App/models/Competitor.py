@@ -1,12 +1,11 @@
 from App.database import db
 from .User import User
-from .LeaderboardObserver import LeaderboardObserver
 
 
-class Competitor(User, LeaderboardObserver):
+
+class Competitor(User):
     __tablename__ = 'competitor'
-
-    id = db.Column(db.Integer, db.ForeignKey('leaderboard_observer.id'), nullable=False, primary_key=True)
+       
     points = db.Column(db.Integer, default=0, nullable=False)
     competitions = db.relationship('Competition', secondary='usercompetition', back_populates='participants')
     
@@ -33,9 +32,4 @@ class Competitor(User, LeaderboardObserver):
         self.rank = rank
         self.points = points
 
-    def subscribe(self, leaderboard):
-        leaderboard.register(self)
-
-    
-    def unsubscribe(self, leaderboard):
-        leaderboard.detach(self)
+ 
