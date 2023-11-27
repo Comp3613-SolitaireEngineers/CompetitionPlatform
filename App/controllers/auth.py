@@ -51,3 +51,11 @@ def admin_required(func):
             return jsonify({"error" : "Permission Denied. This action is restricted to admin only" }), 401
         return func(*args, **kwargs)
     return wrapper
+
+def competitor_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.is_authenticated or not isinstance(current_user, Competitor):
+            return jsonify({"error" : "Permission Denied. This action is restricted to admin only" }), 401
+        return func(*args, **kwargs)
+    return wrapper
