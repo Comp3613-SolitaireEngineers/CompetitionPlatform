@@ -20,7 +20,7 @@ def get_competitons_views():
     competitions = get_all_competitions_json()
     return (jsonify(competitions),200) 
 
-@comp_views.route('/api/competitions', methods=['POST'])
+@comp_views.route('/api/competition', methods=['POST'])
 def add_new_competition_views():
     data = request.json
     response = create_competition(data['name'], data['location'])
