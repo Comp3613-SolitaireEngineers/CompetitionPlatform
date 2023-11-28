@@ -82,65 +82,77 @@ app.cli.add_command(test)
 
 
 '''
-Competition commands
+Competition Commands
 '''
 
-comps = AppGroup('comp', help = 'commands for competition')   
+competition_cli = AppGroup('competition', help = 'competition object commands')   
 
-@comps.command("add", help = 'add new competition')
-@click.argument("name", default = "Coding Comp")
-@click.argument("location", default = "Port of Spain")
-def add_comp(name, location):
-    response = create_competition(name, location)
-    if response:
+@competition.command("create", help = 'Create new competition')
+
+def create_competition_command():
+    name = click.prompt("Enter Competition Name", type = str)
+    location =click.prompt("Enter Competition Location", type = str)
+    competition_date = datetime.now()
+    competition = create_competition(name, location)
+    if competition:
         print("Competition Created Successfully")
     else:
-        print("error adding comp")
+        print("Competition not created")
+
+@competition_cli.command("Get", help = " Get competition")
+def get_competition_by_id_command(id):
+    competition = get_competition_by_id(id)
+    if competition :
+        print(competition)
+    else: 
+        print("No competition Found")
+
+
+@competition_cli.command("List", help = "Lists all competitions")
+def list_competitions_command():
+    competitions = get_all_competitions_json()
+    print(competitions)
+
+@competition_cli.command("Add", help = "Add results to competition")
+def add_results_command(user_id, comp_id, rank):
+    competition = add_results(user_id, comp_id, rank)
+    if competition :
+        print(competition)
+    else:
+        print("No compettion Found")
+
+
+#@competition_cli.command("add_user")
+#@click.argument("user_id")
+#@click.argument("comp_id")
+# @click.argument("rank")
+# def add_to_comp(user_id, comp_id, rank):
+#     add_user_to_comp(user_id, comp_id, rank)
+#     print("Done!")
+
+
+# @comps.command("getUserComps")
+# @click.argument("user_id")
+# def getUserCompetitions(user_id):
+#     competitions = get_user_competitions(user_id)
+#     print("these are the competitions")
+#     # print(competitions)
+
+# @comps.command("findcompuser")
+# @click.argument("user_id")
+# @click.argument("comp_id")
+# def find_comp_user(user_id, comp_id):
+#     findCompUser(user_id, comp_id)
+
+# @comps.command("getCompUsers")
+# @click.argument("comp_id")
+# def get_comp_users(comp_id):
+#     get_competition_users(comp_id)
 
 
 
 
-
-@comps.command("get", help = "list all competitions")
-def get_comps():
-    print(get_all_competitions())
-
-@comps.command("get_json", help = "list all competitions")
-def get_comps():
-    print(get_all_competitions_json())
-
-
-@comps.command("add_user")
-@click.argument("user_id")
-@click.argument("comp_id")
-@click.argument("rank")
-def add_to_comp(user_id, comp_id, rank):
-    add_user_to_comp(user_id, comp_id, rank)
-    print("Done!")
-
-
-@comps.command("getUserComps")
-@click.argument("user_id")
-def getUserCompetitions(user_id):
-    competitions = get_user_competitions(user_id)
-    print("these are the competitions")
-    # print(competitions)
-
-@comps.command("findcompuser")
-@click.argument("user_id")
-@click.argument("comp_id")
-def find_comp_user(user_id, comp_id):
-    findCompUser(user_id, comp_id)
-
-@comps.command("getCompUsers")
-@click.argument("comp_id")
-def get_comp_users(comp_id):
-    get_competition_users(comp_id)
-
-
-
-
-app.cli.add_command(comps)
+app.cli.add_command(competition_cli)
 
 
 '''
@@ -252,3 +264,5 @@ def get_rank_command():
 
 
 app.cli.add_command(rank)
+
+

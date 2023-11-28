@@ -32,9 +32,7 @@ def get_competition_by_id(id):
 def add_results(user_id, comp_id, rank):
     Comp = Competition.query.get(comp_id)
     user = User.query.get(user_id)
-        
-        
-            
+                
     if user and Comp:
         compParticipant = UserCompetition(user_id = user.id, comp_id = Comp.id, rank=rank)
 
