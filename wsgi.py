@@ -262,7 +262,7 @@ Admin Commands
 admin_cli = AppGroup('admin', help='Admin object commands')
 
 @admin_cli.command("create", help="Creates an admin")
-@click.argument("username", defualt="bob")
+@click.argument("username", default="bob")
 @click.argument("password", default="bobpass")
 
 def create_admin_command(username,password):
@@ -278,6 +278,8 @@ def list_admin_command():
     print(admins)
     
 @admin_cli.command("update",help = "Updates an admin in the database")
+@click.argument("id", default="std1")
+@click.argument("username", default="bob")
 def update_admin_command(id,username):
     admin = update_admin(id,username)
     if admin:
