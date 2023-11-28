@@ -1,3 +1,4 @@
+from App.controllers.host import create_host, get_all_hosts_json
 import click, pytest, sys
 from flask import Flask
 from datetime import datetime
