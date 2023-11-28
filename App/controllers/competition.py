@@ -1,4 +1,4 @@
-from App.models import Competition,User, UserCompetition
+from App.models import Competition,User, UserCompetition, Competitor
 from App.database import db
 
 def create_competition(name, location):
@@ -52,14 +52,16 @@ def add_results(user_id, comp_id, rank):
 
 
 
-def get_competition_users(comp_id):
+def get_competition_competitors(comp_id):
     Comp = get_competition_by_id(comp_id)
-    
 
     if Comp:
         compUsers = Comp.participants
-        Participants = [User.query.get(part.user_id) for part in compUsers]
-        print(Participants)
+        Participants = [Competitor.query.get(part.user_id) for part in compUsers]
+
+        return Participants
+    
+    return None
 
 
 def get_competition_details(self, competition_id):
