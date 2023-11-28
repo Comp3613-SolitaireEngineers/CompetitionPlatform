@@ -4,7 +4,7 @@ from datetime import datetime
 class Rank(db.Model):
     __tablename__ = 'rank'
     id = db.Column(db.Integer, primary_key=True)
-    competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
+    competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
     ranking = db.Column(db.Integer)
     points = db.Column(db.Integer, default=0)    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
