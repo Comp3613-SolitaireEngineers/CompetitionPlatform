@@ -1,5 +1,7 @@
-from flask_login import login_user, login_manager, logout_user, LoginManager
+from flask_login import login_user, login_manager, logout_user, LoginManager, current_user
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+from functools import wraps
+from flask import jsonify
 
 from App.models import User, Admin, Competitor
 
@@ -58,3 +60,19 @@ def setup_jwt(app):
         return User.query.get(identity)
 
     return jwt
+
+def admin_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.is_authenticated or not isinstance(current_user, Admin):
+            return jsonify({"error" : "Permission Denied. This action is restricted to admin only" }), 401
+        return func(*args, **kwargs)
+    return wrapper
+
+def competitor_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.is_authenticated or not isinstance(current_user, Competitor):
+            return jsonify({"error" : "Permission Denied. This action is restricted to admin only" }), 401
+        return func(*args, **kwargs)
+    return wrapper
