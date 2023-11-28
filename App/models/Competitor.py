@@ -3,8 +3,9 @@ from .User import User
 
 class Competitor(User):
     __tablename__ = 'competitor'        
-    rank = db.relationship('Rank', uselist=False, cascade="all, delete-orphan", lazy=True)
+    rank = db.relationship('Rank', uselist=False, lazy=True)
     competitions = db.relationship('Competition', secondary='usercompetition', back_populates='participants')       
+    notifications = db.relationship('Notification', backref='competitor', lazy=True)
     
 
     def __init__(self, username, password):
@@ -17,13 +18,17 @@ class Competitor(User):
         return {
             'id': self.id,
             'username': self.username,
-            'rank': self.rank.toDict() if self.rank else "",            
+            'rank': self.rank.toDict() if self.rank else "",
+            'competitions': [comp.get_json() for comp in self.competitions] if self.competitions else [],
+            'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else []            
         }
 
     def toDict(self):
         return {
             'id': self.id,
             'username': self.username,
-            'rank': self.rank.toDict() if self.rank else "",            
+            'rank': self.rank.toDict() if self.rank else "",
+            'competitions': [comp.toDict() for comp in self.competitions] if self.competitions else [],
+            'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else []            
         }
       
