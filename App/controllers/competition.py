@@ -1,29 +1,23 @@
-from App.models import Competition,User, UserCompetition, Competitor
+from App.models import Competition,User, UserCompetition
 from App.database import db
 
-def create_competition(name, location):
-    newcomp = Competition(name = name, location = location)
+def create_competition(id,name, location):
+    competition = Competition.query.filter_by(id = id).first()
+    if competition:
+        return  competition.create_competition(id,name,location)
+    return None
 
-    try:
-        db.session.add(newcomp)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        return False
-    return True
 
 def get_all_competitions():
     return Competition.query.all()
 
 def get_all_competitions_json():
-    competition = Competition.query.all()
-
-    if not competition:
+    competitions = Competition.query.all()
+    if not competitions:
         return []
-    else:
-        return [comp.toDict() for comp in competition]
-
-
+    competitions = [comp.get_json() for comp in competitions]
+    return competitions
+            
 def get_competition_by_id(id):
     competition = Competition.query.get(id)
     return competition
@@ -32,9 +26,7 @@ def get_competition_by_id(id):
 def add_results(user_id, comp_id, rank):
     Comp = Competition.query.get(comp_id)
     user = User.query.get(user_id)
-        
-        
-            
+                
     if user and Comp:
         compParticipant = UserCompetition(user_id = user.id, comp_id = Comp.id, rank=rank)
 
@@ -52,16 +44,14 @@ def add_results(user_id, comp_id, rank):
 
 
 
-def get_competition_competitors(comp_id):
+def get_competition_users(comp_id):
     Comp = get_competition_by_id(comp_id)
+    
 
     if Comp:
         compUsers = Comp.participants
-        Participants = [Competitor.query.get(part.user_id) for part in compUsers]
-
-        return Participants
-    
-    return None
+        Participants = [User.query.get(part.user_id) for part in compUsers]
+        print(Participants)
 
 
 def get_competition_details(self, competition_id):
