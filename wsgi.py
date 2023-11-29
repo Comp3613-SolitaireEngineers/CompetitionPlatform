@@ -116,7 +116,7 @@ def list_competitions_command():
 def add_results_command(user_id, comp_id, rank):
     competition = add_results(user_id, comp_id, rank)
     if competition :
-        print(competition)
+        print("Competition Added Successfully")
     else:
         print("No compettion Found")
 
