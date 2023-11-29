@@ -4,7 +4,7 @@ from App.database import db
 def create_host(id,name,website):
     host = Host.query.filter_by(id = id).first()
     if host:
-        return host.create_author(id,name,website)
+        return Host.create_host(name,website)
     return None
     
 def get_host(id):

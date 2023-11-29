@@ -1,4 +1,6 @@
+from App.controllers.host import create_host, get_all_hosts_json
 import click, pytest, sys
+from App.controllers.admin import create_admin, get_all_admins_json, update_admin
 from flask import Flask
 from datetime import datetime
 
@@ -264,4 +266,64 @@ def get_rank_command():
 
 app.cli.add_command(rank)
 
+
+'''
+Host Commands
+''' 
+
+host_cli = AppGroup('host', help = 'host object commands')
+
+@host_cli.command('create', help='Creates a host')
+@click.argument("host_id", default="strid1")
+@click.argument("username", default="bob")
+@click.argument("website", default="hostwebsite@gmail.com")
+def create_admin_command(host_id, username, website):
+    host = create_host(host_id, username, website)
+    if host:
+        print(f'{username} created!')
+    else:
+        print(f'{username} not created')
+        
+@host_cli.command("list", help="Lists hosts in the database")
+def list_host_command():
+    hosts = get_all_hosts_json()
+    print(hosts)
+    
+app.cli.add_command(host_cli)
+
+'''
+Admin Commands
+'''
+
+admin_cli = AppGroup('admin', help='Admin object commands')
+
+@admin_cli.command("create", help="Creates an admin")
+@click.argument("uwi_id")", default="816099123")
+@click.argument("username", default="bob")
+@click.argument("password", default="bobpass")
+@click.argument("email", default="admin@sta.uwi.edu)
+
+def create_admin_command(uwi_id,username,email,password):
+    admin = create_admin(uwi_id,username, email, password)
+    if admin:
+        print(f'{username} created!')
+    else:
+        print(f'{username} not created')
+
+@admin_cli.command("list", help="Lists admins in the database")
+def list_admin_command():
+    admins = get_all_admins_json()
+    print(admins)
+    
+@admin_cli.command("update",help = "Updates an admin in the database")
+@click.argument("id", default="std1")
+@click.argument("username", default="bob")
+def update_admin_command(id,username):
+    admin = update_admin(id,username)
+    if admin:
+        print(f'{id} updated!')
+    else:
+        print(f'{id} not updated!')
+
+app.cli.add_command(admin_cli) 
 

@@ -5,7 +5,7 @@ class Notification(db.Model):
     __tablename__ = 'notification'
     
     id = db.Column(db.Integer, primary_key=True)
-    competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
+    competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
     message = db.Column(db.String(255))    
     timeStamp = db.Column(db.DateTime, default=datetime.utcnow)
     
