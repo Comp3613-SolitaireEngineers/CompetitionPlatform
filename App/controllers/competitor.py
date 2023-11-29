@@ -3,15 +3,15 @@ from App.database import db
 from .rank import create_rank
 
 
-def create_competitor(username, password):
+def create_competitor(uwi_id, username, email ,password, firstname, lastname):
     try:
-        competitor = Competitor(username, password)
+        competitor = Competitor(uwi_id, username, email, password, firstname, lastname)
         
         db.session.add(competitor)
         db.session.commit()
         
         # Create rank for competitor
-        rank = create_rank(competitor.id, -1)  
+        rank = create_rank(competitor.id)  
                
         return competitor   
     except Exception as e:
