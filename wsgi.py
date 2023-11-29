@@ -1,4 +1,5 @@
 import click, pytest, sys
+from App.controllers.admin import create_admin, get_all_admins_json, update_admin
 from flask import Flask
 from datetime import datetime
 
@@ -252,3 +253,38 @@ def get_rank_command():
 
 
 app.cli.add_command(rank)
+
+
+'''
+Admin Commands
+'''
+
+admin_cli = AppGroup('admin', help='Admin object commands')
+
+@admin_cli.command("create", help="Creates an admin")
+@click.argument("username", default="bob")
+@click.argument("password", default="bobpass")
+
+def create_admin_command(username,password):
+    admin = create_admin(username,password)
+    if admin:
+        print(f'{username} created!')
+    else:
+        print(f'{username} not created')
+
+@admin_cli.command("list", help="Lists admins in the database")
+def list_admin_command():
+    admins = get_all_admins_json()
+    print(admins)
+    
+@admin_cli.command("update",help = "Updates an admin in the database")
+@click.argument("id", default="std1")
+@click.argument("username", default="bob")
+def update_admin_command(id,username):
+    admin = update_admin(id,username)
+    if admin:
+        print(f'{id} updated!')
+    else:
+        print(f'{id} not updated!')
+
+app.cli.add_command(admin_cli) 
