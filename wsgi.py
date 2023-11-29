@@ -85,15 +85,14 @@ app.cli.add_command(test)
 Competition Commands
 '''
 
-competition_cli = AppGroup('competition', help = 'competition object commands')   
+competition_cli = AppGroup('competition', help = 'Competition object commands')   
 
-@competition.command("create", help = 'Create new competition')
-
-def create_competition_command():
-    name = click.prompt("Enter Competition Name", type = str)
-    location =click.prompt("Enter Competition Location", type = str)
-    competition_date = datetime.now()
-    competition = create_competition(name, location)
+@competition_cli.command("create", help = 'Creates new competition')
+@click.argument("id", default = "1")
+@click.argument("name", default ="Run Time")
+@click.argument("location", default ="Chaguanas")
+def create_competition_command(id,name,location):
+    competition = create_competition(id,name,location)
     if competition:
         print("Competition Created Successfully")
     else:
