@@ -280,6 +280,7 @@ def list_host_command():
     
 app.cli.add_command(host_cli)
 
+'''
 Admin Commands
 '''
 
