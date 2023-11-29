@@ -8,7 +8,8 @@ class Competition(db.Model):
     location = db.Column(db.String(120), nullable=False)
     hosts = db.relationship("CompetitionHost", lazy=True, backref=db.backref("hosts"), cascade="all, delete-orphan")
     participants = db.relationship("Competitor", secondary='usercompetition', back_populates='competitions')
-
+    results = db.relationship('Results', backref='competition', lazy=True)
+    results_added = db.Column(db.Boolean, default=False)
 
     def __init__(self, name, location):
         self.name = name

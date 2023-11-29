@@ -1,12 +1,16 @@
 from App.models import Competition,User, UserCompetition
 from App.database import db
 
-def create_competition(id,name, location):
-    competition = Competition.query.filter_by(id = id).first()
-    if competition:
-        return  competition.create_competition(id,name,location)
-    return None
+def create_competition(name, location):
+    newcomp = Competition(name = name, location = location)
 
+    try:
+        db.session.add(newcomp)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        return False
+    return True
 
 def get_all_competitions():
     return Competition.query.all()

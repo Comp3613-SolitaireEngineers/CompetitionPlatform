@@ -7,5 +7,6 @@ from .Competition import *
 from .CompetitionHost import *
 from .Competitor import *
 from .UserCompetition import *
+from .Results import *
 
 
