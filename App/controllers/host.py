@@ -2,9 +2,14 @@ from App.models import Host
 from App.database import db
 
 def create_host(id,name,website):
-    host = Host.query.filter_by(id = id).first()
-    if host:
-        return Host.create_host(name,website)
+    try:
+        newHost = Host(id=id, name=name, website=website)
+        db.session.add(newHost)
+        db.session.commit()
+        return newHost
+    except Exception as e:
+        print(e)
+        db.session.rollback()
     return None
     
 def get_host(id):
@@ -14,5 +19,5 @@ def get_all_hosts_json():
     hosts = Host.query.all()
     if not hosts:
         return []
-    hosts = [host.get_json() for host in hosts]
+    hosts = [host.toDict() for host in hosts]
     return hosts
