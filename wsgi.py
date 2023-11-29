@@ -1,3 +1,4 @@
+from App.controllers.host import create_host, get_all_hosts_json
 import click, pytest, sys
 from App.controllers.admin import create_admin, get_all_admins_json, update_admin
 from flask import Flask
@@ -256,6 +257,29 @@ app.cli.add_command(rank)
 
 
 '''
+Host Commands
+''' 
+
+host_cli = AppGroup('host', help = 'host object commands')
+
+@host_cli.command('create', help='Creates a host')
+@click.argument("host_id", default="strid1")
+@click.argument("username", default="bob")
+@click.argument("website", default="hostwebsite@gmail.com")
+def create_admin_command(host_id, username, website):
+    host = create_host(host_id, username, website)
+    if host:
+        print(f'{username} created!')
+    else:
+        print(f'{username} not created')
+        
+@host_cli.command("list", help="Lists hosts in the database")
+def list_host_command():
+    hosts = get_all_hosts_json()
+    print(hosts)
+    
+app.cli.add_command(host_cli)
+
 Admin Commands
 '''
 
