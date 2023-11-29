@@ -1,19 +1,20 @@
 from App.models import Rank, Competitor
 from App.database import db
 
-def create_rank(competitor_id, ranking):
+def create_rank(competitor_id):
     competitor = Competitor.query.filter_by(id = competitor_id).first()
     if competitor is None:
         return False
 
-    newrank = Rank(competitor_id = competitor_id, ranking = ranking)
+    newrank = Rank(competitor_id = competitor_id)
     try:
         db.session.add(newrank)
         db.session.commit()
+        return newrank
     except Exception as e:
+        print(e)
         db.session.rollback()
-        return False
-    return True
+    return None
 
 def update_rank_points(competitor_id, points):
     rank = Rank.query.filter_by(competitor_id = competitor_id).first()

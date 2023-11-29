@@ -5,16 +5,16 @@ from App.models import Rank
 
 class Admin(User):
     __tablename__ = 'admin'
-    admin_id = db.Column(db.String(1200), nullable = False,unique=True)
 
-    def __init__(self, admin_id, username, password):
-        super().__init__(username, password)
-        self.admin_id = admin_id
+    def __init__(self, uwi_id, username, email, password):
+        super().__init__(uwi_id,username,email, password)        
+        self.user_type = 'admin'
 
     def get_json(self):
         return{
             'id': self.id,
-            'admin_id' : self.admin_id,
+            'uwi_id': self.uwi_id,
+            'email': self.email,
             'username': self.username,
             'role' : 'admin'
         }

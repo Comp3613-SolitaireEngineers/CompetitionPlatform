@@ -164,11 +164,15 @@ competitor = AppGroup('competitor', help = 'commands for competitor')
 
 @competitor.command("create", help = 'create new competitor')
 @click.argument("username", default = "rick")
+@click.argument("email", default = "rick.sanchez@my.uwi.edu")
 @click.argument("password", default = "sanchez")
-def create_competitor_command(username, password):
-    competitor = create_competitor(username, password)
+@click.argument("uwi_id", default = "123456789")
+@click.argument("firstname", default = "rick")
+@click.argument("lastname", default = "sanchez")
+def create_competitor_command( uwi_id, username, email,password, firstname, lastname):
+    competitor = create_competitor(uwi_id, username,email, password, firstname, lastname)
     if competitor:
-        print("Competitor Created Successfully")
+        print("Competitor Created Successfully ", competitor.get_json())
     else:
         print("Error adding competitor")
 
@@ -176,7 +180,8 @@ def create_competitor_command(username, password):
 def list_competitors_command():
     competitors = get_all_competitors()
     if competitors:
-        print(competitors)
+        for competitor in competitors:
+            print(competitor)
     else:
         print("Error getting competitors")
 
@@ -217,9 +222,8 @@ rank = AppGroup('rank', help = 'commands for rank')
 
 @rank.command("create", help = 'create new rank')
 def create_rank_command():
-    competitor_id = click.prompt("Enter Competitor ID")
-    ranking = click.prompt("Enter Ranking")
-    rank = create_rank(competitor_id, ranking)
+    competitor_id = click.prompt("Enter Competitor ID")    
+    rank = create_rank(competitor_id)
     if rank:
         print("Rank Created Successfully")
     else:
@@ -298,10 +302,10 @@ Admin Commands
 admin_cli = AppGroup('admin', help='Admin object commands')
 
 @admin_cli.command("create", help="Creates an admin")
-@click.argument("uwi_id")", default="816099123")
+@click.argument("uwi_id", default="816099123")
 @click.argument("username", default="bob")
 @click.argument("password", default="bobpass")
-@click.argument("email", default="admin@sta.uwi.edu)
+@click.argument("email", default="admin@sta.uwi.edu")
 
 def create_admin_command(uwi_id,username,email,password):
     admin = create_admin(uwi_id,username, email, password)
@@ -312,8 +316,11 @@ def create_admin_command(uwi_id,username,email,password):
 
 @admin_cli.command("list", help="Lists admins in the database")
 def list_admin_command():
-    admins = get_all_admins_json()
-    print(admins)
+    admins = get_all_admins_json()    
+    if admins:
+        print(admins)
+    else:
+        print("No Admins Founds")
     
 @admin_cli.command("update",help = "Updates an admin in the database")
 @click.argument("id", default="std1")
