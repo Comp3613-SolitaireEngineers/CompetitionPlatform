@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}
+
+{% block title %}Competition Form{% endblock %}
+
+{% block styles %}
+    <!-- Additional styles for the child template -->
+    <style>
+        /* Your custom styles here */
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Competition Registration</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Form to capture competition data -->
+                    <form method="post" action="/competition">
+                        
+
+                        <!-- Competition Name -->
+                        <div class="form-group">
+                            <label for="competitionName">Competition Name</label>
+                            <input type="text" class="form-control" id="competitionName" name="competitionName" required>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" required>
+                        </div>                       
+
+                        <!-- Platform -->
+                        <div class="form-group">
+                            <label for="platform">Platform</label>
+                            <input type="text" class="form-control" id="platform" name="platform" required>
+                        </div>
+
+                         <!-- Date -->
+                         <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" class="form-control" id="date" name="date" required>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <!-- <button type="submit" class="btn btn-primary btn-block">Submit</button> -->
+                        <div class="row">                            
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-secondary btn-block" onclick="clearForm()">Clear</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Additional scripts for the child template -->
+    <script>
+        // Your custom scripts here
+        function clearForm() {
+        document.getElementById("competitionName").value = "";
+        document.getElementById("location").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("platform").value = "";
+    }
+    </script>
+{% endblock %}

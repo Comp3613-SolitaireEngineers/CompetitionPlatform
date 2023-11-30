@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+
+{% block title %}Competitor Profile{% endblock %}
+
+{% block styles %}
+    <!-- Additional styles for the child template -->
+    <style>
+        /* Your custom styles here */
+        .custom-divider {
+            width: 100%;
+            height: 2px;
+            background-color: #343a40;
+            margin: 10px 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row mt-5">
+        <!-- Competitor Information Card (Left) -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Competitor Info</h2>
+                </div>
+                <div class="card-body text-center">
+                    <!-- Competitor Photo -->
+                    <img src="/static/User-Profile-PNG-Image.png" alt="Competitor Photo" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                    <div class="custom-divider"></div>
+                    <!-- Competitor Name -->
+                    <h4>{{current_user.firstname}} {{current_user.lastname}}</h4>
+
+                    <!-- Competitor Email -->
+                    <p class="text-muted">{{current_user.email}}</p>
+                   
+                </div>
+            </div>
+        </div>
+
+        <!-- Competitions Participated Card (Right) -->        
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                  <div class="card">
+                    <div class="card-body text-center">
+                      <h5 class="card-title">Rank</h5>
+                      <br>
+                      <p class="card-text">{{current_user.rank.ranking}}</p>                     
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="card">
+                    <div class="card-body  text-center">
+                      <h5 class="card-title">Total Points</h5>
+                      <br>
+                      <p class="card-text">{{current_user.rank.points}}</p>                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <br>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Competitions Participated</h2>
+                </div>
+                <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for competition in current_user.competitions %}
+                            {%for result in competition.results%}
+                                {%if result.competitor_id == current_user.id%}
+                                    <li class="list-group-item">{{competition.name}} - Rank {{result.rank}}</li>
+                                {%endif%}
+                            {%endfor%}
+                        {% endfor %}                       
+                        <!-- Add more competitions as needed -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Icon (Top Left) -->
+    
+
+    <!-- Notifications Modal -->
+    <div class="modal fade" id="notificationsModal" tabindex="-1" role="dialog" aria-labelledby="notificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- List of Notifications -->
+                    <ul class="list-group">
+                        {% for notification in current_user.notifications %}
+                            <li class="list-group-item">{{notification.message}}</li>
+                        {% endfor %}
+                        <li class="list-group-item">You have a new message.</li>
+                        <li class="list-group-item">Congratulations on your recent achievement!</li>
+                        <li class="list-group-item">Event reminder: Competition on Dec 15th.</li>
+                        <!-- Add more notifications as needed -->
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+
+{% block buttons %}
+    <!-- Notifications Icon (Top Right) -->  
+    <button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-toggle="modal" data-target="#notificationsModal">
+         <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{notifications|length}}+
+            <!-- <span class="visually-hidden">unread messages</span> -->
+        </span>
+    </button>
+    
+{% endblock %}
+
+{% block scripts %}
+    <!-- Additional scripts for the child template -->
+    <script>
+        // Your custom scripts here
+    </script>
+{% endblock %}

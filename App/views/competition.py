@@ -1,19 +1,52 @@
 from flask import Blueprint, render_template, jsonify, request, send_from_directory, flash, redirect, url_for
 from flask_jwt_extended import jwt_required, current_user as jwt_current_user
 from flask_login import current_user, login_required
-from App.controllers import get_all_competitions_json, create_competition, get_competition_by_id, get_competition_competitors
-
-from.index import index_views
-
-from App.controllers import (
-    
-     jwt_authenticate, 
-    jwt_required
-    
-)
+from datetime import datetime, date
 
 
-comp_views = Blueprint('comp_views', __name__, template_folder='../templates')
+from App.controllers import *
+
+
+competition_views = Blueprint('competition_views', __name__, template_folder='../templates')
+
+
+'''
+Page Routes
+'''
+@competition_views.route('/competition', methods=['GET'])
+@admin_required
+def competition_form_page():
+    return render_template('competition_form.html')
+
+@competition_views.route('/competitions', methods=['GET'])
+def competition_page():
+    competitions = get_all_competitions()
+    return render_template('competitions.html', competitions=competitions)
+
+
+'''
+Action Routes
+'''
+@competition_views.route('/competition', methods=['POST'])
+@admin_required
+def add_competition_action():
+    competition_name = request.form.get('competitionName')
+    location = request.form.get('location')
+    platform = request.form.get('platform')    
+    date = request.form.get('date')
+    competition_date = datetime.strptime(date, '%Y-%m-%d')   
+    response = create_competition(name=competition_name, location=location, platform=platform, date=competition_date)
+    if response:
+        flash('Competition created successfully!')
+        return redirect(url_for('competition_views.competition_form_page'))
+    flash('Error creating competition')
+    return redirect(url_for('competition_views.competition_form_page'))
+
+
+
+'''
+API Routes
+'''
 
 # @comp_views.route('/api/competitions', methods=['GET'])
 # def get_competitons_views():

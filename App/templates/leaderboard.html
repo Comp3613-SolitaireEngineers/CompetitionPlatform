@@ -1,0 +1,155 @@
+{% extends 'layout.html' %}
+
+{% block title %}Leaderboard{% endblock %}
+
+{% block styles %}
+    <!-- Additional styles for the child template -->
+    <style>
+        /* Your custom styles here */
+    </style>
+{% endblock %}
+
+{% block content %}
+    <!-- Podium for 1st, 2nd, and 3rd Ranked Competitors -->
+    <!-- <div class="row justify-content-center mt-5">
+        <div class="col-md-4 mb-4">
+           
+            <div class="card text-center">
+                <div class="card-header bg-success text-white">
+                    <h3>1st Place</h3>
+                </div>
+                <div class="card-body">
+                    <img src="/static/" alt="John Doe" class="img-fluid rounded-circle mb-3" style="max-width: 100px;"> 
+                    <h4>John Doe</h4>
+                    <p>Score: 500</p>
+                </div>
+            </div>
+        </div>..
+    </div>
+    <div class="row justify-content-center mt-5">        
+        <div class="col-md-4 mb-4">
+           
+            <div class="card text-center">
+                <div class="card-header bg-info text-white">
+                    <h3>2nd Place</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Jane Smith</h4>
+                    <p>Score: 450</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            
+            <div class="card text-center">
+                <div class="card-header bg-warning text-dark">
+                    <h3>3rd Place</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Bob Johnson</h4>
+                    <p>Score: 400</p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-4 mb-4">
+            <!-- 1st Place -->
+            
+            <div class="card flex-row">
+                <img src="/static/coding_image.jpg" class="img-fluid rounded-start" alt="...">              
+                <div class="card-body">
+                    <!-- <img src="/static/" alt="John Doe" class="img-fluid rounded-circle mb-3" style="max-width: 100px;"> -->
+                    <h4>John Doe</h4>
+                    <p>Score: 500</p>
+                </div>
+            </div>
+        </div>
+        <!-- Add more 1st Place cards as needed -->
+    </div>
+    <div class="row justify-content-center mt-5">        
+        <div class="col-md-4 mb-4">
+            <!-- 2nd Place -->
+            <div class="card flex-row">
+                <div class="card-header bg-info text-white">
+                    <h3>2nd Place</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Jane Smith</h4>
+                    <p>Score: 450</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <!-- 3rd Place -->
+            <div class="card flex-row">
+                <div class="card-header bg-warning text-dark">
+                    <h3>3rd Place</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Bob Johnson</h4>
+                    <p>Score: 400</p>
+                </div>
+            </div>
+        </div>
+        <!-- Add more 2nd and 3rd Place cards as needed -->
+    </div>
+    
+
+    <!-- Table for Other Competitors with Pagination -->
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample Data, replace with actual data from your application -->
+                    <tr>
+                        <td>4</td>
+                        <td>Mary Johnson</td>
+                        <td>380</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Michael Davis</td>
+                        <td>350</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item disabled">
+                        <span class="page-link">Previous</span>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">2</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">3</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Additional scripts for the child template -->
+    <script>
+        // Your custom scripts here
+    </script>
+{% endblock %}

@@ -1,47 +1,120 @@
-<!doctype html>
-<html>
-  <head>
-  
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-     <!--Import Google Icon Font-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{% block title %}{% endblock %}</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}My Website{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Font Awesome CSS -->   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-  </head>
-  <body>
-    <nav class="purple">
-      <div class="nav-wrapper">
-        <a href="#!" class="brand-logo center">{% block page %}{% endblock %}</a>
-        <div class="nav-wrapper">
-            <ul id="nav-mobile" class="left">
-                <li><a href="/">Home</a></li>
-                <li><a href="/users">Users Jinja</a></li>
-                <li><a href="/static/users">Users JS</a></li>
+    <!-- Custom styles for the parent layout -->
+    <style>
+        body {
+            padding-top: 5rem;
+        }
+    </style>
+    <!-- Additional styles can be included in child templates -->
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/leaderboard">Competitions Platform</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <!-- Add navigation links as needed -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/leaderboard">Leaderboard</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/competitions">Competitions</a>
+                </li>
+
+                {% if current_user.is_authenticated %}
+                {%if current_user.user_type == 'admin'%}
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/competition">Competition</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/competition/results">Competition Results</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/competition/competitors">Competition Competitors</a>
+                    </li>
+                {%endif%}
+                {%endif%}                               
             </ul>
+            <div class="d-flex" >
+                <ul class="navbar-nav mr-auto d-flex">
+                {% if current_user.is_authenticated %}
+             
+                {%if current_user.user_type == 'admin'%}
+                <li class="nav-item">
+                    <a href="/competition" class="nav-link"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ current_user.username }}</a>
+                </li>
+                {%else%}            
+                <li class="nav-item">
+                    <a href="/competitor/profile" class="nav-link"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ current_user.username }}</a>
+                </li>
+                {%endif%}
+                    
+                <li class="nav-item">
+                    <a href="/logout" class="nav-link"><i class="fa fa-sign-out"  aria-hidden="true"></i> Logout</a>
+                </li>
+                {% else %}
+                <a href="/login" class="nav-link"> Login</a>
+                <a href="/signup" class="nav-link"> Sign Up</a>
+                {% endif %}
+            </ul>
+            </div>
         </div>
-      </div>
     </nav>
-    
+
+    <!-- Page content -->
+    <div class="container">
+        <!-- Content block that can be overridden by child templates -->
+        {% block content %}{% endblock %}
+    </div>
+
+    {%block buttons%}{%endblock%}
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Additional scripts can be included in child templates -->
+    {% block scripts %}{% endblock %}
+
     {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <nav class="white black-text" style="padding: 10px">
-        <div class="nav-wrapper">
-            <ul class="flashes">
+        {% if messages %}
             {% for message in messages %}
-              <li>{{ message }}</li>
+             <div class="toast-container position-fixed">
+                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+                    <div class="toast-header">
+                        <strong class="mr-auto">Notification</strong>
+                        <small>Just now</small>
+                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+                </div>
+            </div>            
             {% endfor %}
-            </ul>
-        </div>
-      </nav>
-      {% endif %}
+            <script>
+                $('.toast').toast('show');
+            </script>
+        {% endif %}
     {% endwith %}
-
-    <div class="container" id="content">{% block content %}{% endblock %}</div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  </body>
+</body>
 </html>
