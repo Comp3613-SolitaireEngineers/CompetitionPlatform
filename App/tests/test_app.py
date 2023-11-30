@@ -35,8 +35,7 @@ class UserUnitTests(unittest.TestCase):
         assert competitor.lastname == "Morris"
 
     def test_new_host(self):
-        host = Host("817364712", "DCIT", "https://sta.uwi.edu/fst/dcit")
-        assert host.id == "817364712"
+        host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
         assert host.name == "DCIT"
         assert host.website == "https://sta.uwi.edu/fst/dcit"
         
@@ -74,14 +73,14 @@ class UserUnitTests(unittest.TestCase):
             })
 
     def test_host_get_json(self):
-        host = Host("817364712", "DCIT", "https://sta.uwi.edu/fst/dcit")
+        host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
         host_json = host.toDict()
         
         self.assertDictEqual(
             host_json, 
             {
                 "id": None, 
-                "name": "UWI Games 2023",
+                "name": "DCIT",
                 "website": "https://sta.uwi.edu/fst/dcit"
             })
 
