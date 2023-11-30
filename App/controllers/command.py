@@ -56,4 +56,3 @@ def get_all_competition_commands_json():
 def get_all_results_commands_json():
     commands = get_all_results_commands()
     return [command.get_json() for command in commands]
- 
