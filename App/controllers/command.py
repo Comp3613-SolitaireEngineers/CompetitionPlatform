@@ -16,3 +16,25 @@ def execute_results_command(self, admin_id, competition_id, results):
         return "Results command executed successfully"
     except Exception as e:
         return f"Error executing results command: {str(e)}"
+
+
+def get_competition_command_by_id(command_id):
+    command = CompetitionCommand.query.get(command_id)
+    return command
+
+def get_results_command_by_id(command_id):
+    command = ResultsCommand.query.get(command_id)
+    return command
+
+
+def get_competition_command_by_id_json(command_id):
+    command = get_competition_command_by_id(command_id)
+    if not command:
+        return []
+    return command.get_json()
+
+def get_results_command_by_id_json(command_id):
+    command = get_results_command_by_id(command_id)
+    if not command:
+        return []
+    return command.get_json()
