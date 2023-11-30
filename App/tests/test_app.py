@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User
+from App.models import User, Results, Rank, Notification, ResultsCommand, CompetitionCommand
 from App.controllers import (
     create_user,
     get_all_users_json,
@@ -45,7 +45,33 @@ class UserUnitTests(unittest.TestCase):
         password = "mypass"
         user = User("bob", password)
         assert user.check_password(password)
-
+        
+    def test_new_notifcation(self):
+        notification = Notification("10","Congratulations")
+        assert notification.competitor_id == "10"
+        assert notification.message == "Congratulations"
+        
+    def test_new_rank(self):
+        rank = Rank("10")
+        assert rank.competitor_id == "10"
+              
+    def test_new_results(self):
+        result = Results("123","12","10","1")
+        assert result.competition_id == "123"
+        assert result.competitor_id == "12"
+        assert result.points == "10"
+        assert result.rank == "1"
+        
+    def test_new_results_command(self):
+        reCmd = ResultsCommand("10")
+        assert reCmd.competition_id == "10"
+        
+        
+    def test_new_competition_command(self):
+        compCmd = CompetitionCommand("10")
+        assert compCmd.competition_id == "10"
+        
+        
 '''
     Integration Tests
 '''
