@@ -38,3 +38,22 @@ def get_results_command_by_id_json(command_id):
     if not command:
         return []
     return command.get_json()
+
+
+def get_all_competition_commands():
+    commands = CompetitionCommand.query.all()
+    return commands
+
+def get_all_results_commands():
+    commands = ResultsCommand.query.all()
+    return commands
+
+
+def get_all_competition_commands_json():
+    commands = get_all_competition_commands()
+    return [command.get_json() for command in commands]
+
+def get_all_results_commands_json():
+    commands = get_all_results_commands()
+    return [command.get_json() for command in commands]
+ 
