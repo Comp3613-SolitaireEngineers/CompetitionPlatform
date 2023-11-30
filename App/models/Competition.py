@@ -11,7 +11,8 @@ class Competition(db.Model):
     results = db.relationship('Results', backref='competition', lazy=True)
     results_added = db.Column(db.Boolean, default=False)
 
-    def __init__(self, name, location):
+    def __init__(self,id, name, location):
+        self.id = id
         self.name = name
         self.location = location
 

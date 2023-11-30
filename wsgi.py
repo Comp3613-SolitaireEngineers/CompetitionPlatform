@@ -90,7 +90,8 @@ Competition Commands
 competition_cli = AppGroup('competition', help = 'Competition object commands')   
 
 @competition_cli.command("create", help = 'Creates new competition')
-@click.argument("name", default ="Run Time")
+@click.argument("id", default = "1")
+@click.argument("name", default ="RunTime")
 @click.argument("location", default ="Chaguanas")
 def create_competition_command(name,location):
     competition = create_competition(name,location)
@@ -99,27 +100,31 @@ def create_competition_command(name,location):
     else:
         print("Competition not created")
 
-@competition_cli.command("Get", help = " Get competition")
+@competition_cli.command("get", help = " Get competition")
+@click.argument("id", default = "1")
 def get_competition_by_id_command(id):
-    competition = get_competition_by_id(id)
+    competition = get_competition_by_id_json(id)
     if competition :
         print(competition)
     else: 
         print("No competition Found")
 
 
-@competition_cli.command("List", help = "Lists all competitions")
+@competition_cli.command("list", help = "Lists all competitions")
 def list_competitions_command():
     competitions = get_all_competitions_json()
     print(competitions)
 
-@competition_cli.command("Add", help = "Add results to competition")
+@competition_cli.command("add", help = "Add results to competition")
+@click.argument("user_id", default = "1")
+@click.argument("comp_id", default ="1")
+@click.argument("rank", default ="1")
 def add_results_command(user_id, comp_id, rank):
-    competition = add_results(user_id, comp_id, rank)
-    if competition :
-        print("Competition Added Successfully")
+    result = add_results(user_id, comp_id, rank)
+    if result :
+        print("Competition Result Added Successfully")
     else:
-        print("No compettion Found")
+        print("Error Results Not Added")
 
 
 #@competition_cli.command("add_user")
@@ -148,9 +153,6 @@ def add_results_command(user_id, comp_id, rank):
 # @click.argument("comp_id")
 # def get_comp_users(comp_id):
 #     get_competition_users(comp_id)
-
-
-
 
 app.cli.add_command(competition_cli)
 
@@ -277,20 +279,23 @@ Host Commands
 host_cli = AppGroup('host', help = 'host object commands')
 
 @host_cli.command('create', help='Creates a host')
-@click.argument("host_id", default="strid1")
-@click.argument("username", default="bob")
+@click.argument("id", default="1")
+@click.argument("name", default="bob")
 @click.argument("website", default="hostwebsite@gmail.com")
-def create_admin_command(host_id, username, website):
-    host = create_host(host_id, username, website)
+def create_admin_command(id, name, website):
+    host = create_host(id, name, website)
     if host:
-        print(f'{username} created!')
+        print(f'{name} created!')
     else:
-        print(f'{username} not created')
+        print(f'{name} not created')
         
 @host_cli.command("list", help="Lists hosts in the database")
 def list_host_command():
     hosts = get_all_hosts_json()
-    print(hosts)
+    if hosts:
+        print(hosts)
+    else:
+        print("No Hosts Founds")
     
 app.cli.add_command(host_cli)
 
@@ -302,9 +307,10 @@ admin_cli = AppGroup('admin', help='Admin object commands')
 
 @admin_cli.command("create", help="Creates an admin")
 @click.argument("uwi_id", default="816099123")
+@click.argument("email", default="admin@sta.uwi.edu")
 @click.argument("username", default="bob")
 @click.argument("password", default="bobpass")
-@click.argument("email", default="admin@sta.uwi.edu")
+
 
 def create_admin_command(uwi_id,username,email,password):
     admin = create_admin(uwi_id,username, email, password)
@@ -327,7 +333,7 @@ def list_admin_command():
 def update_admin_command(id,username):
     admin = update_admin(id,username)
     if admin:
-        print(f'{id} updated!')
+        print(f'Admin {id} updated!')
     else:
         print(f'{id} not updated!')
 

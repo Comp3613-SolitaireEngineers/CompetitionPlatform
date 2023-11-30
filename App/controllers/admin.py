@@ -1,7 +1,7 @@
 from App.models import Admin
 from App.database import db
 
-def create_admin(uwi_id,username, email, password):
+def create_admin(uwi_id,email,username,password):
     try:
         newAdmin = Admin(uwi_id=uwi_id, username=username, password=password, email=email)
         db.session.add(newAdmin)
@@ -34,6 +34,7 @@ def update_admin(id, username):
     if admin:
         admin.username = username
         db.session.add(admin)
-        return db.session.commit()
+        db.session.commit()
+        return admin
     return None
     

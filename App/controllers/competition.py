@@ -1,16 +1,16 @@
 from App.models import Competition,User, UserCompetition
 from App.database import db
 
-def create_competition(name, location):
-    newcomp = Competition(name = name, location = location)
-
+def create_competition(id,name, location):
     try:
-        db.session.add(newcomp)
+        newComp = Competition(id=id,name=name, location=location)
+        db.session.add(newComp)
         db.session.commit()
+        return newComp
     except Exception as e:
+        print(e)
         db.session.rollback()
-        return False
-    return True
+    return None
 
 def get_all_competitions():
     return Competition.query.all()
@@ -24,6 +24,13 @@ def get_all_competitions_json():
             
 def get_competition_by_id(id):
     competition = Competition.query.get(id)
+    return competition
+
+def get_competition_by_id_json(id):
+    competition = get_competition_by_id(id)
+    if not competition:
+        return []
+    competition = competition.get_json()
     return competition
 
 
