@@ -11,18 +11,11 @@ class CompetitionCommand(Command):
         self.competition_id = competition_id
 
     def get_json(self):
-        return{
+        return {
             'id': self.id,
-            'competition_id': self.competition_id
+            'competition_id': self.competition_id,
+            "executed_at": self.executed_at
         }
-
-    def toDict(self):
-        res = {
-            "id": self.id,
-            "competition_id": self.competition_id,
-            "executed_at": self.executed_at,
-        } 
-        return res
 
     def execute(self, admin_id, competition_id):
         

@@ -48,6 +48,6 @@ def get_competition_users(comp_id):
 def get_competition_details(self, competition_id):
     competition = Competition.query.get(competition_id)
     if competition:
-        return competition.toDict()
+        return competition.get_json()
     else:
         return "Competition not found"

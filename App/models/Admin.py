@@ -16,7 +16,6 @@ class Admin(User):
             'uwi_id': self.uwi_id,
             'email': self.email,
             'username': self.username,
-            'password': self.password,
             'role' : 'admin'
         }
         
