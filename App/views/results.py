@@ -62,12 +62,12 @@ def add_results_action():
 
         remove(f"App/static/{new_name}")
         flash("Results added successfully!")        
-        return  redirect(request.referrer)#render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
+        return redirect(request.referrer)#return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
     except Exception as e:
         # Handle exceptions (e.g., file not found, incorrect format)
         print(e)
         flash('Error uploading file. Please try again.')
-        return  redirect(request.referrer)#render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
+        return redirect(request.referrer)#return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
 
 
 @results_views.route('/competition/results', methods=['POST'])
@@ -77,9 +77,7 @@ def competition_results_action():
     page = request.args.get('page', 1, type=int)    
     competition = get_competition_by_id(competition_id)
     results = get_results_by_competition_id(competition_id, page=page)
-    print("int action route", competition_id)
-    competitions = get_all_competitions()      
-    # return redirect(url_for('results_views.competition_results_page', selected_comepetition_id=competition_id))# competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id))
+    competitions = get_all_competitions()         
     return render_template('competition_results.html', competitions=competitions,competition=competition, selected_competition_id=competition_id, results=results, page=page)
 
 

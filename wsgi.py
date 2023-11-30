@@ -21,7 +21,8 @@ migrate = get_migrate(app)
 @app.cli.command("init", help="Creates and initializes the database")
 def initialize():
     db.drop_all()
-    db.create_all()    
+    db.create_all()
+    initialize_db()    
     print('database intialized')
 
 '''
@@ -90,20 +91,20 @@ Competition Commands
 competition_cli = AppGroup('competition', help = 'Competition object commands')   
 
 @competition_cli.command("create", help = 'Creates new competition')
-@click.argument("id", default = "1")
-@click.argument("name", default ="RunTime")
+@click.argument("name", default ="Run Time")
 @click.argument("location", default ="Chaguanas")
-def create_competition_command(name,location):
-    competition = create_competition(name,location)
+@click.argument("platform", default ="HackerRank")
+def create_competition_command(name,location,platform):
+    competition_date = date(2020, 2, 29)
+    competition = create_competition(name,location,platform,competition_date)
     if competition:
         print("Competition Created Successfully")
     else:
         print("Competition not created")
 
-@competition_cli.command("get", help = " Get competition")
-@click.argument("id", default = "1")
+@competition_cli.command("get_competition", help = " get competition")
 def get_competition_by_id_command(id):
-    competition = get_competition_by_id_json(id)
+    competition = get_competition_by_id(id)
     if competition :
         print(competition)
     else: 
@@ -114,45 +115,6 @@ def get_competition_by_id_command(id):
 def list_competitions_command():
     competitions = get_all_competitions_json()
     print(competitions)
-
-@competition_cli.command("add", help = "Add results to competition")
-@click.argument("user_id", default = "1")
-@click.argument("comp_id", default ="1")
-@click.argument("rank", default ="1")
-def add_results_command(user_id, comp_id, rank):
-    result = add_results(user_id, comp_id, rank)
-    if result :
-        print("Competition Result Added Successfully")
-    else:
-        print("Error Results Not Added")
-
-
-#@competition_cli.command("add_user")
-#@click.argument("user_id")
-#@click.argument("comp_id")
-# @click.argument("rank")
-# def add_to_comp(user_id, comp_id, rank):
-#     add_user_to_comp(user_id, comp_id, rank)
-#     print("Done!")
-
-
-# @comps.command("getUserComps")
-# @click.argument("user_id")
-# def getUserCompetitions(user_id):
-#     competitions = get_user_competitions(user_id)
-#     print("these are the competitions")
-#     # print(competitions)
-
-# @comps.command("findcompuser")
-# @click.argument("user_id")
-# @click.argument("comp_id")
-# def find_comp_user(user_id, comp_id):
-#     findCompUser(user_id, comp_id)
-
-# @comps.command("getCompUsers")
-# @click.argument("comp_id")
-# def get_comp_users(comp_id):
-#     get_competition_users(comp_id)
 
 app.cli.add_command(competition_cli)
 

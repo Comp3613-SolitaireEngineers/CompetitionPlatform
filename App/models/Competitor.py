@@ -2,11 +2,12 @@ from App.database import db
 from .User import User
 
 class Competitor(User):
-    __tablename__ = 'competitor'      
+    __tablename__ = 'competitor'  
+    
     firstname = db.Column(db.String(255), nullable=False)
     lastname = db.Column(db.String(255), nullable=False)      
     rank = db.relationship('Rank', uselist=False, lazy=True)
-    competitions = db.relationship('Competition', secondary='usercompetition', back_populates='participants')       
+    competitions = db.relationship('Competition', secondary='results', back_populates='participants', viewonly=True)       
     notifications = db.relationship('Notification', backref='competitor', lazy=True)
     
     def __init__(self, uwi_id, username,email,password, firstname, lastname):
@@ -15,8 +16,9 @@ class Competitor(User):
         self.lastname = lastname
         self.user_type = 'competitor'
 
+
     def __repr__(self):       
-        return f"<Competitor {self.id}, {self.uwi_id} , Name: {self.firstname, self.lastname}, Username: {self.username}, {self.rank}>"
+        return f"<Competitor {self.id}, {self.uwi_id} , {self.firstname}, {self.lastname}, {self.username}, {self.rank}>"
 
     def get_json(self):
         return {
@@ -31,4 +33,3 @@ class Competitor(User):
             'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else [],
             'role' : 'competitor'            
         }
-      

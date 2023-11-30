@@ -1,16 +1,17 @@
-from App.models import Competition,User, UserCompetition
+from App.models import Competition,User
 from App.database import db
 
-def create_competition(id,name, location):
+def create_competition(name, location, platform, date):
+   
     try:
-        newComp = Competition(id=id,name=name, location=location)
-        db.session.add(newComp)
+        newcomp = Competition(name = name, location = location,platform = platform, date = date)
+        db.session.add(newcomp)
         db.session.commit()
-        return newComp
+        return newcomp
     except Exception as e:
-        print(e)
+        print("Error in competition", e)
         db.session.rollback()
-    return None
+        return None
 
 def get_all_competitions():
     return Competition.query.all()
@@ -32,27 +33,6 @@ def get_competition_by_id_json(id):
         return []
     competition = competition.get_json()
     return competition
-
-
-def add_results(user_id, comp_id, rank):
-    Comp = Competition.query.get(comp_id)
-    user = User.query.get(user_id)
-                
-    if user and Comp:
-        compParticipant = UserCompetition(user_id = user.id, comp_id = Comp.id, rank=rank)
-
-
-        try:
-            db.session.add(compParticipant)
-            db.session.commit 
-            print("successfully added user to comp")
-            return True
-        except Exception as e:
-            db.session.rollback()
-            print("error adding to comp")
-            return False
-        return False
-
 
 
 def get_competition_users(comp_id):

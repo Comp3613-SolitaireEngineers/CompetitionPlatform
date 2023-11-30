@@ -33,13 +33,17 @@ def get_all_results_json():
         return None
     return [result.get_json() for result in results]
 
-def get_results_by_competition_id(competition_id):
-    competition_results = []
-    results = Results.query.filter_by(competition_id=competition_id).all()
-
-    if results is None:
-        return None
+def get_results_by_competition_id(competition_id, page=None):
+    results = Results.query.filter_by(competition_id=competition_id)
     
+    if results.count() == 0:
+        return None
+
+    if page is not None:
+        return results.paginate(page=page, per_page=8, error_out=False)
+
+    results = results.all()
+    competition_results = []
     for result in results:
         competitor = Competitor.query.filter_by(id=result.competitor_id).first()
         competition_results.append({
@@ -72,17 +76,18 @@ def add_results(competition_id, results_file):
             rank = line['rank']            
             competitor = Competitor.query.filter_by(uwi_id=student_id).first()
             if competitor is None:
-                username = firstname[0].lower() + lastname.lower()+student_id[-2:]
+                username = firstname[0].lower() + lastname.lower()+ student_id[-2:]
                 password = firstname[0].lower() + lastname[0].lower()+ student_id[-4:]
-                # print("Student 1:" + username + " "+ password)
-                competitor = create_competitor(student_id, username, email, password, firstname, lastname,)
+                
+                competitor = create_competitor(student_id, username, email, password, firstname, lastname)
                 if competitor is None:
                     print("Student not created")
                     continue
-                    
+          
             result = create_result(competition_id, competitor.id, points, rank)                   
     
     competition.results_added = True
+    db.session.commit()
     return True
  
 
