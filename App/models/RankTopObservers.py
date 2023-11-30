@@ -16,6 +16,9 @@ class RankTopObservers(db.Model):
     def subscribe(self, competitor):
       self.top_subscribers.append(competitor)
       
+    def unsubscribe(self, competitor):
+        self.top_subscribers.remove(competitor)
+      
     def notify_subscribers(self, message):
         for subscriber in self.top_subscribers:
             subscriber.update(message)
