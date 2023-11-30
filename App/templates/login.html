@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block styles %}
+    <!-- Additional styles for the child template -->
+    <style>
+        /* Your custom styles here */
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Login</h2>
+                </div>
+                <div class="card-body">
+                    <!-- Login Form -->
+                    <form method="post" action="/login">                        
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="hidden" id="referrer" name="referrer" value="{{referrer}}">
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <!-- Link to Change Password -->
+                        <p class="text-right"><a href="/change-password">Forgot Password?</a></p>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+
+                    <p class="mt-3 text-center">Don't have an account? <a href="/signup">Sign up</a></p>
+                    
+                </div>
+            </div>
+             <!-- Link to Continue as Guest -->
+            <p class="mt-3 text-center">Continue as a <a href="/leaderboard">Guest</a></p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Additional scripts for the child template -->
+    <script>
+        // Your custom scripts here
+    </script>
+{% endblock %}

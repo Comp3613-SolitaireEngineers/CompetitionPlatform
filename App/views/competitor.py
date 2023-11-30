@@ -7,6 +7,28 @@ from App.controllers import *
 competitor_views = Blueprint('competitor_views', __name__, template_folder='../templates')
 
 
+
+'''
+Page Routes
+'''
+@competitor_views.route('/competitor/profile', methods=['GET'])
+@competitor_required
+def competitor_profile():
+    return render_template('competitor_profile.html')
+
+
+
+
+'''
+Action Routes
+'''
+
+
+
+'''
+API Routes
+'''
+
 @competitor_views.route('/api/competitors', methods=['GET'])
 def api_get_competitors():
     competitors = get_all_competitors_json()
@@ -25,7 +47,7 @@ def api_add_new_competitor():
     else:
         return jsonify({'error': 'Competitor not created'}), 400
     
-@competitor_views.route('/api/competitor/<id>', methods=['GET'])
+@competitor_views.route('/api/competitor/profile/<id>', methods=['GET'])
 def api_get_competitor_by_id(id):
     competitor = get_competitor_by_id(id)
     if competitor:

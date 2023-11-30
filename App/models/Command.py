@@ -1,4 +1,5 @@
-from App.database import db, abstractmethod
+from App.database import db
+from abc import ABC, abstractmethod
 
 class Command(db.Model):
     

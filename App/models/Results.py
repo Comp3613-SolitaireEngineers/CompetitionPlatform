@@ -12,6 +12,7 @@ class Results(db.Model):
     date_modified = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     competitor = db.relationship('Competitor', uselist=False, lazy=True)
 
+
     def __init__(self, competition_id, competitor_id, points, rank):
         self.competition_id = competition_id
         self.competitor_id = competitor_id
@@ -31,5 +32,3 @@ class Results(db.Model):
             'date_created': self.date_created.strftime("%Y-%m-%d %H:%M:%S"),
             'date_modified': self.date_modified.strftime("%Y-%m-%d %H:%M:%S")
         }
-
-    

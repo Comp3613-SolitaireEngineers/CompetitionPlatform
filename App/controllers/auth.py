@@ -61,6 +61,9 @@ def setup_jwt(app):
 
     return jwt
 
+def logout():
+    logout_user()
+
 def admin_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -73,6 +76,6 @@ def competitor_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated or not isinstance(current_user, Competitor):
-            return jsonify({"error" : "Permission Denied. This action is restricted to admin only" }), 401
+            return jsonify({"error" : "Permission Denied. This action is restricted to competitor only" }), 401
         return func(*args, **kwargs)
     return wrapper
