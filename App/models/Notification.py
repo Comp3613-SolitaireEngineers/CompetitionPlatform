@@ -20,5 +20,5 @@ class Notification(db.Model):
          'id':self.id,
          'competitor_id': self.competitor_id,
          'message': self.message,
-         'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+         'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S") if self.timestamp else None
      }

@@ -7,7 +7,6 @@ from .CompetitionHost import *
 from .Competitor import *
 from .Results import *
 from .Notification import *
-from .ResultsCommand import *
-from .CompetitionCommand import *
+
 
 
