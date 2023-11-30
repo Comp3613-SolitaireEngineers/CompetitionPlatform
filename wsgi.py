@@ -93,8 +93,8 @@ competition_cli = AppGroup('competition', help = 'Competition object commands')
 @click.argument("id", default = "1")
 @click.argument("name", default ="RunTime")
 @click.argument("location", default ="Chaguanas")
-def create_competition_command(id,name,location):
-    competition = create_competition(id,name,location)
+def create_competition_command(name,location):
+    competition = create_competition(name,location)
     if competition:
         print("Competition Created Successfully")
     else:
@@ -339,3 +339,50 @@ def update_admin_command(id,username):
 
 app.cli.add_command(admin_cli) 
 
+
+'''
+Results commands
+'''
+
+results = AppGroup('results', help = 'commands for results')
+
+@results.command("create", help = 'create new result')
+def create_result_command():
+    competition_id = click.prompt("Enter Competition ID")
+    competitor_id = click.prompt("Enter Competitor ID")
+    points = click.prompt("Enter Points")
+    rank = click.prompt("Enter Rank")
+    result = create_result(competition_id, competitor_id, points, rank)
+    if result:
+        print("Result Created Successfully")
+    else:
+        print("Error adding result")
+
+@results.command("list", help = 'list all results')
+def list_results_command():
+    results = get_all_results_json()
+    if results:
+        print(results)
+    else:
+        print("Error getting results")
+
+@results.command("get_competition_results", help = 'get result by id')
+def get_competition_results_command():
+    competition_id = click.prompt("Enter Competition ID")
+    results = get_results_by_competition_id(competition_id)
+    if results:
+        print(results)
+    else:
+        print("Error getting results")
+
+@results.command("add", help = 'add results to competition')
+def add_results_command():
+    competition_id = click.prompt("Enter Competition ID")
+    results_file = 'App/static/results.csv'
+    response = add_results(competition_id,results_file)
+    if response:
+        print("Results Added Successfully")
+    else:
+        print("Error adding results")
+
+app.cli.add_command(results)

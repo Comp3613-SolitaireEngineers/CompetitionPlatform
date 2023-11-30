@@ -12,7 +12,6 @@ def create_competition(id,name, location):
         db.session.rollback()
     return None
 
-
 def get_all_competitions():
     return Competition.query.all()
 
