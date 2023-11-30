@@ -1,21 +1,22 @@
 import os, tempfile, pytest, logging, unittest
 from werkzeug.security import check_password_hash, generate_password_hash
+from datetime import datetime
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User
-from App.controllers import (
-    create_user,
-    get_all_users_json,
-    login,
-    get_user,
-    get_user_by_username,
-    update_user,
-    get_user_competitions,
-    create_competition,
-    add_user_to_comp,
-    get_user_rankings
-)
+from App.models import Host, Admin, Competitor, Competition
+# from App.controllers import (
+    # create_user,
+    # get_all_users_json,
+    # login,
+    # get_user,
+    # get_user_by_username,
+    # update_user,
+    # get_user_competitions,
+    # create_competition,
+    # add_user_to_comp,
+    # get_user_rankings
+# )
 
 
 LOGGER = logging.getLogger(__name__)
@@ -25,27 +26,109 @@ LOGGER = logging.getLogger(__name__)
 '''
 class UserUnitTests(unittest.TestCase):
 
-    def test_new_user(self):
-        user = User("bob", "bobpass")
-        assert user.username == "bob"
+    def test_new_competitor(self):
+        competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
+        assert competitor.uwi_id == "816011111"
+        assert competitor.username == "coolGuy101"
+        assert competitor.email == "randal.m@mail.com"
+        assert competitor.firstname == "Randal"
+        assert competitor.lastname == "Morris"
+
+    def test_new_host(self):
+        host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
+        assert host.name == "DCIT"
+        assert host.website == "https://sta.uwi.edu/fst/dcit"
+        
+    def test_new_admin(self):
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", "admin1pass")
+        assert admin.uwi_id == "817630671"
+        assert admin.username == "admin1"
+        assert admin.email == "sherry.floobs@mail.com"
+        
+    def test_new_competition(self):
+        competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", "01-02-2023")
+        assert competition.name == "UWI Games 2023"
+        assert competition.location == "DCIT Conference Room"
+        assert competition.platform == "HankerRank"
+        assert competition.date == "01-02-2023"
 
     # pure function no side effects or integrations called
-    def test_get_json(self):
-        user = User("bob", "bobpass")
-        user_json = user.get_json()
-        self.assertDictEqual(user_json, {"id":None, "username":"bob"})
-    
+    def test_competitor_get_json(self):
+        competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
+        competitor_json = competitor.get_json()
+
+        self.assertDictEqual(
+            competitor_json,
+            {
+                'id': None,
+                'uwi_id': "816011111",
+                'firstname': "Randal",
+                'lastname': "Morris",
+                'email': "randal.m@mail.com",
+                'username': "coolGuy101",
+                'rank': "",
+                'competitions': [],
+                'notifications': [],
+                'role' : 'competitor'            
+            })
+
+    def test_host_get_json(self):
+        host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
+        host_json = host.toDict()
+        
+        self.assertDictEqual(
+            host_json, 
+            {
+                "id": None, 
+                "name": "DCIT",
+                "website": "https://sta.uwi.edu/fst/dcit"
+            })
+
+    def test_admin_get_json(self):
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", "admin1pass")
+        admin_json = admin.get_json()
+
+        self.assertDictEqual(
+            admin_json,
+            {
+                'id': None,
+                'uwi_id': "817630671",
+                'email': "sherry.floobs@mail.com",
+                'username': "admin1",
+                'role' : 'admin'
+            })
+
+    def test_competition_get_json(self):
+        date = datetime.now()
+        competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", date)
+        competition_json = competition.get_json()
+
+        self.assertDictEqual(
+            competition_json, 
+            {
+                'id': None,
+                'name': "UWI Games 2023",
+                'location': "DCIT Conference Room",
+                'platform': "HankerRank",
+                'date': date.strftime("%Y-%m-%d %H:%M:%S"),
+                "hosts": [],
+                "participants": []
+            })
+        
     def test_hashed_password(self):
-        password = "mypass"
+        password = "password"
         hashed = generate_password_hash(password, method='sha256')
-        user = User("bob", password)
-        assert user.password != password
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
+        
+        assert admin.password != password
 
     def test_check_password(self):
-        password = "mypass"
-        user = User("bob", password)
-        assert user.check_password(password)
+        password = "admin1pass"
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
+        
+        assert admin.check_password(password)
 
+    
 '''
     Integration Tests
 '''
