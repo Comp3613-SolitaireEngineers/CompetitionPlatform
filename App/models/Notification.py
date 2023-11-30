@@ -16,9 +16,9 @@ class Notification(db.Model):
         
     
     def toDict(self):
-     return{
-         'id':self.id,
-         'competitor_id': self.competitor_id,
-         'message': self.message,
-         'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
-     }
+        return{
+            'id':self.id,
+            'competitor_id': self.competitor_id,
+            'message': self.message,
+            'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+        }

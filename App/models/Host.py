@@ -7,6 +7,10 @@ class Host(db.Model):
     
     competitions = db.relationship("CompetitionHost", lazy=True, backref=db.backref("competitions"), cascade="all, delete-orphan")
 
+    def __init__(self, name, website):
+        self.name = name
+        self.website = website
+
     def toDict(self):
         res = {
             "id": self.id,
@@ -14,5 +18,3 @@ class Host(db.Model):
             "website": self.website
         }
         return res
-    
-    
