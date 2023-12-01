@@ -10,5 +10,7 @@ from .Results import *
 from .Notification import *
 from .RankCommand import *
 from .ResultsCommand import *
+from .RankTopObservers import *
+
 
 
