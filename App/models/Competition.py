@@ -31,16 +31,3 @@ class Competition(db.Model):
             "hosts": [host.toDict() for host in self.hosts],
             "participants": [participant.toDict() for participant in self.participants]
         }
-
-
-
-    def toDict(self):
-        res = {
-            "id": self.id,
-            "name": self.name,
-            "date": self.date,
-            "location": self.location,
-            "hosts": [host.toDict() for host in self.hosts],
-            "participants": [participant.toDict() for participant in self.participants]
-        } 
-        return res
