@@ -7,7 +7,7 @@ rank_views = Blueprint('rank_views', __name__, template_folder='../templates')
 
 @rank_views.route('/api/ranks', methods=['GET'])
 def api_get_ranks():
-    ranks = get_all_ranks_json()
+    ranks = get_rankings()
     if ranks:
         return (jsonify(ranks),200)
     return jsonify({'message': 'No Ranks found'}), 405

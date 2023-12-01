@@ -157,6 +157,15 @@ def get_competitor_command():
     else:
         print("Error getting competitor")
 
+@competitor.command("get_competitor_profile", help = 'get competitor by id')
+def get_competitor_jprofile_command():
+    id  = click.prompt("Enter id", type=str)
+    competitor_profile = get_competitor_profile(id)
+    if competitor_profile:
+        print(competitor_profile)
+    else:
+        print("Error getting competitor")
+
 @competitor.command("get_competitor_json", help = 'get competitor by id')
 def get_competitor_json_command():
     id = click.prompt("Enter id", type=str)
@@ -229,6 +238,14 @@ def get_rank_command():
         print(rank)
     else:
         print("Error getting rank")
+
+@rank.command("get_rankings", help = 'get rankings')
+def get_rankings_command():
+    rankings = get_rankings()
+    if rankings:
+        print(rankings)
+    else:
+        print("Error getting rankings")
 
 
 app.cli.add_command(rank)
