@@ -2,7 +2,7 @@ from datetime import datetime
 from App.database import db
 from App.models import Command, RankCommand
 from App.controllers import results
-from App.controllers import get_admin, get_competition_by_id
+from App.controllers import get_admin, get_competition_by_id, add_results
 
 class ResultsCommand(Command):
     id = db.Column(db.Integer, primary_key=True)
@@ -34,7 +34,7 @@ class ResultsCommand(Command):
         
         if admin:
             if competition:
-                results.add_results(competition_id, results)
+                add_results(competition_id, results)
                 
                 # Create and execute a RankCommand for each competitor
                 for competitor in competition.participants:
