@@ -31,22 +31,24 @@ Action Routes
 def login_action():
 
   data = request.form
-  referrer=data['referrer']
+  if 'email' not in data or 'password' not in data:
+    flash('Error: Missing email or password.')
+    return redirect('/login')
 
-  competitor = Competitor.query.filter_by(email = data['email']).first()    
-  if competitor and competitor.check_password(data['password']):
+  email = data.get('email')
+  password = data.get('password')
+
+  competitor = Competitor.query.filter_by(email=email).first()
+  if competitor and competitor.check_password(password):
     logout_user()
     login_user(competitor)
-    return redirect(referrer)
-  
-  admin = Admin.query.filter_by(email = data['email']).first()
-  if admin and admin.check_password(data['password']):  
+    return redirect(data.get('referrer', '/'))  # redirects to '/' if 'referrer' is missing
+
+  admin = Admin.query.filter_by(email=email).first()
+  if admin and admin.check_password(password):
     logout_user()
-    login_user(admin)     
+    login_user(admin)
     return redirect('/competition')
-  
-  flash('Error in email/password.')
-  return redirect('/login')
 
 @auth_views.route('/signup', methods=['POST'])
 def signup_action():
