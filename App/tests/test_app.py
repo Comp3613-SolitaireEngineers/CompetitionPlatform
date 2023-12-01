@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from App.main import create_app
 from App.database import db, create_db
 from datetime import datetime
-from App.models import User, Results, Rank, Notification, ResultsCommand, CompetitionCommand
+from App.models import User, Results, Rank, Notification
 from App.controllers import (
     create_user,
     get_all_users_json,
