@@ -120,7 +120,7 @@ def api_get_results():
     results = get_all_results_json()
     if results:
         return (jsonify(results),200)
-    return jsonify({'message': 'No Results found'}), 405
+    return jsonify({'message': 'No Results found'}), 404
 
 
 @results_views.route('/api/results/<competition_id>', methods=['GET'])
@@ -129,14 +129,14 @@ def api_get_competition_results(competition_id):
     if results:
         return jsonify(results), 200
     else:
-        return jsonify({'message': 'Competition Results not found'}), 405
+        return jsonify({'message': 'Competition Results not found'}), 404
 
 @results_views.route('/api/leaderboard', methods=['GET'])
 def api_get_leaderboard():
     results = get_all_results_json()
 
     if results is None:
-        return jsonify("message: leaderboard is empty")
+        return jsonify({'message': 'Leaderboard not found'})
 
     if results:
         top20 = results[:20]
