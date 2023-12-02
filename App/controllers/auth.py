@@ -10,7 +10,13 @@ def jwt_authenticate(email, password):
     user = Admin.query.filter_by(email=email).first()
     if user and user.check_password(password):
         login_user(user)
-        return create_access_token(identity=email)
+
+        user_credentials = {
+            "access_token": create_access_token(identity=email),
+            "admin_id": user.id
+        }
+
+        return user_credentials
 
     user = Competitor.query.filter_by(email=email).first()
     if user and user.check_password(password):
