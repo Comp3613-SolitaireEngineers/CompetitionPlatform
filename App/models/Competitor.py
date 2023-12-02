@@ -30,7 +30,7 @@ class Competitor(User):
             'lastname': self.lastname,
             'email': self.email,
             'username': self.username,
-            'rank': self.rank.get_json() if self.rank else "",
+            'platform_rank': self.rank.get_json() if self.rank else "",
             # 'competitions': [comp.get_json() for comp in self.competitions] if self.competitions else [],
             #'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else [],
             'role' : 'competitor'            

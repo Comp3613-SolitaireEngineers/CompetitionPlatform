@@ -256,10 +256,6 @@ def get_rankings_command():
     else:
         print("Error getting rankings")
 
-@rank.command("date", help = 'get rankings')
-def date_command():
-    date = datetime.now()
-    print(date.strftime("%Y-%m-%d %H:%M:%S"))
 
 
 app.cli.add_command(rank)
@@ -388,15 +384,15 @@ Notification commands
 notification = AppGroup('notification', help = 'commands for notification')
 
 
-# @notification.command("create", help = 'create new notification')
-# def create_notification_command():
-#     competitor_id = click.prompt("Enter Competitor ID")
-#     message = click.prompt("Enter Message")     
-#     notification = create_notification(competitor_id, message)
-#     if notification:
-#         print("Notification Created Successfully")
-#     else:
-#         print("Error adding notification")
+@notification.command("create", help = 'create new notification')
+def create_notification_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    message = click.prompt("Enter Message")     
+    notification = create_notification(competitor_id, message)
+    if notification:
+        print("Notification Created Successfully")
+    else:
+        print("Error adding notification")
 
 @notification.command("list", help = 'list all notifications')
 def list_notifications_command():
@@ -406,7 +402,7 @@ def list_notifications_command():
     else:
         print("Error getting notifications")
 
-@notification.command("get_comp_not", help = 'get notifications by competitor id')
+@notification.command("get_competition_notifications", help = 'get notifications by competitor id')
 def get_competitor_notifications_command():
     competitor_id = click.prompt("Enter Competitor ID")
     notifications = get_competitor_notifications(competitor_id)
@@ -415,36 +411,3 @@ def get_competitor_notifications_command():
     else:
         print("Error getting notifications")
 
-@notification.command("create", help='create new notification')
-def create_notification_command():
-    competitor_id = click.prompt("Enter Competitor ID")
-    message = click.prompt("Enter Message")
-
-    # # Example: Create notifications with different timestamps for testing time ago cases
-    # for i in range(7):
-    #     timestamp = datetime.now() - timedelta(days=i, hours=i, minutes=i)  # Modify as needed
-    #     notification = create_notification(competitor_id, message, timestamp)
-    #     if notification:
-    #         print(f"Notification {i+1} Created Successfully")
-    #     else:
-    #         print(f"Error adding notification {i+1}")
-    timestamp_now = datetime.now()
-
-    cases = [
-        ('seconds', timestamp_now - timedelta(seconds=30)),
-        ('minutes', timestamp_now - timedelta(minutes=45)),
-        ('hours', timestamp_now - timedelta(hours=5)),
-        ('days', timestamp_now - timedelta(days=3)),
-        ('weeks', timestamp_now - timedelta(weeks=2)),
-        ('months', timestamp_now - timedelta(days=60)),
-        ('years', timestamp_now - timedelta(days=365))
-    ]
-
-    for case, timestamp in cases:
-        notification = create_notification(competitor_id, f"{message} - {case}", timestamp)
-        if notification:
-            print(f"Notification '{case}' Created Successfully")
-        else:
-            print(f"Error adding notification '{case}'")
-
-app.cli.add_command(notification)

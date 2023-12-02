@@ -1,5 +1,6 @@
 from App.models import Competition,User
 from App.database import db
+from App.controllers import get_results_by_competition_id
 
 def create_competition(name, location, platform, date):
    
@@ -24,6 +25,8 @@ def get_all_competitions_json():
     return competitions
             
 def get_competition_by_id(id):
+    if not id:
+        return None
     competition = Competition.query.get(id)
     return competition
 
@@ -45,9 +48,17 @@ def get_competition_users(comp_id):
         print(Participants)
 
 
-def get_competition_details(self, competition_id):
+def get_competition_details(competition_id):
     competition = Competition.query.get(competition_id)
     if competition:
-        return competition.toDict()
-    else:
-        return "Competition not found"
+        results = get_results_by_competition_id(competition_id)
+        competition_details = {
+            "name": competition.name,
+            "location": competition.location,
+            "platform": competition.platform,
+            "date": competition.date,
+            "results": results        
+        }
+        return competition_details
+    return None
+      
