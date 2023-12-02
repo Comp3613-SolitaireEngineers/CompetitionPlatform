@@ -9,6 +9,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import *
+from datetime import date, datetime, timedelta
 
 
 
@@ -157,6 +158,15 @@ def get_competitor_command():
     else:
         print("Error getting competitor")
 
+@competitor.command("get_competitor_profile", help = 'get competitor by id')
+def get_competitor_jprofile_command():
+    id  = click.prompt("Enter id", type=str)
+    competitor_profile = get_competitor_profile(id)
+    if competitor_profile:
+        print(competitor_profile)
+    else:
+        print("Error getting competitor")
+
 @competitor.command("get_competitor_json", help = 'get competitor by id')
 def get_competitor_json_command():
     id = click.prompt("Enter id", type=str)
@@ -174,6 +184,14 @@ def get_competitor_by_username_command():
         print(competitor)
     else:
         print("Error getting competitor")
+
+@competitor.command("leaderboard", help = 'get competitor by username')
+def leaderboard_command():    
+    leaderboard = leaderboard_competitors(1)
+    if leaderboard:
+        print(leaderboard)
+    else:
+        print("Error getting leaderboard")
 
 app.cli.add_command(competitor)
 
@@ -229,6 +247,19 @@ def get_rank_command():
         print(rank)
     else:
         print("Error getting rank")
+
+@rank.command("get_rankings", help = 'get rankings')
+def get_rankings_command():
+    rankings = get_rankings()
+    if rankings:
+        print(rankings)
+    else:
+        print("Error getting rankings")
+
+@rank.command("date", help = 'get rankings')
+def date_command():
+    date = datetime.now()
+    print(date.strftime("%Y-%m-%d %H:%M:%S"))
 
 
 app.cli.add_command(rank)
@@ -348,3 +379,72 @@ def add_results_command():
         print("Error adding results")
 
 app.cli.add_command(results)
+
+
+'''
+Notification commands
+'''
+
+notification = AppGroup('notification', help = 'commands for notification')
+
+
+# @notification.command("create", help = 'create new notification')
+# def create_notification_command():
+#     competitor_id = click.prompt("Enter Competitor ID")
+#     message = click.prompt("Enter Message")     
+#     notification = create_notification(competitor_id, message)
+#     if notification:
+#         print("Notification Created Successfully")
+#     else:
+#         print("Error adding notification")
+
+@notification.command("list", help = 'list all notifications')
+def list_notifications_command():
+    notifications = get_notifications()
+    if notifications:
+        print(notifications)
+    else:
+        print("Error getting notifications")
+
+@notification.command("get_comp_not", help = 'get notifications by competitor id')
+def get_competitor_notifications_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    notifications = get_competitor_notifications(competitor_id)
+    if notifications:
+        print(notifications)
+    else:
+        print("Error getting notifications")
+
+@notification.command("create", help='create new notification')
+def create_notification_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    message = click.prompt("Enter Message")
+
+    # # Example: Create notifications with different timestamps for testing time ago cases
+    # for i in range(7):
+    #     timestamp = datetime.now() - timedelta(days=i, hours=i, minutes=i)  # Modify as needed
+    #     notification = create_notification(competitor_id, message, timestamp)
+    #     if notification:
+    #         print(f"Notification {i+1} Created Successfully")
+    #     else:
+    #         print(f"Error adding notification {i+1}")
+    timestamp_now = datetime.now()
+
+    cases = [
+        ('seconds', timestamp_now - timedelta(seconds=30)),
+        ('minutes', timestamp_now - timedelta(minutes=45)),
+        ('hours', timestamp_now - timedelta(hours=5)),
+        ('days', timestamp_now - timedelta(days=3)),
+        ('weeks', timestamp_now - timedelta(weeks=2)),
+        ('months', timestamp_now - timedelta(days=60)),
+        ('years', timestamp_now - timedelta(days=365))
+    ]
+
+    for case, timestamp in cases:
+        notification = create_notification(competitor_id, f"{message} - {case}", timestamp)
+        if notification:
+            print(f"Notification '{case}' Created Successfully")
+        else:
+            print(f"Error adding notification '{case}'")
+
+app.cli.add_command(notification)

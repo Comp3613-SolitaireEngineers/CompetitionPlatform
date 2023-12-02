@@ -48,18 +48,46 @@ def add_competition_action():
 API Routes
 '''
 
-# @comp_views.route('/api/competitions', methods=['GET'])
-# def get_competitons_views():
-#     competitions = get_all_competitions_json()
-#     return (jsonify(competitions),200) 
+@competition_views.route('/api/competitions', methods=['GET'])
+def api_get_all_competitons():
+    competitions = get_all_competitions_json()
+    if competitions:
+        return (jsonify(competitions),200) 
+    return jsonify({'message': 'No Competitions found'}), 405
 
-# @comp_views.route('/api/competition', methods=['POST'])
-# def add_new_competition_views():
-#     data = request.json
-#     response = create_competition(data['name'], data['location'])
-#     if response:
-#         return (jsonify({'message': f"competition created"}), 201)
-#     return (jsonify({'error': f"error creating competition"}),500)
+@competition_views.route('/api/competition', methods=['POST'])
+def add_new_competition_views():
+    data = request.json
+    name= data.get('name')
+    location = data.get('location')
+    platform = data.get('platform')
+    
+    if None in (name, location, platform, data['date']):
+        return jsonify({'error': 'Missing data in the request'}), 400
+   
+
+    response = create_competition(name=name, location=location, platform=platform, date=datetime.strptime(data['date'], "%Y-%m-%d"))
+
+    
+    if response:
+        return (jsonify({'message': f"Competition created"}), 201)
+    return (jsonify({'error': f"Error creating competition"}),500)
+
+
+@competition_views.route('/api/competition/details/<int:id>', methods=['GET'])
+def get_competition_views(id):
+    competition = get_competition_by_id(id)
+    if not competition:
+        return jsonify({'error': 'competition not found'}), 404 
+    
+    competition_details = {
+        "name": competition.name,
+        "location": competition.location,
+        "platform": competition.platform,
+        "date": competition.date,        
+    }
+    return (jsonify(competition_details),200)
+
 
 # @comp_views.route('/api/competitions/<int:id>', methods=['GET'])
 # def get_competition_views(id):

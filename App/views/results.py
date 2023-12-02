@@ -99,6 +99,10 @@ def api_create_results():
     competitor_id = data['competitor_id']
     points = data['points']
     rank = data['rank']
+
+    if None in (competition_id, competitor_id, points, rank):
+        return jsonify({'error': 'Missing data in the request'}), 400
+    
     result = create_result(competition_id, competitor_id, points, rank)
     if result:
         return jsonify(result.get_json()), 200

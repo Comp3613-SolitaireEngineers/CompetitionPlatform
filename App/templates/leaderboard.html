@@ -10,67 +10,27 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Podium for 1st, 2nd, and 3rd Ranked Competitors -->
-    <!-- <div class="row justify-content-center mt-5">
-        <div class="col-md-4 mb-4">
-           
-            <div class="card text-center">
-                <div class="card-header bg-success text-white">
-                    <h3>1st Place</h3>
-                </div>
-                <div class="card-body">
-                    <img src="/static/" alt="John Doe" class="img-fluid rounded-circle mb-3" style="max-width: 100px;"> 
-                    <h4>John Doe</h4>
-                    <p>Score: 500</p>
-                </div>
-            </div>
-        </div>..
-    </div>
-    <div class="row justify-content-center mt-5">        
-        <div class="col-md-4 mb-4">
-           
-            <div class="card text-center">
-                <div class="card-header bg-info text-white">
-                    <h3>2nd Place</h3>
-                </div>
-                <div class="card-body">
-                    <h4>Jane Smith</h4>
-                    <p>Score: 450</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            
-            <div class="card text-center">
-                <div class="card-header bg-warning text-dark">
-                    <h3>3rd Place</h3>
-                </div>
-                <div class="card-body">
-                    <h4>Bob Johnson</h4>
-                    <p>Score: 400</p>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
+<!-- 
     <div class="row justify-content-center mt-5">
         <div class="col-md-4 mb-4">
-            <!-- 1st Place -->
+           
             
             <div class="card flex-row">
-                <img src="/static/coding_image.jpg" class="img-fluid rounded-start" alt="...">              
-                <div class="card-body">
-                    <!-- <img src="/static/" alt="John Doe" class="img-fluid rounded-circle mb-3" style="max-width: 100px;"> -->
+                <div class="card-header bg-info text-white">
+                    <h3>1st Place</h3>
+                </div>       
+                <div class="card-body">                    
                     <h4>John Doe</h4>
                     <p>Score: 500</p>
                 </div>
             </div>
         </div>
-        <!-- Add more 1st Place cards as needed -->
+      
     </div>
     <div class="row justify-content-center mt-5">        
         <div class="col-md-4 mb-4">
-            <!-- 2nd Place -->
+           
             <div class="card flex-row">
                 <div class="card-header bg-info text-white">
                     <h3>2nd Place</h3>
@@ -82,7 +42,7 @@
             </div>
         </div>
         <div class="col-md-4 mb-4">
-            <!-- 3rd Place -->
+           
             <div class="card flex-row">
                 <div class="card-header bg-warning text-dark">
                     <h3>3rd Place</h3>
@@ -93,11 +53,11 @@
                 </div>
             </div>
         </div>
-        <!-- Add more 2nd and 3rd Place cards as needed -->
+      
     </div>
     
 
-    <!-- Table for Other Competitors with Pagination -->
+   
     <div class="row justify-content-center mt-3">
         <div class="col-md-8">
             <table class="table">
@@ -109,7 +69,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample Data, replace with actual data from your application -->
+                    
                     <tr>
                         <td>4</td>
                         <td>Mary Johnson</td>
@@ -120,10 +80,10 @@
                         <td>Michael Davis</td>
                         <td>350</td>
                     </tr>
-                    <!-- Add more rows as needed -->
+                    
                 </tbody>
             </table>
-            <!-- Pagination -->
+           
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-end">
                     <li class="page-item disabled">
@@ -144,8 +104,221 @@
                 </ul>
             </nav>
         </div>
+    </div> -->
+
+    <!-- Podium for 1st, 2nd, and 3rd Ranked Competitors -->
+   
+        {%if competitors%}
+
+        <div class="row justify-content-center mt-1">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4 card-header bg-info">
+                    <h4>1st Place</h4>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <!-- <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                      <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+                      <h4>{{ competitors.top_three[0].firstname }} {{ competitors.top_three[0].lastname }}</h4>
+                      <p>Score: {{ competitors.top_three[0].rank.points }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <div class="row justify-content-center mt-1">
+            
+            {% for competitor in competitors.top_three[1:] %}
+            <div class="col-md-4 mb-1">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <!-- <div class="col-md-4 card-header bg-info">
+                    <h4>1st Place</h4>
+                  </div> -->
+                    {%if competitor.rank.ranking == 2%}
+                    <div class="col-md-4 card-header bg-info">
+                        <h4>{{ competitor.rank.ranking }}nd Place</h4>
+                    </div>
+                    {%else%}
+                    <div class="col-md-4 card-header bg-info">
+                        <h4>{{ competitor.rank.ranking }}rd Place</h4>
+                    </div>
+                    {%endif%} 
+                  
+                  <div class="col-md-8">
+                    <div class="card-body">
+                      <!-- <h5 class="card-title">Card title</h5>
+                      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                      <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+                      <h4>{{ competitor.firstname }} {{ competitor.lastname }}</h4>
+                      <p>Score: {{ competitor.rank.points }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %} 
+            
+        </div>
+        <!-- <div class="row justify-content-center mt-1">
+            {% for competitor in competitors.top_three[1:] %}
+            <div class="col-md-4 mb-4">
+                <div class="card flex-row">
+                    {%if competitor.rank.ranking == 1%}
+                    <div class="card-header bg-info text-white">
+                        <h3>{{ competitor.rank.ranking }}st Place</h3>
+                    </div>
+                    {%elif competitor.rank.ranking == 2%}
+                    <div class="card-header bg-info text-white">
+                        <h3>{{ competitor.rank.ranking }}nd Place</h3>
+                    </div>
+                    {%else%}
+                    <div class="card-header bg-warning text-dark">
+                        <h3>{{ competitor.rank.ranking }}rd Place</h3>
+                    </div>
+                    {%endif%}                    
+                    <div class="card-body">
+                        <h4>{{ competitor.firstname }} {{ competitor.lastname }}</h4>
+                        <p>Score: {{ competitor.rank.points }}</p>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        <!-- {% endfor %} -->
+
+        {%else%}
+        
+        <div class="row justify-content-center mt-1">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                  <div class="col-md-4 card-header bg-info">
+                    <h4>1st Place</h4>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body">
+                        <h4>No Competitors Yet</h4>
+                        <p>Score: 0</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-1">
+            <div class="col-md-4 mb-1">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                      <div class="col-md-4 card-header bg-info">
+                        <h4>1st Place</h4>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                            <h4>No Competitors Yet</h4>
+                            <p>Score: 0</p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-1">
+                <div class="card mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                      <div class="col-md-4 card-header bg-info">
+                        <h4>1st Place</h4>
+                      </div>
+                      <div class="col-md-8">
+                        <div class="card-body">
+                            <h4>No Competitors Yet</h4>
+                            <p>Score: 0</p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {%endif%}
+    
+
+    <!-- Table for Other Competitors with Pagination -->
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%if competitors%}
+                    {% for competitor in competitors.competitors_pagination.items %}                                                                          
+                        <tr>
+                            <td>{{ competitor.rank.ranking }}</td>
+                            <td>{{ competitor.firstname }} {{ competitor.lastname }}</td>
+                            <td>{{ competitor.rank.points }}</td>
+                        </tr>
+                        
+                    {% endfor %}
+                    {%else%}
+                    {% for i in range(3) %}
+                        <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>No Competitors Yet</td>
+                            <td>0</td>
+                        </tr>
+                    {% endfor %}
+                    {%endif%}                   
+                </tbody>
+            </table>
+            <!-- Pagination --> 
+            {%if competitors%}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-end">
+                    {% if competitors.competitors_pagination.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('index_views.index_page', page=competitors.competitors_pagination.prev_num) }}" aria-label="Previous">
+                                <span aria-hidden="true">Previous</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">Previous</span>
+                        </li>
+                    {% endif %}
+
+                    {% for page_num in competitors.competitors_pagination.iter_pages() %}
+                        <li class="page-item {% if page_num == competitors.competitors_pagination.page %}active{% endif %}">
+                            {%if page_num %}
+                            <a class="page-link" href="{{ url_for('index_views.index_page', page=page_num) }}">{{ page_num }}</a>
+                            {%else%}
+                            <a class="page-link" href="{{ url_for('index_views.index_page', page=page_num) }}">...</a>
+                            {%endif%}
+                            
+                        </li>
+                    {% endfor %}
+
+                    {% if competitors.competitors_pagination.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('index_views.index_page', page=competitors.competitors_pagination.next_num) }}" aria-label="Next">
+                                <span aria-hidden="true">Next</span>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link" aria-hidden="true">Next</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
+
 
 {% block scripts %}
     <!-- Additional scripts for the child template -->

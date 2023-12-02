@@ -1,5 +1,6 @@
 from App.database import db
 from .User import User
+from .Rank import Rank
 
 class Competitor(User):
     __tablename__ = 'competitor'  
@@ -15,6 +16,7 @@ class Competitor(User):
         self.firstname = firstname
         self.lastname = lastname
         self.user_type = 'competitor'
+        self.rank = Rank(self.id)
 
 
     def __repr__(self):       
@@ -29,7 +31,7 @@ class Competitor(User):
             'email': self.email,
             'username': self.username,
             'rank': self.rank.get_json() if self.rank else "",
-            'competitions': [comp.get_json() for comp in self.competitions] if self.competitions else [],
-            'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else [],
+            # 'competitions': [comp.get_json() for comp in self.competitions] if self.competitions else [],
+            #'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else [],
             'role' : 'competitor'            
         }
