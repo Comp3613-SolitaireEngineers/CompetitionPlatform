@@ -1,7 +1,21 @@
-from App.models import Command
+from App.models import Command, CompetitionCommand, ResultsCommand, RankCommand, UpdateRanksCommand, PointsCommand, Admin
 from App.database import db
 
+def create_competition_command(self, competition_id):
+    command = CompetitionCommand(competition_id)
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print (f"Error creating competition : {str(e)}")
+        
+    return None
+    
 def execute_competition_command(self, admin_id, competition_id):
+    
+    admin = Admin.query.get(admin_id)
     command = CompetitionCommand(competition_id)
     try:
         command.execute(admin_id, competition_id)
@@ -9,13 +23,114 @@ def execute_competition_command(self, admin_id, competition_id):
     except Exception as e:
         return f"Error executing competition command: {str(e)}"
     
-def execute_results_command(self, admin_id, competition_id, results):
+def create_results_command(self, competition_id):
     command = ResultsCommand(competition_id)
+    
     try:
-        command.execute(admin_id, competition_id, results)
-        return "Results command executed successfully"
+        db.session.add(command)
+        db.session.commit()
+        return command
     except Exception as e:
-        return f"Error executing results command: {str(e)}"
+        print( f"Error executing results command: {str(e)}")
+        return None
+    
+def execute_results_command(self, admin_id, competition_id, results_file_path):
+    
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_results_command(competition_id)
+        if command:
+            try:
+                command.execute(admin_id, competition_id, results_file_path)
+                print( "Results command executed successfully")
+            except Exception as e:
+                print( f"Error executing results command: {str(e)}")
+        print ("Results command not executed successfully")
+        
+    return None
+
+
+def create_update_ranks_command(self):
+    command = UpdateRanksCommand()
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print(f"Error executing update ranks command: {str(e)}")
+        return None
+    
+def execute_update_ranks_command(self, admin_id):
+    
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_update_ranks_command()
+        if command:
+            try:
+                command.execute()
+                print("Update ranks command executed successfully")
+            except Exception as e:
+                print(f"Error executing update ranks command: {str(e)}")
+        else:
+            print("Update ranks command not executed successfully")
+    return None
+
+def create_rank_command(self, competitor, new_rank):
+    command = RankCommand(competitor, new_rank)
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print(f"Error executing rank command: {str(e)}")
+        return None
+    
+def execute_rank_command(self, admin_id, competitor, new_rank):
+    
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_rank_command(competitor, new_rank)
+        if command:
+            try:
+                command.execute()
+                print("Rank command executed successfully")
+            except Exception as e:
+                print(f"Error executing rank command: {str(e)}")
+        else:
+            print("Rank command not executed successfully")
+    return None
+
+def create_points_command(self, competitor_id):
+    command = PointsCommand(competitor_id)
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print(f"Error executing points command: {str(e)}")
+        return None
+    
+def execute_points_command(self, admin_id, competitor_id):
+    
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_points_command(competitor_id)
+        if command:
+            try:
+                command.execute()
+                print("Points command executed successfully")
+            except Exception as e:
+                print(f"Error executing points command: {str(e)}")
+        else:
+            print("Points command not executed successfully")
+    return None
 
 
 def get_competition_command_by_id(command_id):

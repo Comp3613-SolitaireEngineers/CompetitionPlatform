@@ -1,5 +1,6 @@
 from App.models import Rank, Competitor
 from App.database import db
+from sqlalchemy import desc, asc
 
 def create_rank(competitor_id):
     competitor = Competitor.query.filter_by(id = competitor_id).first()
@@ -15,6 +16,22 @@ def create_rank(competitor_id):
         print(e)
         db.session.rollback()
     return None
+
+def get_rankings():
+    ranks = Rank.query.order_by(asc(Rank.ranking)).all()
+
+    rankings = []
+    for rank in ranks:
+        competitor = Competitor.query.filter_by(id = rank.competitor_id).first()
+        ranking = {
+            'competitor_id': rank.competitor_id,
+            'username': competitor.username,
+            'name': competitor.firstname + ' ' + competitor.lastname,            
+            'ranking': rank.ranking,
+            'points': rank.points
+        }
+        rankings.append(ranking)
+    return rankings
 
 def update_rank_points(competitor_id, points):
     rank = Rank.query.filter_by(competitor_id = competitor_id).first()
@@ -44,6 +61,21 @@ def get_all_ranks():
     ranks = Rank.query.all()
     return ranks
 
+def get_rankings():
+    ranks = Rank.query.order_by(asc(Rank.ranking)).all()
+
+    rankings = []
+    for rank in ranks:
+        competitor = Competitor.query.filter_by(id = rank.competitor_id).first()
+        ranking = {
+            'competitor_id': rank.competitor_id,
+            'username': competitor.username,
+            'name': competitor.firstname + ' ' + competitor.lastname,            
+            'ranking': rank.ranking,
+            'points': rank.points
+        }
+        rankings.append(ranking)
+    return rankings
 
 def get_all_ranks_json():
     ranks = Rank.query.all()

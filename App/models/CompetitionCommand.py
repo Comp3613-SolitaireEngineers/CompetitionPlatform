@@ -1,5 +1,7 @@
 from datetime import datetime
 from App.database import db
+from App.models import Command
+from App.controllers import get_admin, get_competition_by_id
 
 class CompetitionCommand(Command):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,7 +22,7 @@ class CompetitionCommand(Command):
     def execute(self, admin_id, competition_id):
         
         admin = get_admin(admin_id)
-        competition = get_competition(competition_id)
+        competition = get_competition_by_id(competition_id)
         
         if admin:
             if competition:

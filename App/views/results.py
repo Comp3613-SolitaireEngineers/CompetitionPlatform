@@ -17,6 +17,8 @@ Page Routes
 def competition_results_page():
     competitions = get_all_competitions()
     competition_id = request.args.get('competition_id')
+    if(competition_id is None):
+        return redirect(request.referrer)
     competition = get_competition_by_id(competition_id)
     page = request.args.get('page', 1, type=int)
     results = get_results_by_competition_id(competition_id, page=page)
@@ -32,7 +34,7 @@ Action Routes
 @admin_required
 def add_results_action():
     
-    competitions = get_all_competitions()
+    
 
     competition_id = request.form.get('competition_id')
     if competition_id is None:
@@ -44,8 +46,8 @@ def add_results_action():
         flash('Competition not found')
         return redirect(request.referrer)
     
-    page = request.args.get('page', 1, type=int)
-    results = get_results_by_competition_id(competition.id, page=page)
+    competitions = get_all_competitions()
+    
 
 
     try:
@@ -56,13 +58,15 @@ def add_results_action():
         results_file_path = f"App/static/{new_name}"                
         response = add_results(competition_id, results_file_path)
 
+        page = request.args.get('page', 1, type=int)
+        results = get_results_by_competition_id(competition.id, page=page)
         if response is None:
             flash('Results already added for this competition')
-            return redirect(request.referrer)#render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
+            render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
 
         remove(f"App/static/{new_name}")
         flash("Results added successfully!")        
-        return redirect(request.referrer)#return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
+        return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
     except Exception as e:
         # Handle exceptions (e.g., file not found, incorrect format)
         print(e)
@@ -74,6 +78,10 @@ def add_results_action():
 @admin_required
 def competition_results_action():
     competition_id = request.form.get('competition')
+
+    if(competition_id is None):
+        return redirect(request.referrer)
+    
     page = request.args.get('page', 1, type=int)    
     competition = get_competition_by_id(competition_id)
     results = get_results_by_competition_id(competition_id, page=page)
@@ -93,6 +101,10 @@ def api_create_results():
     competitor_id = data['competitor_id']
     points = data['points']
     rank = data['rank']
+
+    if None in (competition_id, competitor_id, points, rank):
+        return jsonify({'error': 'Missing data in the request'}), 400
+
     result = create_result(competition_id, competitor_id, points, rank)
     if result:
         return jsonify(result.get_json()), 200
