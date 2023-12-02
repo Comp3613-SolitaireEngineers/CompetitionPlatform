@@ -78,6 +78,30 @@ def execute_update_ranks_command(self, admin_id):
             print("Update ranks command not executed successfully")
     return None
 
+def create_rank_command(self, competitor, new_rank):
+    command = RankCommand(competitor, new_rank)
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print(f"Error executing rank command: {str(e)}")
+        return None
+    
+def execute_rank_command(self, competitor, new_rank):
+    
+    command = create_rank_command(competitor, new_rank)
+    if command:
+        try:
+            command.execute()
+            print("Rank command executed successfully")
+        except Exception as e:
+            print(f"Error executing rank command: {str(e)}")
+    else:
+        print("Rank command not executed successfully")
+    return None
+
 def get_competition_command_by_id(command_id):
     command = CompetitionCommand.query.get(command_id)
     return command
