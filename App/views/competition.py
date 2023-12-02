@@ -89,37 +89,12 @@ def get_competition_views(id):
         return jsonify({'error': 'competition not found'}), 404          
     return (jsonify(competition_details),200)
 
-
-# @comp_views.route('/api/competitions/<int:id>', methods=['GET'])
-# def get_competition_views(id):
-#     competition = get_competition_by_id(id)
-#     if not competition:
-#         return jsonify({'error': 'competition not found'}), 404 
-#     return (jsonify(competition.toDict()),200)
-
-# @comp_views.route('/api/competition/<string:id>/competitors', methods=['GET'])
-# def get_competition_competitors_views(id):
-#     competition = get_competition_by_id(id)
-    
-#     if not competition:
-#         return jsonify({'message': 'competition does not exist'}),404 
-        
-#     competitors = get_competition_competitors(id)
-    
-#     if competitors:
-#         return jsonify(competitors), 200
-    
-#     return jsonify({'message': 'no competitors found'}), 404
-
-
-
-# @comp_views.route('/competitions/results', methods=['POST'])
-# def add_comp_results():
-#     data = request.json
-#     response = add_user_to_comp(data['user_id'],data['comp_id'], data['rank'])
-#     if response:
-#         return (jsonify({'message': f"results added successfully"}),201)
-#     return (jsonify({'error': f"error adding results"}),500)
+@competition_views.route('/api/competition/details/<int:id>', methods=['GET'])
+def get_competition_views(id):
+    competition = get_competition_details(id)
+    if not competition:
+        return jsonify({'error': 'competition not found'}), 404     
+    return (jsonify(competition),200)
 
 
 

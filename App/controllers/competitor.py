@@ -10,15 +10,13 @@ def create_competitor(uwi_id, username, email ,password, firstname, lastname):
         
         db.session.add(competitor)
         db.session.commit()
-        
-        # Create rank for competitor
-        #rank = create_rank(competitor.id)  
                
         return competitor   
     except Exception as e:
         print(e)
         db.session.rollback()
     return None
+
 
 def leaderboard_competitors(page=None):
     competitors_pagination = Competitor.query \
@@ -59,6 +57,7 @@ def get_competitor_profile(competitor_id):
                               "Rank": competitor.rank.get_json(),
                               "competitions": competitions,
                               "notifications": [notification.toDict() for notification in competitor.notifications] if competitor.notifications else []
+
                               }
         return competitor_profile
     else:

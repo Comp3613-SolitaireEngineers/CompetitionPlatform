@@ -72,15 +72,15 @@ def user_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "App"]))
 
-@test.command("competition", help = 'Testing Competition commands')
-@click.argument("type", default="all")
-def competition_tests_command(type):
-    if type == "unit":
-        sys.exit(pytest.main(["-k", "CompUnitTests"]))
-    elif type == "int":
-        sys.exit(pytest.main(["-k", "CompIntegrationTests"]))
-    else:
-        print("deafult input, no test ran")
+# @test.command("competition", help = 'Testing Competition commands')
+# @click.argument("type", default="all")
+# def competition_tests_command(type):
+#     if type == "unit":
+#         sys.exit(pytest.main(["-k", "CompUnitTests"]))
+#     elif type == "int":
+#         sys.exit(pytest.main(["-k", "CompIntegrationTests"]))
+#     else:
+#         print("deafult input, no test ran")
 
 app.cli.add_command(test)
 
@@ -255,8 +255,6 @@ def get_rankings_command():
         print(rankings)
     else:
         print("Error getting rankings")
-
-
 
 app.cli.add_command(rank)
 

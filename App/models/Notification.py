@@ -6,7 +6,7 @@ class Notification(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
-    message = db.Column(db.String)
+    message = db.Column(db.String(220))
     timestamp=db.Column(db.DateTime,default = datetime.now())
     seen = db.Column(db.Boolean, default=False)
 
@@ -17,9 +17,9 @@ class Notification(db.Model):
         
     
     def toDict(self):
-     return{
-         'id':self.id,
-         'competitor_id': self.competitor_id,
-         'message': self.message,
-         'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
-     }
+        return{
+            'id':self.id,
+            'competitor_id': self.competitor_id,
+            'message': self.message,
+            'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+        }

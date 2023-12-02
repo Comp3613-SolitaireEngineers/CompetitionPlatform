@@ -17,6 +17,22 @@ def create_rank(competitor_id):
         db.session.rollback()
     return None
 
+def get_rankings():
+    ranks = Rank.query.order_by(asc(Rank.ranking)).all()
+
+    rankings = []
+    for rank in ranks:
+        competitor = Competitor.query.filter_by(id = rank.competitor_id).first()
+        ranking = {
+            'competitor_id': rank.competitor_id,
+            'username': competitor.username,
+            'name': competitor.firstname + ' ' + competitor.lastname,            
+            'ranking': rank.ranking,
+            'points': rank.points
+        }
+        rankings.append(ranking)
+    return rankings
+
 def update_rank_points(competitor_id, points):
     rank = Rank.query.filter_by(competitor_id = competitor_id).first()
     rank.points = points

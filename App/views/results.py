@@ -17,6 +17,8 @@ Page Routes
 def competition_results_page():
     competitions = get_all_competitions()
     competition_id = request.args.get('competition_id')
+    if(competition_id is None):
+        return redirect(request.referrer)
     competition = get_competition_by_id(competition_id)
     page = request.args.get('page', 1, type=int)
     results = get_results_by_competition_id(competition_id, page=page)
@@ -102,7 +104,7 @@ def api_create_results():
 
     if None in (competition_id, competitor_id, points, rank):
         return jsonify({'error': 'Missing data in the request'}), 400
-    
+
     result = create_result(competition_id, competitor_id, points, rank)
     if result:
         return jsonify(result.get_json()), 200
