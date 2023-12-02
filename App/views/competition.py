@@ -21,6 +21,9 @@ def competition_form_page():
 @competition_views.route('/competitions', methods=['GET'])
 def competition_page():
     competitions = get_all_competitions()
+
+    # print(get_all_competitions_json)
+    # print([comp.get_json() for comp in competitions])
     return render_template('competitions.html', competitions=competitions)
 
 

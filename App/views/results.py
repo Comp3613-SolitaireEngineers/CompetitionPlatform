@@ -31,22 +31,29 @@ Action Routes
 @results_views.route('/results', methods=['POST'])
 @admin_required
 def add_results_action():
-    
-    
+    data = request.form
 
-    competition_id = request.form.get('competition_id')
+    if not data:
+      data = request.json
+
+    print(list(data.keys()))
+    print(list(data.values()))
+
+    competition_id = data['competition_id']
+    print(competition_id)
+
     if competition_id is None:
         flash('Please select a competition')
-        return redirect(request.referrer)
+        return redirect(data.get('referrer', '/results')), 400
     
     competition = get_competition_by_id(competition_id)
     if competition is None:
         flash('Competition not found')
-        return redirect(request.referrer)
+        # return jsonify(error="invalid competition id"), 404
+        return redirect(data.get('referrer', '/results')), 404
     
     competitions = get_all_competitions()
     
-
 
     try:
         file = request.files['result_file']
@@ -64,18 +71,31 @@ def add_results_action():
 
         remove(f"App/static/{new_name}")
         flash("Results added successfully!")        
-        return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
+        return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page), 201
     except Exception as e:
         # Handle exceptions (e.g., file not found, incorrect format)
         print(e)
         flash('Error uploading file. Please try again.')
-        return redirect(request.referrer)#return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
-
+        
+        return redirect(data.get('referrer', '/competition/results'))
+        # return redirect(request.referrer) #return render_template('competition_results.html', competitions=competitions, competition=competition, results=results, selected_competition_id=competition_id, page=page)
+        
 
 @results_views.route('/competition/results', methods=['POST'])
 @admin_required
 def competition_results_action():
-    competition_id = request.form.get('competition')
+    
+    data = request.form # get competition data from frontend form
+
+    # get competition data from json eg postman api test
+    if not data:
+      data = request.json
+
+    # print(list(data.keys()))
+    # print(list(data.values()))
+
+    
+    competition_id = data['competition']
 
     if(competition_id is None):
         return redirect(request.referrer)

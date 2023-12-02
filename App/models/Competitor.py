@@ -39,6 +39,20 @@ class Competitor(User):
             'role' : 'competitor'            
         }
 
+    def toDict(self):
+        return {
+            'id': self.id,
+            'uwi_id': self.uwi_id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'email': self.email,
+            'username': self.username,
+            'rank': self.rank.get_json() if self.rank else "",
+            # 'competitions': [comp.get_json() for comp in self.competitions] if self.competitions else [],
+            'notifications': [notification.toDict() for notification in self.notifications] if self.notifications else [],
+            'role' : 'competitor'            
+        }
+
     def update(self, message):
         print(f'Competitor {self.id} received message: {message}')
         

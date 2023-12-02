@@ -29,5 +29,5 @@ class Competition(db.Model):
             'platform': self.platform,
             'date': self.date.strftime("%Y-%m-%d %H:%M:%S"),
             "hosts": [host.toDict() for host in self.hosts],
-            "participants": [participant.get_json() for participant in self.participants]
+            "participants": [participant.toDict() for participant in self.participants]
         }
