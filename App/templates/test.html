@@ -1,0 +1,136 @@
+{% extends 'layout.html' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block styles %}
+    <!-- Additional styles for the child template -->
+ 
+{% endblock %}
+
+{%block breadcrumb%}
+<nav aria-label="breadcrumb" class="">
+  <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/leaderboard">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Current Page</li>
+  </ol>
+</nav>
+{%endblock%}
+
+{% block content %}
+    <!-- Button trigger off-canvas -->
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
+        Open Notifications
+    </button>
+    <div class="card mb-3 border-white" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="/static/Gold.png" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <img src="https://i.imgur.com/L0THefh.png" alt="nothing">
+    <div class="row justify-content-center mt-1">
+      <div class="card mb-3" style="max-width: 540px;">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="https://i.imgur.com/L0THefh.png" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">               
+                <h4>John Doe</h4>
+                <p>Score: 100</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Home</li>
+      </ol>
+    </nav>
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Library</li>
+      </ol>
+    </nav>
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Library</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data</li>
+      </ol>
+    </nav>
+
+    <!-- Off-canvas container -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="notificationOffcanvas" aria-labelledby="notificationOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="notificationOffcanvasLabel">Notifications</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- List of notification cards -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    Notification 1
+                </div>
+                <div class="card-body">
+                    <p class="card-text">This is the content of notification 1.</p>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header">
+                    Notification 2
+                </div>
+                <div class="card-body">
+                    <p class="card-text">This is the content of notification 2.</p>
+                </div>
+            </div>
+
+            <!-- Add more notification cards as needed -->
+
+        </div>
+    </div>
+
+
+    <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+        Link with href
+      </a>
+      <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        Button with data-bs-target
+      </button>
+      
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+          </div>
+          <div class="dropdown mt-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+{% endblock %}
