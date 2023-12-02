@@ -30,9 +30,9 @@ Action Routes
 @competition_views.route('/competition', methods=['POST'])
 @admin_required
 def add_competition_action():
-    data = request.form # get login credentials from frontend form
+    data = request.form # get competition data from frontend form
 
-    # get login credentials from json eg postman api test
+    # get competition data from json eg postman api test
     if not data:
       data = request.json
 
