@@ -95,6 +95,7 @@ API Routes
 '''
 
 @results_views.route('/api/results', methods=['POST'])
+@admin_required
 def api_create_results():
     data = request.json
     competition_id = data['competition_id']
@@ -107,7 +108,8 @@ def api_create_results():
 
     result = create_result(competition_id, competitor_id, points, rank)
     if result:
-        return jsonify(result.get_json()), 200
+        return jsonify({'message': 'Result created successfully'}), 201
+        # return jsonify(result.get_json()), 201
     else:
         return jsonify({'message': 'Result not created'}), 405
 
@@ -129,3 +131,16 @@ def api_get_competition_results(competition_id):
     else:
         return jsonify({'message': 'Competition Results not found'}), 405
 
+@results_views.route('/api/leaderboard', methods=['GET'])
+def api_get_leaderboard():
+    results = get_all_results_json()
+
+    if results is None:
+        return jsonify("message: leaderboard is empty")
+
+    if results:
+        top20 = results[:20]
+    else:
+        top20 = results  
+        
+    return jsonify(top20)

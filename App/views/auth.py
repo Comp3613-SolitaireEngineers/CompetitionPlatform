@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, jsonify, request, flash, redirect, url_for
-from flask_jwt_extended import jwt_required# current_user as jwt_current_user
-from flask_login import login_required, login_user, current_user, logout_user
+from flask_login import login_user, login_manager, logout_user, LoginManager
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+# from flask_jwt_extended import jwt_required# current_user as jwt_current_user
+# from flask_login import login_required, login_user, current_user, logout_user
 from App.models import db
 from App.controllers import *
 
@@ -107,13 +109,14 @@ API Routes
 #         return jsonify({'message': f"user created"}), 201
 #     return jsonify(error='error creating user'), 500
 
-# @auth_views.route('/api/login', methods=['POST'])
-# def user_login_api():
-#   data = request.json
-#   token = jwt_authenticate(data['username'], data['password'])
-#   if not token:
-#     return jsonify(error='bad username or password given'), 401
-#   return jsonify(access_token=token)
+@auth_views.route('/api/login', methods=['POST'])
+def user_login_api():
+  data = request.json
+  logout_user()
+  token = jwt_authenticate(data['email'], data['password'])
+  if not token:
+    return jsonify(error='bad email or password given'), 401
+  return jsonify(access_token=token)
 
 # @auth_views.route('/api/identify', methods=['GET'])
 # @jwt_required()

@@ -57,18 +57,17 @@ def api_get_all_competitons():
     return jsonify({'message': 'No Competitions found'}), 405
 
 @competition_views.route('/api/competition', methods=['POST'])
+@admin_required
 def add_new_competition_views():
     data = request.json
     name= data.get('name')
     location = data.get('location')
     platform = data.get('platform')
-    
+
     if None in (name, location, platform, data['date']):
         return jsonify({'error': 'Missing data in the request'}), 400
-   
-
+  
     response = create_competition(name=name, location=location, platform=platform, date=datetime.strptime(data['date'], "%Y-%m-%d"))
-
     
     if response:
         return (jsonify({'message': f"Competition created"}), 201)
