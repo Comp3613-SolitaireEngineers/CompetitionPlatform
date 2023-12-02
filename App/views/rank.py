@@ -10,7 +10,7 @@ def api_get_ranks():
     ranks = get_rankings()
     if ranks:
         return (jsonify(ranks),200)
-    return jsonify({'message': 'No Ranks found'}), 405
+    return jsonify({'message': 'No Ranks found'}), 404
     
 @rank_views.route('/api/rank/<competitor_id>', methods=['GET'])
 def api_get_competitor_rank(competitor_id):
@@ -18,7 +18,7 @@ def api_get_competitor_rank(competitor_id):
     if rank:
         return jsonify(rank.get_json()), 200
     else:
-        return jsonify({'message': 'Competitor Rank not found'}), 405
+        return jsonify({'message': 'Competitor Rank not found'}), 404
     
 @rank_views.route('/api/rank/ranking', methods=['PUT'])
 @admin_required

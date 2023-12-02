@@ -61,7 +61,7 @@ def api_get_all_competitons():
     competitions = get_all_competitions_json()
     if competitions:
         return (jsonify(competitions),200) 
-    return jsonify({'message': 'No Competitions found'}), 405
+    return jsonify({'message': 'No Competitions found'}), 404
 
 @competition_views.route('/api/competition', methods=['POST'])
 @admin_required
@@ -85,7 +85,14 @@ def add_new_competition_views():
 def get_competition_views(id):
     competition_details = get_competition_details(id)
     if not competition:
-        return jsonify({'error': 'competition not found'}), 404          
+        return jsonify({'error': 'Competition not found'}), 404 
+    
+    competition_details = {
+        "name": competition.name,
+        "location": competition.location,
+        "platform": competition.platform,
+        "date": competition.date,        
+    }
     return (jsonify(competition_details),200)
 
 @competition_views.route('/api/competition/details/<int:id>', methods=['GET'])
