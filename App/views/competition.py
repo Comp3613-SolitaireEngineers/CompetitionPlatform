@@ -62,6 +62,7 @@ def api_get_all_competitons():
     if competitions:
         return (jsonify(competitions),200) 
     return jsonify({'message': 'No Competitions found'}), 404
+    return jsonify({'message': 'No Competitions found'}), 404
 
 @competition_views.route('/api/competition', methods=['POST'])
 @admin_required
