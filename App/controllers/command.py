@@ -22,6 +22,33 @@ def execute_competition_command(self, admin_id, competition_id):
         return "Competition command executed successfully"
     except Exception as e:
         return f"Error executing competition command: {str(e)}"
+    
+def create_results_command(self, competition_id):
+    command = ResultsCommand(competition_id)
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print( f"Error executing results command: {str(e)}")
+        return None
+    
+def execute_results_command(self, admin_id, competition_id, results_file_path):
+    
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_results_command(competition_id)
+        if command:
+            try:
+                command.execute(admin_id, competition_id, results_file_path)
+                print( "Results command executed successfully")
+            except Exception as e:
+                print( f"Error executing results command: {str(e)}")
+        print ("Results command not executed successfully")
+        
+    return None
 
 def get_competition_command_by_id(command_id):
     command = CompetitionCommand.query.get(command_id)
