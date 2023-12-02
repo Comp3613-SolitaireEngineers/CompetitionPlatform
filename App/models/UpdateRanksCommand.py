@@ -9,7 +9,7 @@ class UpdateRanksCommand(Command):
     executed_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-    def __init__(self, competitor_id):
+    def __init__(self):
         pass
         # self.competitor_id = competitor_id
 
