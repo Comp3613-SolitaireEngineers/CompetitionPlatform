@@ -11,10 +11,10 @@ class RankCommand(Command):
     new_rank = db.Column(db.Integer)
     executed_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __init__(self, competitor, new_rank):
-        self.competitor_id = competitor.id
-        if competitor.rank is not None:
-            self.old_rank = competitor.rank.ranking
+    def __init__(self, competitor_id, old_rank, new_rank):
+        self.competitor_id = competitor_id
+        if old_rank is not None:
+            self.old_rank = old_rank
         else:
             self.old_rank = 0
         self.new_rank = new_rank
