@@ -127,14 +127,15 @@ class UserUnitTests(unittest.TestCase):
         assert admin.check_password(password)
         
     def test_new_notifcation(self):
-        notification = Notification("10","Congratulations")
+        notification = Notification("10","Congratulations","01-02-2023")
         assert notification.competitor_id == "10"
         assert notification.message == "Congratulations"
+        assert notification.timestamp == "2023-01-20"
             
     def test_new_notifcation_get_json(self):
         date = datetime.now()
-        notification = Notification("10","Congratulations")
-        notification_json = notification.toDict()
+        notification = Notification("10","Congratulations",date)
+        notification_json = notification.get_json()
         self.assertDictEqual(
             notification_json, 
             {
@@ -145,13 +146,18 @@ class UserUnitTests(unittest.TestCase):
             })
         
     def test_new_rank(self):
-        rank = Rank("10")
+        rank = Rank("10","01-02-2023","01-05-2023")
         assert rank.competitor_id == "10"
+        assert rank.created_at == "2023-02-20"
+        assert rank.updated_at == "2023-05-20"
         
     def test_new_rank_get_json(self):
+
         date = datetime.now()
-        rank = Rank("10")
+        rank = Rank("10",date,date)
         rank_json = rank.get_json()
+        print("Actual created_at:", rank_json['created_at'])
+        print("Actual updated_at:", rank_json['updated_at'])
         self.assertDictEqual(
             rank_json,
             {
@@ -162,17 +168,20 @@ class UserUnitTests(unittest.TestCase):
                 'created_at':date.strftime("%Y-%m-%d %H:%M:%S"),
                 'updated_at':date.strftime("%Y-%m-%d %H:%M:%S")
             })
+          
               
     def test_new_results(self):
-        result = Results("123","12","10","1")
+        result = Results("123","12","10","1","01-02-2023","01-05-2023")
         assert result.competition_id == "123"
         assert result.competitor_id == "12"
         assert result.points == "10"
         assert result.rank == "1"
+        assert result.date_created == "2023-02-20"
+        assert result.date_modified == "2023-05-20"
         
     def test_new_results_get_json(self):
         date = datetime.now()
-        result = Results("123","12","10","1")
+        result = Results("123","12","10","1",date,date)
         result_json = result.get_json()
         self.assertDictEqual(
             result_json,
