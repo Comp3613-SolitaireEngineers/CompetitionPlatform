@@ -7,71 +7,65 @@
  
 {% endblock %}
 
-{%block breadcrumb%}
-<nav aria-label="breadcrumb" class="">
-  <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/leaderboard">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Current Page</li>
-  </ol>
-</nav>
-{%endblock%}
-
 {% block content %}
     <!-- Button trigger off-canvas -->
     <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
         Open Notifications
     </button>
-    <div class="card mb-3 border-white" style="max-width: 540px;">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img src="/static/Gold.png" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+    <div class="card">
+      <div class="card-header">
+          <div class="d-flex justify-content-between align-items-center">
+              <span>Notification</span>
+              <small>Timestamp</small>
           </div>
-        </div>
       </div>
+      <div class="card-body">
+          <h5 class="card-title">Notification Title</h5>
+          <p class="card-text">This is the content of the notification.</p>
+          <a href="#" class="btn btn-primary">View Details</a>
+      </div>
+  </div>
+  
+  <div class="card border-dark mb-3" style="max-width: 18rem;">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+        Notification
+        <small class="text-muted">Timestamp</small>
     </div>
-    <img src="https://i.imgur.com/L0THefh.png" alt="nothing">
-    <div class="row justify-content-center mt-1">
-      <div class="card mb-3" style="max-width: 540px;">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="https://i.imgur.com/L0THefh.png" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">               
-                <h4>John Doe</h4>
-                <p>Score: 100</p>
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="card-body text-dark">
+        <h5 class="card-title">Notification Title</h5>
+        <p class="card-text">This is the content of the notification.</p>
     </div>
+    
+</div>
 
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item active" aria-current="page">Home</li>
-      </ol>
-    </nav>
-    
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Library</li>
-      </ol>
-    </nav>
-    
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Library</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Data</li>
-      </ol>
-    </nav>
+<div class="card">
+  <div class="card-header">
+      <h5 class="card-title">Notification Title</h5>
+      <small class="text-muted">Timestamp</small>
+  </div>
+  <div class="card-body">
+      <!-- Your notification content goes here -->
+      <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+  </div>
+  <div class="card-footer" style="height: 2rem;">
+    <div class="d-flex justify-content-end">
+        <a href="#" class="text-muted">Mark as Read</a>
+    </div>
+</div>
+</div>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-header">
+    Featured
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Cras justo odio</li>
+    <li class="list-group-item">Dapibus ac facilisis in</li>
+    <li class="list-group-item">Vestibulum at eros</li>
+  </ul>
+</div>
+
 
     <!-- Off-canvas container -->
     <div class="offcanvas offcanvas-start" tabindex="-1" id="notificationOffcanvas" aria-labelledby="notificationOffcanvasLabel">

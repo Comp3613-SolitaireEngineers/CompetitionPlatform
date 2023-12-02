@@ -46,6 +46,8 @@ def get_results_by_competition_id(competition_id, page=None):
     competition_results = []
     for result in results:
         competitor = Competitor.query.filter_by(id=result.competitor_id).first()
+        if competitor is None:
+            continue
         competition_results.append({
             'competitor': competitor.get_json(),
             'rank': result.rank,
