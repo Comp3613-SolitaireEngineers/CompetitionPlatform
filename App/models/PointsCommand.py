@@ -21,21 +21,18 @@ class PointsCommand(Command):
         
     def execute(self):
         # Get all competitors
-        competitors = Competitor.query.all()
 
-        for competitor in competitors:
+        # Calculate the total points of a competitor
+        total_points = db.session.query(func.sum(Results.points)).filter(Results.competitor_id == self.competitor_id).scalar()
 
-            # Calculate the total points of a competitor
-            total_points = db.session.query(func.sum(Results.points)).filter(Results.competitor_id == competitor.id).scalar()
+        # If total_points is None, set it to 0
+        if total_points is None:
+            total_points = 0
 
-            # If total_points is None, set it to 0
-            if total_points is None:
-                total_points = 0
-
-            # Update the competitor's points in the Rank table
-            competitor_rank = Rank.query.filter_by(competitor_id= competitor.id).first()
-            if competitor_rank:
-                competitor_rank.points = total_points
+        # Update the competitor's points in the Rank table
+        competitor_rank = Rank.query.filter_by(competitor_id= self.competitor_id).first()
+        if competitor_rank:
+            competitor_rank.points = total_points
 
         # Commit changes to the database
         db.session.commit()
