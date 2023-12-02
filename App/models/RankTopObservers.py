@@ -14,7 +14,17 @@ class RankTopObservers(db.Model):
         # self.competitor_id = competitor.id
         
     def subscribe(self, competitor):
-      self.top_subscribers.append(competitor)
+        if competitor.rank.ranking <= 20:
+            
+            ini = False
+            for i in self.top_subscribers:
+                if i.id == competitor.id:
+                    ini = True
+            if ini == False:
+                self.top_subscribers.append(competitor)
+        else:
+            print(f"Competitor {competitor.id} does not qualify for top observers")
+
       
     def unsubscribe(self, competitor):
         self.top_subscribers.remove(competitor)
@@ -26,5 +36,4 @@ class RankTopObservers(db.Model):
     def get_json(self):
         return{
             'id': self.id,
-            # 'competitor_id': self.competitor_id,
         }
