@@ -50,6 +50,34 @@ def execute_results_command(self, admin_id, competition_id, results_file_path):
         
     return None
 
+
+def create_update_ranks_command(self):
+    command = UpdateRanksCommand()
+    
+    try:
+        db.session.add(command)
+        db.session.commit()
+        return command
+    except Exception as e:
+        print(f"Error executing update ranks command: {str(e)}")
+        return None
+    
+def execute_update_ranks_command(self, admin_id):
+    
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_update_ranks_command()
+        if command:
+            try:
+                command.execute()
+                print("Update ranks command executed successfully")
+            except Exception as e:
+                print(f"Error executing update ranks command: {str(e)}")
+        else:
+            print("Update ranks command not executed successfully")
+    return None
+
 def get_competition_command_by_id(command_id):
     command = CompetitionCommand.query.get(command_id)
     return command
