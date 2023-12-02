@@ -12,17 +12,17 @@ def api_create_host():
     data = request.json
 
     admin_id = data.get('admin_id')
-    host_id = data.get('id')
+    # host_id = data.get('id')
     name = data.get('name')
     website = data.get('website')
 
-    if None in (admin_id, host_id, name, website):
+    if None in (admin_id, name, website):
         return jsonify({'error': 'Missing data in the request'}), 400
     
     if not (get_admin(admin_id)):
         return jsonify({'error': 'Admin not found'}), 404
 
-    host = create_host(id, name, website)
+    host = create_host(name=name, website=website)
 
     if host:
         return jsonify({'message': 'Host created successfully'}), 201

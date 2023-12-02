@@ -54,7 +54,18 @@ user_cli = AppGroup('user', help='User object commands')
 #     else:
 #         print(get_all_users_json())
 
-app.cli.add_command(user_cli) # add the group to the cli
+
+admin_cli = AppGroup('admin', help='Admin object commands') 
+
+@admin_cli.command("list", help="Lists admins in the database")
+@click.argument("format", default="string")
+def list_user_command(format):
+    if format == 'string':
+        print(get_all_admins())
+    else:
+        print(get_all_admins_json())
+
+app.cli.add_command(admin_cli) # add the group to the cli
 
 '''
 Test Commands

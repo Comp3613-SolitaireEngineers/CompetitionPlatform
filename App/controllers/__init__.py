@@ -6,4 +6,5 @@ from .notification import *
 from .results import *
 from .competition import * 
 from .init import *
+from .host import *
 # from .command import *
