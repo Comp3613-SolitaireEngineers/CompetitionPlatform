@@ -11,10 +11,11 @@ class Rank(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
      
-    def __init__(self, competitor_id,created_at,updated_at):
+    def __init__(self, competitor_id):
         self.competitor_id = competitor_id
-        self.created_at = created_at
-        self.updated_at = updated_at
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        
 
         max_rank = db.session.query(func.max(Rank.ranking)).scalar()
         # If there are existing records, set the new rank to one more than the maximum rank
