@@ -111,7 +111,7 @@ def api_create_results():
         return jsonify({'message': 'Result created successfully'}), 201
         # return jsonify(result.get_json()), 201
     else:
-        return jsonify({'message': 'Result not created'}), 405
+        return jsonify({'message': 'Result not created'}), 400
 
 
 
