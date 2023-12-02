@@ -5,9 +5,9 @@ from sqlalchemy.sql import func
 class Rank(db.Model):
     __tablename__ = 'rank'
     id = db.Column(db.Integer, primary_key=True)
-    competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'), unique=True)
+    competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
     ranking = db.Column(db.Integer)
-    points = db.Column(db.Integer, default=0, nullable = False)    
+    points = db.Column(db.Integer, default=0)    
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -28,7 +28,7 @@ class Rank(db.Model):
             'competitor_id': self.competitor_id,
             'ranking': self.ranking,
             'points': self.points,
-            'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S") if self.created_at else None,
-            'updated_at': self.updated_at.strftime("%Y-%m-%d %H:%M:%S") if self.updated_at else None
+            'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            'updated_at': self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
   

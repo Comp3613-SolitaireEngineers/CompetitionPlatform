@@ -6,9 +6,8 @@ class Notification(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
-    message = db.Column(db.String(220))
-    timestamp=db.Column(db.DateTime,default = datetime.now())
-    seen = db.Column(db.Boolean, default=False)
+    message = db.Column(db.String)
+    timestamp=db.Column(db.DateTime,default = datetime.utcnow)
 
 
     def __init__(self, competitor_id, message):
@@ -21,5 +20,5 @@ class Notification(db.Model):
          'id':self.id,
          'competitor_id': self.competitor_id,
          'message': self.message,
-         'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S") if self.timestamp else None
+         'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
      }
