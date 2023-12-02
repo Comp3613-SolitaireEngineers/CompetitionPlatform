@@ -156,8 +156,6 @@ class UserUnitTests(unittest.TestCase):
         date = datetime.now()
         rank = Rank("10",date,date)
         rank_json = rank.get_json()
-        print("Actual created_at:", rank_json['created_at'])
-        print("Actual updated_at:", rank_json['updated_at'])
         self.assertDictEqual(
             rank_json,
             {
