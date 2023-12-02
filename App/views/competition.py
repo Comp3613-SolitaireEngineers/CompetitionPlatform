@@ -30,17 +30,23 @@ Action Routes
 @competition_views.route('/competition', methods=['POST'])
 @admin_required
 def add_competition_action():
-    competition_name = request.form.get('competitionName')
-    location = request.form.get('location')
-    platform = request.form.get('platform')    
-    date = request.form.get('date')
-    competition_date = datetime.strptime(date, '%Y-%m-%d')   
-    response = create_competition(name=competition_name, location=location, platform=platform, date=competition_date)
+    data = request.form # get login credentials from frontend form
+
+    # get login credentials from json eg postman api test
+    if not data:
+      data = request.json
+
+    # print(list(data.keys()))
+    # print(list(data.values()))
+
+    competition_date = datetime.strptime(data['date'], '%Y-%m-%d')   
+    response = create_competition(name=data['competitionName'], location=data['location'], platform=data['platform'], date=competition_date)
     if response:
         flash('Competition created successfully!')
-        return redirect(url_for('competition_views.competition_form_page'))
+        return redirect(url_for('competition_views.competition_page')), 201
+
     flash('Error creating competition')
-    return redirect(url_for('competition_views.competition_form_page'))
+    return redirect(url_for('competition_views.competition_form_page')), 401
 
 
 
