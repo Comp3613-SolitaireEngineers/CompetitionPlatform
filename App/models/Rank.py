@@ -28,7 +28,7 @@ class Rank(db.Model):
             'competitor_id': self.competitor_id,
             'ranking': self.ranking,
             'points': self.points,
-            'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             'updated_at': self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
   

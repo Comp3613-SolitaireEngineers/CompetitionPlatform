@@ -1,9 +1,10 @@
+from datetime import date
 import os, tempfile, pytest, logging, unittest
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import Host, Admin, Competitor, Competition
+from App.models import Host, Admin, Competitor, Competition, Notification, Rank, Results,ResultsCommand, CompetitionCommand
 # from App.controllers import (
     # create_user,
     # get_all_users_json,
@@ -35,7 +36,12 @@ class UserUnitTests(unittest.TestCase):
         host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
         assert host.name == "DCIT"
         assert host.website == "https://sta.uwi.edu/fst/dcit"
-        
+    
+    def test_new_notifcation(self):
+        notification = Notification("10","Congratulations")
+        assert notification.competitor_id == "10"
+        assert notification.message == "Congratulations"
+            
     def test_new_notifcation_get_json(self):
         notification = Notification("10","Congratulations")
         notification_json = notification.toDict()
@@ -58,12 +64,12 @@ class UserUnitTests(unittest.TestCase):
         self.assertDictEqual(
             rank_json,
             {
-                "id":None,
-                "competitor_id":"10",
-                "ranking":1,
-                "points":None,
-                "created_at":None,
-                "updated_at":None
+                'id':None,
+                'competitor_id':"10",
+                'ranking':1,
+                'points':None,
+                'created_at':date.strftime("%Y-%m-%d %H:%M:%S"),
+                'updated_at':date.strftime("%Y-%m-%d %H:%M:%S")
             })
               
     def test_new_results(self):
@@ -76,25 +82,46 @@ class UserUnitTests(unittest.TestCase):
     def test_new_results_get_json(self):
         result = Results("123","12","10","1")
         result_json = result.get_json()
-        self.assertDictEqual(result_json,{"id":None,"competition_id":"123","competitor_id":"12","rank":"1","points":"10","date_created":None,"date_modified":None})
+        self.assertDictEqual(
+            result_json,
+            {
+                'id':None,
+                'competition_id':"123",
+                'competitor_id':"12",
+                'rank':"1",
+                'points':"10",
+                'date_created':date.strftime("%Y-%m-%d %H:%M:%S"),
+                'date_modified':date.strftime("%Y-%m-%d %H:%M:%S")
+            })
         
-    # def test_new_results_command(self):
-    #     reCmd = ResultsCommand("10")
-    #     assert reCmd.competition_id == "10"
+    def test_new_results_command(self):
+        reCmd = ResultsCommand("10")
+        assert reCmd.competition_id == "10"
         
-    # def test_new_results_command_get_json(self):
-    #     reCmd = ResultsCommand("10")
-    #     reCmd_json = reCmd.get_json()
-    #     self.assertDictEqual(reCmd_json,{"id":None,"competition_id":"10","executed_at":None})
+    def test_new_results_command_get_json(self):
+        reCmd = ResultsCommand("10")
+        reCmd_json = reCmd.get_json()
+        self.assertDictEqual(
+            reCmd_json,
+            {
+                'id':None,
+                'competition_id':"10"
+            })
              
-    # def test_new_competition_command(self):
-    #     compCmd = CompetitionCommand("10")
-    #     assert compCmd.competition_id == "10"
+    def test_new_competition_command(self):
+        compCmd = CompetitionCommand("10")
+        assert compCmd.competition_id == "10"
     
-    # def test_new_competition_command_get_json(self):
-    #     compCmd = CompetitionCommand("10")
-    #     compCmd_json = compCmd.get_json()
-    #     self.assertDictEqual(compCmd_json,{"id":None,"competition_id":"10","executed_at":None})
+    def test_new_competition_command_get_json(self):
+        compCmd = CompetitionCommand("10")
+        compCmd_json = compCmd.get_json()
+        self.assertDictEqual(
+            compCmd_json,
+            {
+                'id':None,
+                'competition_id':"10",
+                'executed_at':date.strftime("%Y-%m-%d %H:%M:%S")
+            })
         
         
         

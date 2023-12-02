@@ -29,6 +29,6 @@ class Results(db.Model):
             'competitor_id': self.competitor_id,
             'rank': self.rank,
             'points': self.points,
-            'date_created': self.date_created.strftime("%Y-%m-%d %H:%M:%S") if self.date_created else None,
-            'date_modified': self.date_modified.strftime("%Y-%m-%d %H:%M:%S") if self.date_modified else None
+            'date_created': self.date_created.strftime("%Y-%m-%d %H:%M:%S"),
+            'date_modified': self.date_modified.strftime("%Y-%m-%d %H:%M:%S")
         }
