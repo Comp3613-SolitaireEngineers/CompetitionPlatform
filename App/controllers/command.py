@@ -89,17 +89,20 @@ def create_rank_command(self, competitor, new_rank):
         print(f"Error executing rank command: {str(e)}")
         return None
     
-def execute_rank_command(self, competitor, new_rank):
+def execute_rank_command(self, admin_id, competitor, new_rank):
     
-    command = create_rank_command(competitor, new_rank)
-    if command:
-        try:
-            command.execute()
-            print("Rank command executed successfully")
-        except Exception as e:
-            print(f"Error executing rank command: {str(e)}")
-    else:
-        print("Rank command not executed successfully")
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_rank_command(competitor, new_rank)
+        if command:
+            try:
+                command.execute()
+                print("Rank command executed successfully")
+            except Exception as e:
+                print(f"Error executing rank command: {str(e)}")
+        else:
+            print("Rank command not executed successfully")
     return None
 
 def create_points_command(self, competitor_id):
@@ -113,17 +116,20 @@ def create_points_command(self, competitor_id):
         print(f"Error executing points command: {str(e)}")
         return None
     
-def execute_points_command(self, competitor_id):
+def execute_points_command(self, admin_id, competitor_id):
     
-    command = create_points_command(competitor_id)
-    if command:
-        try:
-            command.execute()
-            print("Points command executed successfully")
-        except Exception as e:
-            print(f"Error executing points command: {str(e)}")
-    else:
-        print("Points command not executed successfully")
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        command = create_points_command(competitor_id)
+        if command:
+            try:
+                command.execute()
+                print("Points command executed successfully")
+            except Exception as e:
+                print(f"Error executing points command: {str(e)}")
+        else:
+            print("Points command not executed successfully")
     return None
 
 
