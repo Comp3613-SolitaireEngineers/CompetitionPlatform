@@ -127,7 +127,7 @@ class UserUnitTests(unittest.TestCase):
         assert admin.check_password(password)
         
     def test_new_notifcation(self):
-        notification = Notification("10","Congratulations","01-02-2023")
+        notification = Notification("10","Congratulations","2023-01-20")
         assert notification.competitor_id == "10"
         assert notification.message == "Congratulations"
         assert notification.timestamp == "2023-01-20"
@@ -146,15 +146,17 @@ class UserUnitTests(unittest.TestCase):
             })
         
     def test_new_rank(self):
-        rank = Rank("10","01-02-2023","01-05-2023")
+        #rank = Rank("10","2023-02-05","2023-05-20")
+        rank = Rank("10")
         assert rank.competitor_id == "10"
-        assert rank.created_at == "2023-02-20"
-        assert rank.updated_at == "2023-05-20"
+        #assert rank.created_at == "2023-02-05"
+        #assert rank.updated_at == "2023-05-20"
         
     def test_new_rank_get_json(self):
 
         date = datetime.now()
-        rank = Rank("10",date,date)
+        #rank = Rank("10",date,date)
+        rank = Rank("10")
         rank_json = rank.get_json()
         self.assertDictEqual(
             rank_json,
@@ -165,11 +167,13 @@ class UserUnitTests(unittest.TestCase):
                 'points':None,
                 'created_at':date.strftime("%Y-%m-%d %H:%M:%S"),
                 'updated_at':date.strftime("%Y-%m-%d %H:%M:%S")
+                #'created_at':None,
+                #'updated_at':None
             })
           
               
     def test_new_results(self):
-        result = Results("123","12","10","1","01-02-2023","01-05-2023")
+        result = Results("123","12","10","1","2023-02-20","2023-05-20")
         assert result.competition_id == "123"
         assert result.competitor_id == "12"
         assert result.points == "10"

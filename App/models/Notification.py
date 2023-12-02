@@ -23,3 +23,11 @@ class Notification(db.Model):
             'message': self.message,
             'timestamp': self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
         }
+
+    def get_json(self):
+        return{
+            'id':self.id,
+            'competitor_id': self.competitor_id,
+            'message': self.message,
+            'timestamp': self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        }
