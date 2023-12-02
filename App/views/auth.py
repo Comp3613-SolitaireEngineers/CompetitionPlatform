@@ -29,11 +29,19 @@ Action Routes
 
 @auth_views.route('/login', methods = ['POST'])
 def login_action():
+  
+  data = request.form # get login credentials from frontend form
 
-  data = request.form
+  # get login credentials from json eg postman api test
+  if not data:
+    data = request.json
+
+  # print(list(data.keys()))
+  # print(list(data.values()))
+
   if 'email' not in data or 'password' not in data:
     flash('Error: Missing email or password.')
-    return redirect('/login')
+    return jsonify(error='Missing email or password.'), 400
 
   email = data.get('email')
   password = data.get('password')
@@ -42,30 +50,52 @@ def login_action():
   if competitor and competitor.check_password(password):
     logout_user()
     login_user(competitor)
-    return redirect(data.get('referrer', '/'))  # redirects to '/' if 'referrer' is missing
+    # token = jwt_authenticate(data['email'], data['password'])
+    # if not token:
+    #   return jsonify(error='bad email or password given'), 401
+
+    # print(current_user.username)
+    # return jsonify(message="competitor logged in"), 200
+    return redirect(data.get('referrer', '/')), 200  # redirects to '/' if 'referrer' is missing
 
   admin = Admin.query.filter_by(email=email).first()
   if admin and admin.check_password(password):
     logout_user()
     login_user(admin)
-    return redirect('/competition')
+    # token = jwt_authenticate(data['email'], data['password'])
+    # if not token:
+    #     return jsonify(message='bad email or password given'), 401
+
+    # print(current_user.username)
+    return redirect('/competition'), 200
+  
+  return jsonify(error="user does not exist"), 404
 
 @auth_views.route('/signup', methods=['POST'])
 def signup_action():
   
   try:
-    data = request.form    
+    data = request.form # get login credentials from frontend form
+
+    # get login credentials from json eg postman api test
+    if not data:
+      data = request.json
+
+    # print(list(data.keys()))
+    # print(list(data.values()))
+
     competitor = create_competitor(uwi_id=data['uwi_id'], firstname=data['firstname'], lastname=data['lastname'], username=data['username'], password = data['password'], email=data['email'])
     login_user(competitor)
 
     if competitor:
       flash('Account Created!')  
-      return redirect("/leaderboard") 
+      # return jsonify(message='Account created'), 201
+      return redirect("/leaderboard"), 201
 
   except Exception as e:      
     print("Error in signup: ", e)
-    flash("Username, Email, or UWI ID")  # error message
-    return redirect(url_for('auth_views.signup_page'))
+    flash("Username, Email, or UWI ID has an existing account associated with it")  # error message
+    return jsonify(error='Username, Email, or UWI ID has an existing account associated with it'), 401
 
 
 @auth_views.route('/identify', methods=['GET'])
