@@ -1,8 +1,8 @@
 from App.models import Command, CompetitionCommand, ResultsCommand, RankCommand, UpdateRanksCommand, PointsCommand, Admin
 from App.database import db
 
-def create_competition_command(self, competition_id):
-    command = CompetitionCommand(competition_id)
+def create_competition_command(competition_id):
+    command = CompetitionCommand.CompetitionCommand(competition_id)
     
     try:
         db.session.add(command)
@@ -13,18 +13,18 @@ def create_competition_command(self, competition_id):
         
     return None
     
-def execute_competition_command(self, admin_id, competition_id):
+def execute_competition_command(admin_id, competition_id):
     
     admin = Admin.query.get(admin_id)
-    command = CompetitionCommand(competition_id)
+    command = create_competition_command(competition_id)
     try:
         command.execute(admin_id, competition_id)
         return "Competition command executed successfully"
     except Exception as e:
         return f"Error executing competition command: {str(e)}"
     
-def create_results_command(self, competition_id):
-    command = ResultsCommand(competition_id)
+def create_results_command(competition_id):
+    command = ResultsCommand.ResultsCommand(competition_id)
     
     try:
         db.session.add(command)
@@ -34,7 +34,7 @@ def create_results_command(self, competition_id):
         print( f"Error executing results command: {str(e)}")
         return None
     
-def execute_results_command(self, admin_id, competition_id, results_file_path):
+def execute_results_command(admin_id, competition_id, results_file_path):
     
     admin = Admin.query.get(admin_id)
     
@@ -51,8 +51,8 @@ def execute_results_command(self, admin_id, competition_id, results_file_path):
     return None
 
 
-def create_update_ranks_command(self):
-    command = UpdateRanksCommand()
+def create_update_ranks_command():
+    command = UpdateRanksCommand.UpdateRanksCommand()
     
     try:
         db.session.add(command)
@@ -62,7 +62,7 @@ def create_update_ranks_command(self):
         print(f"Error executing update ranks command: {str(e)}")
         return None
     
-def execute_update_ranks_command(self, admin_id):
+def execute_update_ranks_command(admin_id):
     
     admin = Admin.query.get(admin_id)
     
@@ -78,8 +78,8 @@ def execute_update_ranks_command(self, admin_id):
             print("Update ranks command not executed successfully")
     return None
 
-def create_rank_command(self, competitor, new_rank):
-    command = RankCommand(competitor, new_rank)
+def create_rank_command(competitor_id, old_rank, new_rank):
+    command = RankCommand(competitor_id, old_rank, new_rank)
     
     try:
         db.session.add(command)
@@ -89,12 +89,12 @@ def create_rank_command(self, competitor, new_rank):
         print(f"Error executing rank command: {str(e)}")
         return None
     
-def execute_rank_command(self, admin_id, competitor, new_rank):
+def execute_rank_command(competitor_id, old_rank,  new_rank):
     
-    admin = Admin.query.get(admin_id)
+    admin = Admin.query.get(000)
     
-    if admin:
-        command = create_rank_command(competitor, new_rank)
+    if admin is None:
+        command = create_rank_command(competitor_id, old_rank, new_rank)
         if command:
             try:
                 command.execute()
@@ -105,8 +105,8 @@ def execute_rank_command(self, admin_id, competitor, new_rank):
             print("Rank command not executed successfully")
     return None
 
-def create_points_command(self, competitor_id):
-    command = PointsCommand(competitor_id)
+def create_points_command(competitor_id):
+    command = PointsCommand.PointsCommand(competitor_id)
     
     try:
         db.session.add(command)
@@ -116,7 +116,7 @@ def create_points_command(self, competitor_id):
         print(f"Error executing points command: {str(e)}")
         return None
     
-def execute_points_command(self, admin_id, competitor_id):
+def execute_points_command(admin_id, competitor_id):
     
     admin = Admin.query.get(admin_id)
     
