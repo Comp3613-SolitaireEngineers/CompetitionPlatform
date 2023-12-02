@@ -21,6 +21,7 @@ def api_get_competitor_rank(competitor_id):
         return jsonify({'message': 'Competitor Rank not found'}), 405
     
 @rank_views.route('/api/rank/ranking', methods=['PUT'])
+@admin_required
 def api_update_rank():
     data = request.json
     rank = update_rank(competitor_id=data["competitor_id"], ranking=data['ranking'])
@@ -30,6 +31,7 @@ def api_update_rank():
         return jsonify({'error': 'Rank not updated'}), 400
     
 @rank_views.route('/api/rank/points', methods=['PUT'])
+@admin_required
 def api_update_rank_points():
     data = request.json
     rank = update_rank_points(competitor_id=data["competitor_id"] , points=data['points'])

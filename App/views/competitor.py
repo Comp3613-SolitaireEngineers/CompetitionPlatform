@@ -61,7 +61,7 @@ def api_add_new_competitor():
     if None in (uwi_id, first_name, last_name, password, email, username):
         return jsonify({'error': 'Missing data in the request'}), 400
 
-    competitor = create_competitor( uwi_id=uwi_id, username=username, firstname=first_name, lastname=last_name, password=password)
+    competitor = create_competitor( uwi_id=uwi_id, username=username, firstname=first_name, lastname=last_name, password=password, email=email)
    
     
     if competitor:
