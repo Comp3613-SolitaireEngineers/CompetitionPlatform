@@ -60,7 +60,7 @@ def signup_action():
 
     if competitor:
       flash('Account Created!')  
-      return redirect("/leaderboard") 
+      return redirect("/") 
 
   except Exception as e:      
     print("Error in signup: ", e)
@@ -90,7 +90,7 @@ def identify_page():
 def logout_action():
     logout()
     flash('Logged Out!')
-    return redirect('/leaderboard')
+    return redirect('/')
 
 '''
 API Routes

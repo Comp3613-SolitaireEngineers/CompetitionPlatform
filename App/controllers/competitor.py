@@ -1,6 +1,7 @@
 from App.models import Competitor, Competition, Rank
 from App.database import db
 from .rank import create_rank
+from sqlalchemy import and_, desc, asc
 
 
 def create_competitor(uwi_id, username, email ,password, firstname, lastname):
@@ -9,13 +10,31 @@ def create_competitor(uwi_id, username, email ,password, firstname, lastname):
         
         db.session.add(competitor)
         db.session.commit()
-        
                
         return competitor   
     except Exception as e:
         print(e)
         db.session.rollback()
     return None
+
+
+def leaderboard_competitors(page=None):
+    competitors_pagination = Competitor.query \
+        .join(Rank, Rank.competitor_id == Competitor.id) \
+        .order_by(asc(Rank.ranking))
+    
+    # Extract top 3 competitors
+    top_three = competitors_pagination[:3] 
+
+      
+    competitors_pagination.offset(3)
+    competitors_paginations = competitors_pagination.paginate(page=page, per_page=4)
+    
+
+    return {
+        'competitors_pagination': competitors_paginations,
+        'top_three': top_three,        
+    }
 
 def get_competitor_profile(competitor_id):
     competitor = get_competitor_by_id(competitor_id)
@@ -36,7 +55,9 @@ def get_competitor_profile(competitor_id):
                               "name": competitor.firstname + " " + competitor.lastname, 
                               "email": competitor.email,
                               "Rank": competitor.rank.get_json(),
-                              "competitions": competitions
+                              "competitions": competitions,
+                              "notifications": [notification.toDict() for notification in competitor.notifications] if competitor.notifications else []
+
                               }
         return competitor_profile
     else:

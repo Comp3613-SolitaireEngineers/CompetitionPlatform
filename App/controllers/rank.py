@@ -61,6 +61,21 @@ def get_all_ranks():
     ranks = Rank.query.all()
     return ranks
 
+def get_rankings():
+    ranks = Rank.query.order_by(asc(Rank.ranking)).all()
+
+    rankings = []
+    for rank in ranks:
+        competitor = Competitor.query.filter_by(id = rank.competitor_id).first()
+        ranking = {
+            'competitor_id': rank.competitor_id,
+            'username': competitor.username,
+            'name': competitor.firstname + ' ' + competitor.lastname,            
+            'ranking': rank.ranking,
+            'points': rank.points
+        }
+        rankings.append(ranking)
+    return rankings
 
 def get_all_ranks_json():
     ranks = Rank.query.all()

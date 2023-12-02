@@ -13,8 +13,19 @@ Page Routes
 '''
 @competitor_views.route('/competitor/profile', methods=['GET'])
 @competitor_required
-def competitor_profile():
-    return render_template('competitor_profile.html')
+def competitor_profile_page():
+    flash('Welcome to your profile')
+    notifications = get_competitor_notifications(current_user.id)
+    return render_template('competitor_profile.html', notifications_info=notifications)
+
+@competitor_views.route('/seen/<notification_id>', methods=['POST'])
+def seen_action(notification_id):
+    reponse = seen_notification(notification_id)
+    if reponse:
+        return jsonify({'message': 'Notification seen'})
+    return jsonify({'message': 'Notification not seen'}), 400
+
+
 
 
 

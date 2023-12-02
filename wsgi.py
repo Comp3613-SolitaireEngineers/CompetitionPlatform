@@ -9,6 +9,7 @@ from flask.cli import with_appcontext, AppGroup
 from App.database import db, get_migrate
 from App.main import create_app
 from App.controllers import *
+from datetime import date, datetime, timedelta
 
 
 
@@ -195,6 +196,14 @@ def get_competitor_by_username_command():
     else:
         print("Error getting competitor")
 
+@competitor.command("leaderboard", help = 'get competitor by username')
+def leaderboard_command():    
+    leaderboard = leaderboard_competitors(1)
+    if leaderboard:
+        print(leaderboard)
+    else:
+        print("Error getting leaderboard")
+
 app.cli.add_command(competitor)
 
 '''
@@ -257,7 +266,6 @@ def get_rankings_command():
         print(rankings)
     else:
         print("Error getting rankings")
-
 
 app.cli.add_command(rank)
 
@@ -376,3 +384,39 @@ def add_results_command():
         print("Error adding results")
 
 app.cli.add_command(results)
+
+
+'''
+Notification commands
+'''
+
+notification = AppGroup('notification', help = 'commands for notification')
+
+
+@notification.command("create", help = 'create new notification')
+def create_notification_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    message = click.prompt("Enter Message")     
+    notification = create_notification(competitor_id, message)
+    if notification:
+        print("Notification Created Successfully")
+    else:
+        print("Error adding notification")
+
+@notification.command("list", help = 'list all notifications')
+def list_notifications_command():
+    notifications = get_notifications()
+    if notifications:
+        print(notifications)
+    else:
+        print("Error getting notifications")
+
+@notification.command("get_competition_notifications", help = 'get notifications by competitor id')
+def get_competitor_notifications_command():
+    competitor_id = click.prompt("Enter Competitor ID")
+    notifications = get_competitor_notifications(competitor_id)
+    if notifications:
+        print(notifications)
+    else:
+        print("Error getting notifications")
+
