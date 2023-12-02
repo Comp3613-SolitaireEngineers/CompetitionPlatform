@@ -113,10 +113,16 @@ API Routes
 def user_login_api():
   data = request.json
   logout_user()
-  token = jwt_authenticate(data['email'], data['password'])
-  if not token:
+  user_credentials = jwt_authenticate(data['email'], data['password'])
+
+  if not user_credentials:
     return jsonify(error='bad email or password given'), 401
-  return jsonify(access_token=token)
+
+  if 'admin_id' in user_credentials:
+    return jsonify(user_credentials)
+  else:
+    return jsonify(access_token=user_credentials)
+
 
 # @auth_views.route('/api/identify', methods=['GET'])
 # @jwt_required()
