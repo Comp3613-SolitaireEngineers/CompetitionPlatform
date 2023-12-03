@@ -91,18 +91,18 @@ def create_rank_command(competitor_id, old_rank, new_rank):
     
 def execute_rank_command(competitor_id, old_rank,  new_rank):
     
-    admin = Admin.query.get(000)
+    # admin = Admin.query.get(admin_id)
     
-    if admin is None:
-        command = create_rank_command(competitor_id, old_rank, new_rank)
-        if command:
-            try:
-                command.execute()
-                print("Rank command executed successfully")
-            except Exception as e:
-                print(f"Error executing rank command: {str(e)}")
-        else:
-            print("Rank command not executed successfully")
+    # if admin is None:
+    command = create_rank_command(competitor_id, old_rank, new_rank)
+    if command:
+        try:
+            command.execute()
+            print("Rank command executed successfully")
+        except Exception as e:
+            print(f"Error executing rank command: {str(e)}")
+    else:
+        print("Rank command not executed successfully")
     return None
 
 def create_points_command(competitor_id):
