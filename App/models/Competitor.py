@@ -49,7 +49,7 @@ class Competitor(User):
 
     def update_notifications(self, message):
         try:
-            notification = (Notification(self.id, message))
+            notification = (Notification(self.id, message, "Just In"))
             db.session.add(notification)
             db.session.commit()   
             print(f'Competitor {self.username} received message: {message}')        
