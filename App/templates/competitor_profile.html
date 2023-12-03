@@ -118,10 +118,10 @@
 <!-- Notifications Icon (Top Right) -->
 <button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-bs-toggle="offcanvas"
     data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
-    <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>
-    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {{notifications_info|length}}+
-        <!-- <span class="visually-hidden">unread messages</span> -->
+    <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>    
+    <span class="position-absolute top-1 start-85 translate-middle">
+        <span class="badge bg-danger text-white rounded-circle">{{notifications_info|length}}</span>
+        <span class="visually-hidden">New alerts</span>
     </span>
 </button>
 
