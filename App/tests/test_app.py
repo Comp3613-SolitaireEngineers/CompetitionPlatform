@@ -5,7 +5,14 @@ from datetime import datetime, date
 from App.main import create_app
 from App.database import db, create_db
 from App.models import Host, Admin, Competitor, Competition
-from App.controllers import create_competitor, get_competitor_profile, get_rankings, create_competition, get_competition_details, create_result
+from App.controllers import (
+    create_competitor, 
+    get_competitor_profile, 
+    get_rankings, 
+    create_competition, 
+    get_competition_details, 
+    create_result,
+    get_all_competitions)
 # from App.controllers import (
     # create_user,
     # get_all_users_json,
@@ -170,19 +177,21 @@ class UsersIntegrationTests(unittest.TestCase):
         competition1 = create_competition("UWI Games 2023", "DCIT Conference Room", "HackerRank", date(2023, 2, 26))
         competition2 = create_competition("UWI Games 2024", "DCIT Conference Room", "HackerRank", date(2024, 2, 25))
 
-        competitions = Competition.query.all()
+        competitions = get_all_competitions()
         assert len(competitions) == 2
         assert competitions[0].name == "UWI Games 2023"
         assert competitions[1].name == "UWI Games 2024"
     
     def test_view_competitions_fail(self):
-        competition1 = create_competition("UWI Games 2025", "DCIT Conference Room", "HackerRank", date(2025, 2, 26))
-        competition2 = create_competition("UWI Games 2026", "DCIT Conference Room", "HackerRank", date(2026, 2, 25))
+        competition1 = create_competition("UWI Games 2023", "DCIT Conference Room", "HackerRank", date(2025, 2, 26))
+        competition2 = create_competition("UWI Games 2024", "DCIT Conference Room", "HackerRank", date(2026, 2, 25))
+        competition3 = create_competition("UWI Games 2024", "DCIT Conference Room", "HackerRank", date(2026, 2, 25))
 
-        competitions = Competition.query.all()
-        assert len(competitions) != 3
-        assert competitions[0].name != "UWI Games 2024"
-        assert competitions[1].name != "UWI Games 2023"
+        competitions = get_all_competitions()
+        print(com.name for com in competitions)
+        assert len(competitions) != 6
+        assert competitions[2].name != "UWI Games 2025"
+        assert competitions[3].name != "UWI Games 2026"
 
 
     def test_view_comoetition_details_success(self):
@@ -203,6 +212,16 @@ class UsersIntegrationTests(unittest.TestCase):
         assert competition_details['results'][0]['competitor']['platform_rank']['points'] == 0
         assert competition_details['results'][0]['rank'] == 3
         assert competition_details['results'][0]['points'] == 25
+
+    def test_view_competition_details_failure(self):
+       
+        competition = create_competition("UWI Games 2028", "DCIT Conference Room", "HackerRank", date(2028, 2, 26))
+        nonexistent_competition_id = 0
+    
+        competition_details = get_competition_details(nonexistent_competition_id)
+        
+        assert competition_details is None  
+
 
 
 
