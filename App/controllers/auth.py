@@ -2,25 +2,34 @@ from flask_login import login_user, login_manager, logout_user, LoginManager, cu
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 from functools import wraps
 from flask import jsonify
+from flask import render_template
 
 from App.models import User, Admin, Competitor
 
-def jwt_authenticate(username, password):
-    user = Admin.query.filter_by(username=username).first()
+def jwt_authenticate(email, password):
+    user = Admin.query.filter_by(email=email).first()
     if user and user.check_password(password):
-        return create_access_token(identity=username)
+        login_user(user)
 
-    user = Competitor.query.filter_by(username=username).first()
+        user_credentials = {
+            "access_token": create_access_token(identity=email),
+            "admin_id": user.id
+        }
+
+        return user_credentials
+
+    user = Competitor.query.filter_by(email=email).first()
     if user and user.check_password(password):
-        return create_access_token(identity=username)
+        login(email, password)
+        return create_access_token(identity=email)
     return None
 
-def login(username, password):
-    user = Admin.query.filter_by(username=username).first()
+def login(email, password):
+    user = Admin.query.filter_by(email=email).first()
     if user and user.check_password(password):
         return user
 
-    user = Competitor.query.filter_by(username=username).first()
+    user = Competitor.query.filter_by(email=email).first()
     if user and user.check_password(password):
         return user
     return None
@@ -35,8 +44,11 @@ def setup_flask_login(app):
         user = Admin.query.get(user_id)
         if user:
             return user
-        
-        return Competitor.query.get(user_id)
+
+        user = Competitor.query.get(user_id)
+        if user:
+            return user
+        # return Competitor.query.get(user_id)
     
     return login_manager
 
@@ -45,11 +57,11 @@ def setup_jwt(app):
 
     @jwt.user_identity_loader
     def user_identity_lookup(identity):
-        user = Admin.query.filter_by(username=identity).one_or_none()
+        user = Admin.query.filter_by(email=identity).one_or_none()
         if user:
             return user.id
         
-        user = Competitor.query.filter_by(username=identity).one_or_none()
+        user = Competitor.query.filter_by(email=identity).one_or_none()
         if user:
             return user.id
         return None

@@ -13,8 +13,19 @@ Page Routes
 '''
 @competitor_views.route('/competitor/profile', methods=['GET'])
 @competitor_required
-def competitor_profile():
-    return render_template('competitor_profile.html')
+def competitor_profile_page():
+    flash('Welcome to your profile')
+    notifications = get_competitor_notifications(current_user.id)
+    return render_template('competitor_profile.html', notifications_info=notifications)
+
+@competitor_views.route('/seen/<notification_id>', methods=['POST'])
+def seen_action(notification_id):
+    reponse = seen_notification(notification_id)
+    if reponse:
+        return jsonify({'message': 'Notification seen'})
+    return jsonify({'message': 'Notification not seen'}), 400
+
+
 
 
 
@@ -34,7 +45,7 @@ def api_get_competitors():
     competitors = get_all_competitors_json()
     if competitors:
         return (jsonify(competitors),200)
-    return jsonify({'message': 'No Competitors found'}), 405
+    return jsonify({'message': 'No Competitors found'}), 404
 
 
 @competitor_views.route('/api/competitor', methods=['POST'])
@@ -50,7 +61,7 @@ def api_add_new_competitor():
     if None in (uwi_id, first_name, last_name, password, email, username):
         return jsonify({'error': 'Missing data in the request'}), 400
 
-    competitor = create_competitor( uwi_id=uwi_id, username=username, firstname=first_name, lastname=last_name, password=password)
+    competitor = create_competitor( uwi_id=uwi_id, username=username, firstname=first_name, lastname=last_name, password=password, email=email)
    
     
     if competitor:
@@ -63,4 +74,4 @@ def api_get_competitor_by_id(id):
     competitor_profile = get_competitor_profile(id)   
     if competitor_profile:                     
         return jsonify(competitor_profile), 200
-    return jsonify({'message': 'No Competitor found'}), 405
+    return jsonify({'message': 'Competitor not found'}), 404

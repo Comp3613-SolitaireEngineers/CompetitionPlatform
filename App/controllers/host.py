@@ -1,9 +1,9 @@
 from App.models import Host
 from App.database import db
 
-def create_host(id,name,website):
+def create_host(name,website):
     try:
-        newHost = Host(id=id, name=name, website=website)
+        newHost = Host(name=name, website=website)
         db.session.add(newHost)
         db.session.commit()
         return newHost

@@ -19,6 +19,7 @@ class Competitor(User):
         self.lastname = lastname
         self.user_type = 'competitor'
         # Create a new Rank instance and associate it with this Competitor
+
         self.rank = Rank(self.id)
 
 
@@ -33,7 +34,7 @@ class Competitor(User):
             'lastname': self.lastname,
             'email': self.email,
             'username': self.username,
-            'rank': self.rank.get_json() if self.rank else "",           
+            'platform_rank': self.rank.get_json() if self.rank else "",
             'role' : 'competitor'            
         }
 

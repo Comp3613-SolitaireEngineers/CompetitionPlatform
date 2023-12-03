@@ -80,47 +80,36 @@
             </div>
         </div>
     </div>
-
-    <!-- Notifications Icon (Top Left) -->
     
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="notificationOffcanvas" aria-labelledby="notificationOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="notificationOffcanvasLabel">Notifications</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">            
+            {% for notification in notifications_info[:3] %}
 
-    <!-- Notifications Modal -->
-    <div class="modal fade" id="notificationsModal" tabindex="-1" role="dialog" aria-labelledby="notificationsModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="notificationsModalLabel">Notifications</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <div class="card border-dark mb-3" >
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    Just In
+                    <small class="text-muted">{{notification.time_ago}} ago</small>
                 </div>
-                <div class="modal-body">
-                    <!-- List of Notifications -->
-                    <ul class="list-group">
-                        {% for notification in current_user.notifications %}
-                            <li class="list-group-item">{{notification.message}}</li>
-                        {% endfor %}
-                        <li class="list-group-item">You have a new message.</li>
-                        <li class="list-group-item">Congratulations on your recent achievement!</li>
-                        <li class="list-group-item">Event reminder: Competition on Dec 15th.</li>
-                        <!-- Add more notifications as needed -->
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+                <div class="card-body text-dark">
+                    <p class="card-text">{{notification.message}}</p>
+                    <p class="card-text text-end"><small ><a href="#" class="text-muted" onclick="markNotificationAsSeen({{ notification.id }})">Mark as Read</a></small></p>                                   
+                </div>                               
+            </div>                                
+            {% endfor %}                
         </div>
     </div>
-    
 {% endblock %}
 
 {% block buttons %}
     <!-- Notifications Icon (Top Right) -->  
-    <button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-toggle="modal" data-target="#notificationsModal">
+    <button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
          <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            {{notifications|length}}+
+            {{notifications_info|length}}+
             <!-- <span class="visually-hidden">unread messages</span> -->
         </span>
     </button>
@@ -130,6 +119,23 @@
 {% block scripts %}
     <!-- Additional scripts for the child template -->
     <script>
-        // Your custom scripts here
+       function markNotificationAsSeen(notificationId) {
+        // Make an AJAX request to mark the notification as seen
+        fetch(`/seen/${notificationId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                  // Add your CSRF token here
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response if needed
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
     </script>
 {% endblock %}

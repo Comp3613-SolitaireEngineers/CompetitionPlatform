@@ -8,3 +8,5 @@ from .competition import *
 from .init import *
 from .observers import *
 from .command import *
+from .host import *
+

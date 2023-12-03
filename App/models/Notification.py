@@ -7,12 +7,13 @@ class Notification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
     message = db.Column(db.String(220))
-    timestamp=db.Column(db.DateTime,default = datetime.utcnow)
-
-
-    def __init__(self, competitor_id, message):
+    timestamp=db.Column(db.DateTime,default = datetime.now())
+    seen = db.Column(db.Boolean, default=False)
+    
+    def __init__(self, competitor_id, message,timestamp):
         self.competitor_id = competitor_id
         self.message = message
+        self.timestamp = timestamp
         
     
     def toDict(self):
@@ -20,5 +21,13 @@ class Notification(db.Model):
             'id':self.id,
             'competitor_id': self.competitor_id,
             'message': self.message,
-            'timestamp': self.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
+            'timestamp': self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        }
+
+    def get_json(self):
+        return{
+            'id':self.id,
+            'competitor_id': self.competitor_id,
+            'message': self.message,
+            'timestamp': self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
         }
