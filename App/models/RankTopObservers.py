@@ -1,7 +1,7 @@
 from App.database import db
 from datetime import datetime
-from sqlalchemy.sql import func
-from App.models import Competitor, Notification
+from sqlalchemy.sql import desc
+from App.models import Competitor, RankCommand, Rank
 
 class RankTopObservers(db.Model):
     __tablename__ = 'rank_top_observers'
@@ -29,9 +29,48 @@ class RankTopObservers(db.Model):
     def unsubscribe(self, competitor):
         self.top_subscribers.remove(competitor)
     
-    def notify_subscribers(self, message):
-        for subscriber in self.top_subscribers:
-            subscriber.update_notifications(message)
+    def notify_subscribers(self):
+        observers = RankTopObservers.query.first()
+        
+        # Get all competitors sorted by points in descending order
+        competitors = Competitor.query.join(Rank).order_by(desc(Rank.points)).all()
+
+        current_top_20 = set(competitors[:20])
+        previous_top_20 = set(observers.top_subscribers)
+        
+        left_top_20 = previous_top_20 - current_top_20
+        entered_top_20 = current_top_20 - previous_top_20
+        remained_top_20 = current_top_20.intersection(previous_top_20)
+
+        # Unsubscribe the competitors who have left the top 20 and send them a notification
+        for competitor in left_top_20:
+            observers.unsubscribe(competitor)
+            self.update_notifications(competitor, "You have left the top 20. Your rank has changed from {} to {}")
+
+        # Subscribe the competitors who have entered the top 20 and send them a notification
+        for competitor in entered_top_20:
+            observers.subscribe(competitor)
+            self.update_notifications(competitor, "You have entered the top 20. Your rank has changed from {} to {}")
+
+        # Send a notification to the competitors who have remained in the top 20
+        for competitor in remained_top_20:
+            self.update_notifications(competitor, "You are still in the top 20. Your rank is {}")
+
+        # Commit the session
+        db.session.commit()
+
+        return "Results added and ranks updated successfully"
+
+    #Helper function to update
+    def update_notifications(self, competitor, message):
+        latest_rank_command = RankCommand.query.filter_by(competitor_id=competitor.id).order_by(RankCommand.executed_at.desc()).first()
+        if latest_rank_command:
+            if latest_rank_command.old_rank == 0:
+                competitor.update_notifications("You are a new competitor and have entered the top 20")
+            else:
+                competitor.update_notifications(message.format(latest_rank_command.old_rank, latest_rank_command.new_rank))
+        else:
+            competitor.update_notifications("You have entered the top 20")
 
 
     def get_json(self):
