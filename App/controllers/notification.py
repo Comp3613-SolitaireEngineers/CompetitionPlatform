@@ -15,10 +15,14 @@ def create_notification(message, competitor_id, title):
         return None    
     
 
-def get_notifications():
+def get_notifications_json():
     notifications = Notification.query.all()
     notifications_list = [notification.toDict() for notification in notifications]
     return jsonify({'notifications': notifications_list})
+
+def get_notifications():
+    notifications = Notification.query.all()
+    return notifications
 
 def get_notification(notification_id):
     notification = Notification.query.get_or_404(notification_id)
