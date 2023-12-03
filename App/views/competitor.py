@@ -19,6 +19,7 @@ def competitor_profile_page():
     return render_template('competitor_profile.html', notifications_info=notifications)
 
 @competitor_views.route('/seen/<notification_id>', methods=['POST'])
+@competitor_required
 def seen_action(notification_id):
     reponse = seen_notification(notification_id)
     if reponse:
