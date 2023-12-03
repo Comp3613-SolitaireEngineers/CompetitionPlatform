@@ -4,7 +4,7 @@ from datetime import datetime
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import Host, Admin, Competitor, Competition,Rank,Notification,Results
+from App.models import Host, Admin, Competitor, Competition,Rank,Notification,Results,ResultsCommand,CompetitionCommand
 # from App.controllers import (
     # create_user,
     # get_all_users_json,
@@ -197,35 +197,35 @@ class UserUnitTests(unittest.TestCase):
                 'date_modified':date.strftime("%Y-%m-%d %H:%M:%S")
             })
         
-    # def test_new_results_command(self):
-    #     reCmd = ResultsCommand("10")
-    #     assert reCmd.competition_id == "10"
+    def test_new_results_command(self):
+        reCmd = ResultsCommand("10")
+        assert reCmd.competition_id == "10"
         
-    # def test_new_results_command_get_json(self):
-    #     reCmd = ResultsCommand("10")
-    #     reCmd_json = reCmd.get_json()
-    #     self.assertDictEqual(
-    #         reCmd_json,
-    #         {
-    #             'id':None,
-    #             'competition_id':"10"
-    #         })
+    def test_new_results_command_get_json(self):
+        reCmd = ResultsCommand("10")
+        reCmd_json = reCmd.get_json()
+        self.assertDictEqual(
+            reCmd_json,
+            {
+                'id':None,
+                'competition_id':"10"
+            })
              
-    # def test_new_competition_command(self):
-    #     compCmd = CompetitionCommand("10")
-    #     assert compCmd.competition_id == "10"
+    def test_new_competition_command(self):
+        compCmd = CompetitionCommand("10")
+        assert compCmd.competition_id == "10"
     
-    # def test_new_competition_command_get_json(self):
-    #     date = datetime.now()
-    #     compCmd = CompetitionCommand("10")
-    #     compCmd_json = compCmd.get_json()
-    #     self.assertDictEqual(
-    #          compCmd_json,
-    #          {
-    #              'id':None,
-    #              'competition_id':"10",
-    #              'executed_at':date.strftime("%Y-%m-%d %H:%M:%S")
-    #          })
+    def test_new_competition_command_get_json(self):
+        date = datetime.now()
+        compCmd = CompetitionCommand("10")
+        compCmd_json = compCmd.get_json()
+        self.assertDictEqual(
+             compCmd_json,
+             {
+                 'id':None,
+                 'competition_id':"10",
+                 'executed_at':date.strftime("%Y-%m-%d %H:%M:%S")
+             })
 
     
 '''

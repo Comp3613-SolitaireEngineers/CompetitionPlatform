@@ -11,12 +11,13 @@ class CompetitionCommand(Command):
 
     def __init__(self, competition_id):
         self.competition_id = competition_id
+        self.executed_at = datetime.now()
 
     def get_json(self):
         return {
             'id': self.id,
             'competition_id': self.competition_id,
-            "executed_at": self.executed_at
+            "executed_at": self.executed_at.strftime("%Y-%m-%d %H:%M:%S")
         }
 
     def execute(self, admin_id, competition_id):
