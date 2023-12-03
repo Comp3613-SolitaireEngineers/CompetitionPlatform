@@ -13,8 +13,8 @@ def create_competitor(uwi_id, username, email ,password, firstname, lastname):
                
         return competitor   
     except Exception as e:
-        print(e)
         db.session.rollback()
+        print(e)
     return None
 
 

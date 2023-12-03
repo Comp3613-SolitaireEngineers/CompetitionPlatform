@@ -19,8 +19,8 @@ class Competitor(User):
         self.lastname = lastname
         self.user_type = 'competitor'
         # Create a new Rank instance and associate it with this Competitor
-
-        self.rank = Rank(self.id)
+        self.set_rank()
+        
 
 
     def __repr__(self):       
@@ -38,6 +38,15 @@ class Competitor(User):
             'role' : 'competitor'            
         }
 
+    def set_rank(self):
+        try:
+            self.rank = Rank(self.id)
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return False
+
     def update_notifications(self, message):
         try:
             notification = (Notification(self.id, message))
@@ -46,4 +55,3 @@ class Competitor(User):
             print(f'Competitor {self.username} received message: {message}')        
         except Exception as e:
             print("Exception when updating notifications " + str(e))
-        
