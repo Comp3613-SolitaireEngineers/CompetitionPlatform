@@ -8,18 +8,18 @@ from flask_login import login_required, login_user, current_user, logout_user
 from.index import index_views
 
 from App.controllers import (
-    # create_user,
-    jwt_authenticate, 
-    # get_all_users,
-    # get_all_users_json,
-    # jwt_required, 
-    # get_ranked_users,
-    # get_user_competitions,
-    login
-
+    get_all_admins_json
 )
 
 user_views = Blueprint('user_views', __name__, template_folder='../templates')
+
+@user_views.route('/api/admins', methods=['GET'])
+def api_get_admins():
+    admins = get_all_admins_json()
+    
+    if admins:
+        return (jsonify(admins),200)
+    return jsonify({'message': 'Admins found'}), 404
 
 # @user_views.route('/users', methods=['GET'])
 # def get_user_page():
