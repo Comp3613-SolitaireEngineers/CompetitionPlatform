@@ -66,6 +66,7 @@ def add_results(competition_id, results_file):
     if competition.results_added == True:
         return None       
 
+    print("adding results to competition")
     with open(results_file, 'r', newline='') as f:
         reader = csv.DictReader(f)
                    
@@ -86,7 +87,9 @@ def add_results(competition_id, results_file):
                     print("Student not created")
                     continue
           
-            result = create_result(competition_id, competitor.id, points, rank)                   
+            result = create_result(competition_id, competitor.id, points, rank)  
+            db.session.add(result)
+            print("result created " + str(result.points) + " points " + result.competitor.username)                 
     
     competition.results_added = True
     db.session.commit()

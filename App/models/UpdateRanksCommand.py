@@ -2,6 +2,7 @@ from datetime import datetime
 from App.database import db
 from App.models import Command, Competitor, Rank
 from sqlalchemy import desc
+from App.controllers import execute_rank_command
 
 class UpdateRanksCommand(Command):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,6 +27,7 @@ class UpdateRanksCommand(Command):
 
         # Update rank based on position in sorted list
         for i, competitor in enumerate(competitors, 1):
+            command = execute_rank_command(competitor.id, competitor.rank.ranking, i)
             competitor.rank.ranking = i
 
         # Commit changes to the database
