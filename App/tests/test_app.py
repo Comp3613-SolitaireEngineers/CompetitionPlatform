@@ -220,7 +220,28 @@ class UsersIntegrationTests(unittest.TestCase):
     
         competition_details = get_competition_details(nonexistent_competition_id)
         
-        assert competition_details is None  
+        assert competition_details is None 
+
+    def test_view_rankings_fail(self):
+        competitor1 = create_competitor(uwi_id='816024687', firstname='Eren', lastname='Jaegar', username='killer', password='attack', email= 'eren.yaegar@my.uwi.edu')
+        competition = create_competition("UWI Games 2029", "DCIT Conference Room", "HackerRank", date(2029, 2, 26))
+        results = create_result(competition.id, "816024687", 25, 1)
+
+        rankings = get_rankings()
+        assert len(rankings) != 4       
+
+    def test_view_rankings_success(self):
+        competitor1 = create_competitor(uwi_id='816024685', firstname='Mikasa', lastname='Ackerman', username='mika', password='ackerman', email= 'mikasa.ackerman@my.uwi.edu')
+        competition = create_competition("UWI Games 2030", "DCIT Conference Room", "HackerRank", date(2030, 2, 26))
+        results = create_result(competition.id, competitor1.id, 25, 1)
+
+        rankings = get_rankings()
+        assert len(rankings) == 4
+        assert rankings[3]["ranking"] == 4
+        assert rankings[3]["competitor_id"] == competitor1.id 
+        assert rankings[3]["name"] == "Mikasa Ackerman"
+
+        
 
 
 
