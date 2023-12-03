@@ -53,8 +53,9 @@ class UserUnitTests(unittest.TestCase):
     # pure function no side effects or integrations called
     def test_competitor_get_json_basic(self):
         competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
+        
+        # get_json_basic is used here as full Rank information in platform_rank is out of scope for this test
         competitor_json = competitor.get_json_basic()
-        print(competitor_json)
 
         self.assertDictEqual(
             competitor_json,
