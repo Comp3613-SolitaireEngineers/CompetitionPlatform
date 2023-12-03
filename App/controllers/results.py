@@ -88,8 +88,8 @@ def add_results(competition_id, results_file):
                     continue
           
             result = create_result(competition_id, competitor.id, points, rank)  
-            db.session.add(result)
-            print("result created " + str(result.points) + " points " + result.competitor.username)                 
+            # db.session.add(result)
+            # print("result created " + str(result.points) + " points " + result.competitor.username)                 
     
     competition.results_added = True
     db.session.commit()

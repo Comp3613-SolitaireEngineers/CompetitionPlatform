@@ -16,9 +16,7 @@ Page Routes
 @admin_required
 def competition_results_page():
     competitions = get_all_competitions()
-    competition_id = request.args.get('competition_id')
-    if(competition_id is None):
-        return redirect(request.referrer)
+    competition_id = request.args.get('competition_id')   
     competition = get_competition_by_id(competition_id)
     page = request.args.get('page', 1, type=int)
     results = get_results_by_competition_id(competition_id, page=page)
@@ -56,7 +54,7 @@ def add_results_action():
         new_name = secure_filename(results_file.filename)
         results_file.save(f"App/static/{new_name}")
         results_file_path = f"App/static/{new_name}"                
-        response = add_results(competition_id, results_file_path)
+        response = execute_results_command(current_user.id, competition_id, results_file_path)
 
         page = request.args.get('page', 1, type=int)
         results = get_results_by_competition_id(competition.id, page=page)
