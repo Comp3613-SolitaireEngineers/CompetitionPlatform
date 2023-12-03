@@ -26,7 +26,7 @@ def leaderboard_competitors(page=None):
     if competitors_pagination.count() == 0:
         return None
     
-    # Extract top 3 competitors
+    # Extract top 3 competitors    
     top_three = competitors_pagination[:3] 
 
       

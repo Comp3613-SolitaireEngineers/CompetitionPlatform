@@ -11,8 +11,58 @@
 
 {% block content %}
 <!-- Podium for 1st, 2nd, and 3rd Ranked Competitors -->
-{%if competitors%}
 <h3>Leaderboard</h3>
+{%if not competitors %}
+<div class="row justify-content-center mt-1">
+    <div class="card mb-3 border-white" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="/static/Gold.png" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5>No Competitors Yet</h5>
+                    <p>Total Points: 0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center mt-1">
+    <div class="col-md-4 mb-1">
+        <div class="card mb-3 border-white" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="/static/Silver.png" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5>No Competitors Yet</h5>
+                        <p>Total Points: 0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-1">
+        <div class="card mb-3 border-white" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="/static/Bronze.png" class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5>No Competitors Yet</h5>
+                        <p>Total Points: 0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%else%}
+
 <div class="row justify-content-center mt-0">
     <div class="card mb-3 border-white" style="max-width: 500px;">
         <div class="row g-0">
@@ -20,7 +70,7 @@
                 <img src="/static/Gold.png" class="img-fluid rounded-start" alt="...">
             </div>
             <div class="col-md-8">
-                <div class="card-body">
+                <div class="card-body">                    
                     <h4>{{ competitors.top_three[0].firstname }} {{ competitors.top_three[0].lastname }}</h4>
                     <p>Total Points: {{ competitors.top_three[0].rank.points }}</p>
                 </div>
@@ -56,55 +106,7 @@
     </div>
     {% endfor %}
 </div>
-{%else%}
 
-<div class="row justify-content-center mt-1">
-    <div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4 card-header bg-info">
-                <h4>1st Place</h4>
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h4>No Competitors Yet</h4>
-                    <p>Total Points: 0</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row justify-content-center mt-1">
-    <div class="col-md-4 mb-1">
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4 card-header bg-info">
-                    <h4>1st Place</h4>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h4>No Competitors Yet</h4>
-                        <p>Total Points: 0</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-1">
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4 card-header bg-info">
-                    <h4>1st Place</h4>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h4>No Competitors Yet</h4>
-                        <p>Total Points: 0</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 {%endif%}
 
