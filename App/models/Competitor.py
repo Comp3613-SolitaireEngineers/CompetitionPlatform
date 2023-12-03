@@ -38,6 +38,18 @@ class Competitor(User):
             'role' : 'competitor'            
         }
 
+    def get_json_basic(self):
+        return {
+            'id': self.id,
+            'uwi_id': self.uwi_id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'email': self.email,
+            'username': self.username,
+            'platform_rank': self.rank.get_json_basic() if self.rank else "",
+            'role' : 'competitor'            
+        }
+
     def update_notifications(self, message):
         try:
             notification = (Notification(self.id, message))

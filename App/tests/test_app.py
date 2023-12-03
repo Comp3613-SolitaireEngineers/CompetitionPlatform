@@ -51,9 +51,10 @@ class UserUnitTests(unittest.TestCase):
         assert competition.date == "01-02-2023"
 
     # pure function no side effects or integrations called
-    def test_competitor_get_json(self):
+    def test_competitor_get_json_basic(self):
         competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
-        competitor_json = competitor.get_json()
+        competitor_json = competitor.get_json_basic()
+        print(competitor_json)
 
         self.assertDictEqual(
             competitor_json,
@@ -64,9 +65,11 @@ class UserUnitTests(unittest.TestCase):
                 'lastname': "Morris",
                 'email': "randal.m@mail.com",
                 'username': "coolGuy101",
-                'rank': "",
-                'competitions': [],
-                'notifications': [],
+                'platform_rank': {
+                    'id': None,
+                    'ranking': 1,
+                    'points': None,
+                },
                 'role' : 'competitor'            
             })
 

@@ -34,4 +34,11 @@ class Rank(db.Model):
             'created_at': self.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             'updated_at': self.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
+
+    def get_json_basic(self):        
+        return{
+            'id': self.id,
+            'ranking': self.ranking,
+            'points': self.points,
+        }
   
