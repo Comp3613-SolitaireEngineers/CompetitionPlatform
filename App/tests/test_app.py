@@ -270,7 +270,62 @@ class UsersIntegrationTests(unittest.TestCase):
         assert rankings[0]["competitor_id"] == competitor.id
         assert rankings[0]["name"] == "Rick Sanchez"
 
+    def test_competition_creation(self):
+        competition = create_competition("name", "locations", "platform", datetime.utcnow())
+        assert competition.id is not None, "Failed to create competition"
 
+    def test_competition_command(self):
+        competition = create_competition("New Competition", "Italia", "Online", datetime.utcnow())
+        self.assertIsNotNone(competition)
+        self.assertEqual(competition.name, "New Competition")
+        
+    def test_results_command(self):
+        
+        # Create a competition_id and admin_id for testing
+        admin = create_admin(113242,"emailaas","usernameaqeq","passwordqedqa")   
+        self.assertIsNotNone(admin)
+        
+        competition = create_competition("nameedqd", "location", "online", datetime.utcnow())
+        self.assertIsNotNone(competition)
+
+        # Prepare some results for testing
+        results = 'App/static/tests/results.csv'
+
+        command = execute_results_command(admin.id, competition.id, results)
+        self.assertIsNotNone(command)
+
+        comp_results = get_results_by_competition_id(competition.id)
+        
+        self.assertEqual(len(comp_results), 5)
+
+    def test_notify_subscribers(self):
+        # Create a RankTopObservers instance
+        observers = create_rank_top_observers("Top 20 Observers")
+        self.assertIsNotNone(observers), "Failed to create RankTopObservers"
+
+        # Create a competitor and subscribe
+        competitor = create_competitor(133434, "user", "pass", "email ", "sara", "lara")
+        observers.subscribe(competitor)
+
+        # Test notify_subscribers
+        observers.notify_subscribers()
+
+        # Check if the notifications were created correctly
+        notifications = Notification.query.all()
+        self.assertEqual(len(notifications), 1), "Incorrect number of notifications"
+        
+        competitors = [create_competitor(id, f"user{id}", f"pass{id}", f"email{id}", f"f{id}", f"l{id}") for id in range(1334314, 1334341)]
+        
+        for i in competitors:
+            observers.subscribe(i)
+            
+        # Test notify_subscribers
+        observers.notify_subscribers()
+        assert len(competitors) == 27, "Failed to create competitors"
+        
+        notifications = get_notifications()
+
+        self.assertEqual(len(notifications), 21), "Incorrect number of notifications"
 
 
 
