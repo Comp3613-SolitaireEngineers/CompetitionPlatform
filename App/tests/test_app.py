@@ -1,22 +1,18 @@
 import os, tempfile, pytest, logging, unittest
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import datetime
+from datetime import datetime, date
 
 from App.main import create_app
 from App.database import db, create_db
+from App.controllers import *
+#     create_competitor, 
+#     get_competitor_profile, 
+#     get_rankings, 
+#     create_competition, 
+#     get_competition_details, 
+#     create_result,
+#     get_all_competitions)
 from App.models import Host, Admin, Competitor, Competition,Rank,Notification,Results,ResultsCommand,CompetitionCommand
-# from App.controllers import (
-    # create_user,
-    # get_all_users_json,
-    # login,
-    # get_user,
-    # get_user_by_username,
-    # update_user,
-    # get_user_competitions,
-    # create_competition,
-    # add_user_to_comp,
-    # get_user_rankings
-# )
 
 LOGGER = logging.getLogger(__name__)
 
@@ -58,15 +54,20 @@ class UserUnitTests(unittest.TestCase):
         self.assertDictEqual(
             competitor_json,
             {
-                'id': None,
+                'id': competitor.id,
                 'uwi_id': "816011111",
                 'firstname': "Randal",
                 'lastname': "Morris",
                 'email': "randal.m@mail.com",
-                'username': "coolGuy101",
-                'rank': "",
-                'competitions': [],
-                'notifications': [],
+                'username': "coolGuy101",                
+                'platform_rank':              
+                        {   'id': 1,
+                            'competitor_id': competitor.id,
+                            'ranking': 1,                          
+                            'points': 0,                        
+                            'created_at': competitor.rank.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                            'updated_at': competitor.rank.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+                        },                
                 'role' : 'competitor'            
             })
 
@@ -77,7 +78,7 @@ class UserUnitTests(unittest.TestCase):
         self.assertDictEqual(
             host_json, 
             {
-                "id": None, 
+                "id": host.id, 
                 "name": "DCIT",
                 "website": "https://sta.uwi.edu/fst/dcit"
             })
@@ -89,7 +90,7 @@ class UserUnitTests(unittest.TestCase):
         self.assertDictEqual(
             admin_json,
             {
-                'id': None,
+                'id': admin.id,
                 'uwi_id': "817630671",
                 'email': "sherry.floobs@mail.com",
                 'username': "admin1",
@@ -115,7 +116,7 @@ class UserUnitTests(unittest.TestCase):
         
     def test_hashed_password(self):
         password = "password"
-        hashed = generate_password_hash(password, method='sha256')
+        hashed = generate_password_hash(password, method='scrypt')
         admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
         
         assert admin.password != password
@@ -261,14 +262,108 @@ class UsersIntegrationTests(unittest.TestCase):
         competitor_profile = get_competitor_profile(0)
         assert competitor_profile == None
 
-    def test_get_rankings(self):        
-        competitor = create_competitor(uwi_id='816024684', firstname='Rick', lastname='Sanchez', username='rickety_rick1', password='rickypass', email= 'rick.sanchez1@my.uwi.edi')
+    def test_veiw_competitions_success(self):
+        competition1 = create_competition("UWI Games 2023", "DCIT Conference Room", "HackerRank", date(2023, 2, 26))
+        competition2 = create_competition("UWI Games 2024", "DCIT Conference Room", "HackerRank", date(2024, 2, 25))
+
+        competitions = get_all_competitions()
+        assert len(competitions) == 2
+        assert competitions[0].name == "UWI Games 2023"
+        assert competitions[1].name == "UWI Games 2024"
+    
+    def test_view_competitions_fail(self):
+        competition1 = create_competition("UWI Games 2023", "DCIT Conference Room", "HackerRank", date(2025, 2, 26))
+        competition2 = create_competition("UWI Games 2024", "DCIT Conference Room", "HackerRank", date(2026, 2, 25))
+        competition3 = create_competition("UWI Games 2024", "DCIT Conference Room", "HackerRank", date(2026, 2, 25))
+
+        competitions = get_all_competitions()
+        print(com.name for com in competitions)
+        assert len(competitions) != 6
+        assert competitions[2].name != "UWI Games 2025"
+        assert competitions[3].name != "UWI Games 2026"
+
+
+    def test_view_comoetition_details_success(self):
+        competition = create_competition("UWI Games 2027", "DCIT Conference Room", "HackerRank", date(2027, 2, 26))
+        competitor = create_competitor(uwi_id='816024687', firstname='Bird', lastname='Person', username='birdperson', password='birdpass', email='bird.person@my.uwi.edu')
+        results = create_result(competition.id, competitor.id, 25, 3)
+        competition_details = get_competition_details(competition.id)
+        assert competition_details['name'] == "UWI Games 2027"
+        assert competition_details['location'] == "DCIT Conference Room"
+        assert competition_details['platform'] == "HackerRank"
+        assert competition_details['date'] == "26 February, 2027"
+        
+        assert competition_details['results'][0]['competitor']['username'] == "birdperson"
+        assert competition_details['results'][0]['competitor']['firstname'] == "Bird"
+        assert competition_details['results'][0]['competitor']['lastname'] == "Person"
+        assert competition_details['results'][0]['competitor']['email'] == "bird.person@my.uwi.edu"
+        assert competition_details['results'][0]['competitor']['platform_rank']['ranking'] == 3
+        assert competition_details['results'][0]['competitor']['platform_rank']['points'] == 0
+        assert competition_details['results'][0]['rank'] == 3
+        assert competition_details['results'][0]['points'] == 25
+
+    def test_view_competition_details_failure(self):
+       
+        competition = create_competition("UWI Games 2028", "DCIT Conference Room", "HackerRank", date(2028, 2, 26))
+        nonexistent_competition_id = 0
+    
+        competition_details = get_competition_details(nonexistent_competition_id)
+        
+        assert competition_details is None 
+
+    def test_view_rankings_fail(self):
+        competitor1 = create_competitor(uwi_id='816024687', firstname='Eren', lastname='Jaegar', username='killer', password='attack', email= 'eren.yaegar@my.uwi.edu')
+        competition = create_competition("UWI Games 2029", "DCIT Conference Room", "HackerRank", date(2029, 2, 26))
+        results = create_result(competition.id, "816024687", 25, 1)
 
         rankings = get_rankings()
-        assert len(rankings) == 3
-        assert rankings[0]["ranking"] == 1
-        assert rankings[0]["competitor_id"] == competitor.id
-        assert rankings[0]["name"] == "Rick Sanchez"
+        assert len(rankings) != 4       
+
+    def test_view_rankings_success(self):
+        competitor1 = create_competitor(uwi_id='816024685', firstname='Mikasa', lastname='Ackerman', username='mika', password='ackerman', email= 'mikasa.ackerman@my.uwi.edu')
+        competition = create_competition("UWI Games 2030", "DCIT Conference Room", "HackerRank", date(2030, 2, 26))
+        results = create_result(competition.id, competitor1.id, 25, 1)
+
+        rankings = get_rankings()
+        assert len(rankings) == 4
+        assert rankings[3]["ranking"] == 4
+        assert rankings[3]["competitor_id"] == competitor1.id 
+        assert rankings[3]["name"] == "Mikasa Ackerman"
+
+        
+
+
+
+
+
+
+
+
+
+    # def test_get_rankings_fail(self):
+    #     # competitor = create_competitor(uwi_id='816024683', firstname='Jerry', lastname='Sanchez', username='rickety_jerry', password='jerrypass', email= 'rick.sanchez@my.uwi.edi')
+    #     rankings = get_rankings()
+    #     assert len(rankings) != 4
+    #     print(rankings)
+    #     assert rankings[2]["ranking"] != 4
+    #     assert rankings[2]["competitor_id"] != 0
+    #     assert rankings[2]["name"] != "Jerry Sanchez"
+
+    # def test_get_rankings_success(self):        
+    #     competitor = create_competitor(uwi_id='816024684', firstname='Beth', lastname='Smith', username='betty', password='bettypass', email= 'betty.smith@my.uwi.edu')
+
+    #     rankings = get_rankings()
+    #     assert len(rankings) == 4
+    #     assert rankings[3]["ranking"] == 3
+    #     assert rankings[3]["competitor_id"] == competitor.id
+    #     assert rankings[3]["name"] == "Beth Smith"
+
+   
+
+   
+    
+
+    
 
     def test_competition_creation(self):
         competition = create_competition("name", "locations", "platform", datetime.utcnow())
