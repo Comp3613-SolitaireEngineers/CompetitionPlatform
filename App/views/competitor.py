@@ -18,6 +18,10 @@ def competitor_profile_page():
     notifications = get_competitor_notifications(current_user.id)
     return render_template('competitor_profile.html', notifications_info=notifications)
 
+
+'''
+Action Routes
+'''
 @competitor_views.route('/seen/<notification_id>', methods=['POST'])
 @competitor_required
 def seen_action(notification_id):
@@ -25,16 +29,6 @@ def seen_action(notification_id):
     if reponse:
         return jsonify({'message': 'Notification seen'})
     return jsonify({'message': 'Notification not seen'}), 400
-
-
-
-
-
-
-'''
-Action Routes
-'''
-
 
 
 '''

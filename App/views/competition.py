@@ -46,7 +46,7 @@ def add_competition_action():
     response = create_competition(name=competition_name, location=location, platform=platform, date=competition_date)
     if response:
         flash('Competition created successfully!')
-        return redirect(url_for('competition_views.competition_form_page'))
+        return redirect(url_for('results_views.competition_results_page', competition_id=response.id, page=1))
     flash('Error creating competition')
     return redirect(url_for('competition_views.competition_form_page'))
 
