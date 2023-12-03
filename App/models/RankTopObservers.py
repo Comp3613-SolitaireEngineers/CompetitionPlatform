@@ -13,7 +13,7 @@ class RankTopObservers(db.Model):
         self.name = name
         
     def subscribe(self, competitor):
-        if competitor.rank.ranking <= 21:
+        if competitor.rank.ranking <= 20:
             
             #Check if competitor is already subscribed
             ini = False
