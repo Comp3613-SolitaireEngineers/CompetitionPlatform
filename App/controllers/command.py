@@ -1,24 +1,28 @@
-from App.models import Command, CompetitionCommand, ResultsCommand, RankCommand, UpdateRanksCommand, PointsCommand, Admin
+from App.models import Command, CompetitionCommand, ResultsCommand, RankCommand, UpdateRanksCommand, PointsCommand, Admin, Competition
 from App.database import db
+from App.controllers import create_competition
 
-def create_competition_command(competition_id):
-    command = CompetitionCommand.CompetitionCommand(competition_id)
+def create_competition_command(admin_id, name, location, platform, date):
     
-    try:
-        db.session.add(command)
-        db.session.commit()
-        return command
-    except Exception as e:
-        print (f"Error creating competition : {str(e)}")
+    competition = create_competition(admin_id, name, location, platform, date)
+    
+    if competition:
+        command = CompetitionCommand.CompetitionCommand(competition.id)
+    
+        try:
+            db.session.add(command)
+            db.session.commit()
+            return command
+        except Exception as e:
+            print (f"Error creating competition : {str(e)}")
         
     return None
     
-def execute_competition_command(admin_id, competition_id):
+def execute_competition_command(admin_id, name, location, platform, date):
     
-    admin = Admin.query.get(admin_id)
-    command = create_competition_command(competition_id)
+    command = create_competition_command(admin_id, name, location, platform, date)
     try:
-        command.execute(admin_id, competition_id)
+        command.execute(admin_id, (Competition.query.get(command.competition_id)))
         return "Competition command executed successfully"
     except Exception as e:
         return f"Error executing competition command: {str(e)}"

@@ -1,18 +1,14 @@
-from App.models import Competition,User
+from App.models import Competition,User, Admin
 from App.database import db
 from App.controllers import get_results_by_competition_id
 
-def create_competition(name, location, platform, date):
+def create_competition(admin_id,name, location, platform, date):
    
-    try:
-        newcomp = Competition(name = name, location = location,platform = platform, date = date)
-        db.session.add(newcomp)
-        db.session.commit()
-        return newcomp
-    except Exception as e:
-        print("Error in competition", e)
-        db.session.rollback()
-        return None
+    admin = Admin.query.get(admin_id)
+    
+    if admin:
+        return admin.create_competition(name, location, platform, date)
+    return None
 
 def get_all_competitions():
     return Competition.query.all()
