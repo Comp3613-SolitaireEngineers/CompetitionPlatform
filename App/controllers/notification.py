@@ -3,9 +3,9 @@ from App.database import db
 from App.models import Notification
 from datetime import datetime
 
-def create_notification(message, competitor_id):
+def create_notification(message, competitor_id, title):
     try:
-        new_notification = Notification(message, competitor_id)
+        new_notification = Notification(message, competitor_id, title)
         db.session.add(new_notification)
         db.session.commit()
         return new_notification
@@ -40,7 +40,8 @@ def get_competitor_notifications(competitor_id):
     for notification in competitor_notifications:
         info = {
             'id': notification.id,
-            'message': notification.message,            
+            'message': notification.message,  
+            'title': notification.title,          
             'timestamp': notification.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
         }
 

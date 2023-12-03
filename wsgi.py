@@ -396,8 +396,9 @@ notification = AppGroup('notification', help = 'commands for notification')
 @notification.command("create", help = 'create new notification')
 def create_notification_command():
     competitor_id = click.prompt("Enter Competitor ID")
-    message = click.prompt("Enter Message")     
-    notification = create_notification(competitor_id, message)
+    message = click.prompt("Enter Message")  
+    title = click.prompt("Enter Head Message")   
+    notification = create_notification(competitor_id, message, title)
     if notification:
         print("Notification Created Successfully")
     else:
@@ -419,4 +420,6 @@ def get_competitor_notifications_command():
         print(notifications)
     else:
         print("Error getting notifications")
+
+app.cli.add_command(notification)
 

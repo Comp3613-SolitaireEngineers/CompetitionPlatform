@@ -3,139 +3,150 @@
 {% block title %}Competitor Profile{% endblock %}
 
 {% block styles %}
-    <!-- Additional styles for the child template -->
-    <style>
-        /* Your custom styles here */
-        .custom-divider {
-            width: 100%;
-            height: 2px;
-            background-color: #343a40;
-            margin: 10px 0;
-        }
-    </style>
+<!-- Additional styles for the child template -->
+<style>
+    /* Your custom styles here */
+    .custom-divider {
+        width: 100%;
+        height: 2px;
+        background-color: #343a40;
+        margin: 10px 0;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <div class="row mt-5">
-        <!-- Competitor Information Card (Left) -->
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="text-center">Competitor Info</h2>
-                </div>
-                <div class="card-body text-center">
-                    <!-- Competitor Photo -->
-                    <img src="/static/User-Profile-PNG-Image.png" alt="Competitor Photo" class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
-                    <div class="custom-divider"></div>
-                    <!-- Competitor Name -->
-                    <h4>{{current_user.firstname}} {{current_user.lastname}}</h4>
+<div class="row mt-5">
+    <!-- Competitor Information Card (Left) -->
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Profile</h2>
+            </div>
+            <div class="card-body text-center">
+                <!-- Competitor Photo -->
+                <img src="/static/User-Profile-PNG-Image.png" alt="Competitor Photo"
+                    class="img-fluid rounded-circle mb-3" style="max-width: 150px;">
+                <div class="custom-divider"></div>
+                <!-- Competitor Name -->
+                <h4>{{current_user.firstname}} {{current_user.lastname}}</h4>
 
-                    <!-- Competitor Email -->
-                    <p class="text-muted">{{current_user.email}}</p>
-                   
-                </div>
+                <!-- Competitor Email -->
+                <p class="text-muted">{{current_user.email}}</p>
+
+            </div>
+            <div class="card-footer text-end">
+                <a href="#" class="btn btn-dark">Edit Profile</a>
             </div>
         </div>
+    </div>
 
-        <!-- Competitions Participated Card (Right) -->        
-        <div class="col-md-8">
-            <div class="row">
-                <div class="col-sm-6 mb-3 mb-sm-0">
-                  <div class="card">
+    <!-- Competitions Participated Card (Right) -->
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card">
                     <div class="card-body text-center">
-                      <h5 class="card-title">Rank</h5>
-                      <br>
-                      <p class="card-text">{{current_user.rank.ranking}}</p>                     
+                        <h5 class="card-title">Rank</h5>
+                        <br>
+                        <h1 class="card-text">{{current_user.rank.ranking}}</h1>
                     </div>
-                  </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="card">
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
                     <div class="card-body  text-center">
-                      <h5 class="card-title">Total Points</h5>
-                      <br>
-                      <p class="card-text">{{current_user.rank.points}}</p>                      
+                        <h5 class="card-title">Total Points</h5>
+                        <br>
+                        <h1 class="card-text">{{current_user.rank.points}}</h1>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <br>
-              <br>
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="text-center">Competitions Participated</h2>
-                </div>
-                <div class="card-body" style="max-height: 250px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for competition in current_user.competitions %}
-                            {%for result in competition.results%}
-                                {%if result.competitor_id == current_user.id%}
-                                    <li class="list-group-item">{{competition.name}} - Rank {{result.rank}}</li>
-                                {%endif%}
-                            {%endfor%}
-                        {% endfor %}                       
-                        <!-- Add more competitions as needed -->
-                    </ul>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="notificationOffcanvas" aria-labelledby="notificationOffcanvasLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="notificationOffcanvasLabel">Notifications</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <br>
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Your Paticipations</h2>
+            </div>
+            <div class="card-body" style="max-height: 250px; overflow-y: auto;">
+                <ul class="list-group">
+                    {% for competition in current_user.competitions %}
+                    {%for result in competition.results%}
+                    {%if result.competitor_id == current_user.id%}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{competition.name}} - Rank {{result.rank}}
+                        <a href="{{ url_for('competition_views.competition_details_page', competition_id=competition.id, page=1) }}" class="btn btn-dark">Details</a>
+                    </li>
+                    {%endif%}
+                    {%endfor%}
+                    {% endfor %}
+                    <!-- Add more competitions as needed -->
+                </ul>
+            </div>
         </div>
-        <div class="offcanvas-body">            
-            {% for notification in notifications_info[:3] %}
+    </div>
+</div>
 
-            <div class="card border-dark mb-3" >
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    Just In
-                    <small class="text-muted">{{notification.time_ago}} ago</small>
-                </div>
-                <div class="card-body text-dark">
-                    <p class="card-text">{{notification.message}}</p>
-                    <p class="card-text text-end"><small ><a href="#" class="text-muted" onclick="markNotificationAsSeen({{ notification.id }})">Mark as Read</a></small></p>                                   
-                </div>                               
-            </div>                                
-            {% endfor %}                
-        </div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="notificationOffcanvas"
+    aria-labelledby="notificationOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="notificationOffcanvasLabel">Notifications</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+    <div class="offcanvas-body">
+        {% for notification in notifications_info[:3] %}
+
+        <div class="card border-dark mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                {{notification.title}}
+                <small class="text-muted">{{notification.time_ago}} ago</small>
+            </div>
+            <div class="card-body text-dark">
+                <p class="card-text">{{notification.message}}</p>
+                <div class="text-center">RANK #{{current_user.rank.ranking}}</div>
+                <p class="card-text text-end"><small><a href="#" class="text-muted"
+                            onclick="markNotificationAsSeen({{ notification.id }})">Mark as Read</a></small></p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
 
 {% block buttons %}
-    <!-- Notifications Icon (Top Right) -->  
-    <button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-bs-toggle="offcanvas" data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
-         <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-            {{notifications_info|length}}+
-            <!-- <span class="visually-hidden">unread messages</span> -->
-        </span>
-    </button>
-    
+<!-- Notifications Icon (Top Right) -->
+<button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-bs-toggle="offcanvas"
+    data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
+    <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {{notifications_info|length}}+
+        <!-- <span class="visually-hidden">unread messages</span> -->
+    </span>
+</button>
+
 {% endblock %}
 
 {% block scripts %}
-    <!-- Additional scripts for the child template -->
-    <script>
-       function markNotificationAsSeen(notificationId) {
+<!-- Additional scripts for the child template -->
+<script>
+    function markNotificationAsSeen(notificationId) {
         // Make an AJAX request to mark the notification as seen
         fetch(`/seen/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                  // Add your CSRF token here
+                // Add your CSRF token here
             }
         })
-        .then(response => response.json())
-        .then(data => {
-            // Handle the response if needed
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response if needed
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     }
-    </script>
+</script>
 {% endblock %}
