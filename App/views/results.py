@@ -17,8 +17,7 @@ Page Routes
 def competition_results_page():
     competitions = get_all_competitions()
     competition_id = request.args.get('competition_id')
-    if(competition_id is None):
-        return redirect(request.referrer)
+   
     competition = get_competition_by_id(competition_id)
     page = request.args.get('page', 1, type=int)
     results = get_results_by_competition_id(competition_id, page=page)

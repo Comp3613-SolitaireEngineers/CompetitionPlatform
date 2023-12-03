@@ -19,8 +19,8 @@ class Competitor(User):
         self.lastname = lastname
         self.user_type = 'competitor'
         # Create a new Rank instance and associate it with this Competitor
-
-        self.rank = Rank(self.id)
+        self.set_rank()
+        
 
 
     def __repr__(self):       
@@ -45,3 +45,12 @@ class Competitor(User):
         
         db.session.add(self)
         db.session.commit()
+
+    def set_rank(self):
+        try:
+            self.rank = Rank(self.id)
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            return False

@@ -64,7 +64,7 @@ def api_get_all_competitons():
     return jsonify({'message': 'No Competitions found'}), 405
 
 @competition_views.route('/api/competition', methods=['POST'])
-def add_new_competition_views():
+def api_add_new_competition():
     data = request.json
     name= data.get('name')
     location = data.get('location')
@@ -75,22 +75,15 @@ def add_new_competition_views():
    
 
     response = create_competition(name=name, location=location, platform=platform, date=datetime.strptime(data['date'], "%Y-%m-%d"))
-
     
     if response:
         return (jsonify({'message': f"Competition created"}), 201)
     return (jsonify({'error': f"Error creating competition"}),500)
 
 
-@competition_views.route('/api/competition/details/<int:id>', methods=['GET'])
-def get_competition_views(id):
-    competition_details = get_competition_details(id)
-    if not competition:
-        return jsonify({'error': 'competition not found'}), 404          
-    return (jsonify(competition_details),200)
 
 @competition_views.route('/api/competition/details/<int:id>', methods=['GET'])
-def get_competition_views(id):
+def api_get_competition(id):
     competition = get_competition_details(id)
     if not competition:
         return jsonify({'error': 'competition not found'}), 404     
