@@ -23,14 +23,14 @@ class Admin(User):
         db.session.add(competition)
         db.session.commit()
 
-    def create_competition(name, location, platform, date): 
+    def create_competition(self, name, location, platform, date): 
         try:
-            newcomp = Competition(name = name, location = location,platform = platform, date = date)
+            newcomp = Competition.Competition(name = name, location = location,platform = platform, date = date)
             db.session.add(newcomp)
             db.session.commit()
             return newcomp
         except Exception as e:
-            print("Error in competition", e)
+            print("Error in competition in model ", e)
             db.session.rollback()
             return None
 
