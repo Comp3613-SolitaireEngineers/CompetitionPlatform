@@ -56,7 +56,7 @@ def get_competition_details(competition_id):
             "name": competition.name,
             "location": competition.location,
             "platform": competition.platform,
-            "date": competition.date,
+            "date": competition.date.strftime("%d %B, %Y"),
             "results": results        
         }
         return competition_details

@@ -88,9 +88,10 @@ def add_results(competition_id, results_file):
                     print("Student not created")
                     continue
           
-            result = create_result(competition_id, competitor.id, points, rank)  
-            # db.session.add(result)
-            # print("result created " + str(result.points) + " points " + result.competitor.username)                 
+            if competitor:
+                result = create_result(competition_id, competitor.id, points, rank)  
+                db.session.add(result)
+                print("result created " + str(result.points) + " points " + str(result.competitor.rank.ranking))                
     
     competition.results_added = True
     db.session.commit()
