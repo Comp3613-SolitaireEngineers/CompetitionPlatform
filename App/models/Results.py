@@ -5,12 +5,12 @@ class Results(db.Model):
     __tablename__ = 'results'
     id = db.Column(db.Integer, primary_key=True)
     competition_id = db.Column(db.Integer, db.ForeignKey('competition.id'))
-    competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
+    competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
     points = db.Column(db.Integer, nullable=False)
     rank = db.Column(db.Integer, nullable=False)   
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_modified = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
-    competitor = db.relationship('competitor', uselist=False, lazy=True)
+    competitor = db.relationship('Competitor', uselist=False, lazy=True)
     
     def __init__(self, competition_id, competitor_id, points, rank):
         self.competition_id = competition_id
