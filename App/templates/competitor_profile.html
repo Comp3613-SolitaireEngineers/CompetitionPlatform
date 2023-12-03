@@ -76,7 +76,8 @@
                     {%if result.competitor_id == current_user.id%}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{competition.name}} - Rank {{result.rank}}
-                        <a href="{{ url_for('competition_views.competition_details_page', competition_id=competition.id, page=1) }}" class="btn btn-dark">Details</a>
+                        <a href="{{ url_for('competition_views.competition_details_page', competition_id=competition.id, page=1) }}"
+                            class="btn btn-dark">Details</a>
                     </li>
                     {%endif%}
                     {%endfor%}
@@ -88,14 +89,14 @@
     </div>
 </div>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="notificationOffcanvas"
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="notificationOffcanvas"
     aria-labelledby="notificationOffcanvasLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="notificationOffcanvasLabel">Notifications</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        {% for notification in notifications_info[:3] %}
+        {% for notification in notifications_info %}
 
         <div class="card border-dark mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -105,8 +106,11 @@
             <div class="card-body text-dark">
                 <p class="card-text">{{notification.message}}</p>
                 <div class="text-center">RANK #{{current_user.rank.ranking}}</div>
-                <p class="card-text text-end"><small><a href="#" class="text-muted"
-                            onclick="markNotificationAsSeen({{ notification.id }})">Mark as Read</a></small></p>
+                <p class="card-text text-end">
+                    <small>
+                        <a href="#" class="text-muted mark-as-read-link" data-notification-id="{{notification.id}}">Mark as Read</a>
+                    </small>
+                </p>
             </div>
         </div>
         {% endfor %}
@@ -117,8 +121,8 @@
 {% block buttons %}
 <!-- Notifications Icon (Top Right) -->
 <button type="button" class="btn btn-link position-fixed" style="top: 80px; right: 30px;" data-bs-toggle="offcanvas"
-    data-bs-target="#notificationOffcanvas" aria-controls="notificationOffcanvas">
-    <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>    
+    data-bs-target="#notificationOffcanvas" aria-controls="offcanvasScrolling">
+    <i class="fa fa-envelope fa-2x " aria-hidden="true"></i>
     <span class="position-absolute top-1 start-85 translate-middle">
         <span class="badge bg-danger text-white rounded-circle">{{notifications_info|length}}</span>
         <span class="visually-hidden">New alerts</span>
@@ -130,23 +134,58 @@
 {% block scripts %}
 <!-- Additional scripts for the child template -->
 <script>
-    function markNotificationAsSeen(notificationId) {
-        // Make an AJAX request to mark the notification as seen
-        fetch(`/seen/${notificationId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Add your CSRF token here
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Handle the response if needed
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
+
+    // Add this script to your HTML or include it in your existing script file
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Assuming you have jQuery included for simplicity
+        $('[data-bs-toggle="offcanvas"]').on('click', function () {
+            // Your existing offcanvas show code here
+        });
+
+        // Add a click event listener to the "Mark as Read" link
+        $('.offcanvas-body').on('click', '.mark-as-read-link', function (e) {
+            e.preventDefault();
+            var notificationId = $(this).data('notification-id');
+
+            // Make an AJAX request to mark the notification as seen
+            $.ajax({
+                type: 'POST',
+                url: '/seen/' + notificationId,
+                success: function (data) {
+                    // Check if the server responded with success
+                    if (data.message === 'Notification seen') {
+                        // Update the offcanvas body with the new notifications
+                        //$('.offcanvas-body').html(data.notifications_info);
+                        
+                        // Store a flag in localStorage to indicate that offcanvas should be reopened
+                        localStorage.setItem('reopenOffcanvas', 'true');
+                        
+                        // Reload the page
+                        location.reload();
+                    }
+                    
+                },
+                error: function (error) {
+                    console.error(error);
+                }
             });
-    }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    // Check if the flag is present in localStorage
+        var reopenOffcanvas = localStorage.getItem('reopenOffcanvas');
+        
+        if (reopenOffcanvas === 'true') {
+            // Open the offcanvas
+            $('[data-bs-toggle="offcanvas"]').click();
+            
+            
+            // Remove the flag from localStorage (optional, to avoid reopening on subsequent reloads)
+            localStorage.removeItem('reopenOffcanvas');
+        }
+    });
+
 </script>
 {% endblock %}
