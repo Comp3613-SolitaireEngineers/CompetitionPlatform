@@ -1,4 +1,4 @@
-from .Rank import * 
+
 from .Command import *
 from .User import *
 from .Admin import *
@@ -13,7 +13,7 @@ from .ResultsCommand import *
 from .RankTopObservers import *
 from .PointsCommand import *
 from .UpdateRanksCommand import *
-
+from .Rank import * 
 
 
 
