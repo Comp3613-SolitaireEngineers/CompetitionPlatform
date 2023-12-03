@@ -74,7 +74,10 @@
                     {% for competition in current_user.competitions %}
                     {%for result in competition.results%}
                     {%if result.competitor_id == current_user.id%}
-                    <li class="list-group-item">{{competition.name}} - Rank {{result.rank}}</li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{competition.name}} - Rank {{result.rank}}
+                        <a href="{{ url_for('competition_views.competition_details_page', competition_id=competition.id, page=1) }}" class="btn btn-dark">Details</a>
+                    </li>
                     {%endif%}
                     {%endfor%}
                     {% endfor %}
