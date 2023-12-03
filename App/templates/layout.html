@@ -36,36 +36,60 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Leaderboard</a>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/competitions">Competitions</a>
-                </li>
-
+               
                 {% if current_user.is_authenticated %}
-                {%if current_user.user_type == 'admin'%}
-                    
+                    {%if current_user.user_type == 'admin'%}
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="/competition">Competition</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/competition/results">Competition Results</a>
+                        </li> 
+                                        
+                    {%endif%}
+                    {%if current_user.user_type == 'competitor'%}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/competitions">Competitions</a>
+                        </li>
+                    {%endif%}
+                {%else%}
                     <li class="nav-item">
-                        <a class="nav-link" href="/competition">Competition</a>
+                        <a class="nav-link" href="/competitions">Competitions</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/competition/results">Competition Results</a>
-                    </li> 
-                                      
+                    
                 {%endif%}
-                {%endif%}                               
+                
+                
             </ul>
             <div class="d-flex" >
                 <ul class="navbar-nav mr-auto d-flex">
                 {% if current_user.is_authenticated %}
              
                 {%if current_user.user_type == 'admin'%}
+
+                
                 <li class="nav-item">
                     <a href="/competition" class="nav-link"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ current_user.username }}</a>
                 </li>
-                {%else%}            
+               
+                {%else%} 
                 <li class="nav-item">
-                    <a href="/competitor/profile" class="nav-link"><i class="fa fa-user-circle-o" aria-hidden="true"></i> {{ current_user.username }}</a>
+                    <a  class="nav-link position-relative" href="/competitor/profile">
+                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        {{ current_user.username }} 
+                        {% if current_user.notifications|length > 0 %}
+                            {% set unseen_notifications = current_user.notifications|selectattr('seen', 'equalto', false)|list %}
+                            {% if unseen_notifications|length > 0 %}
+                                <span class="position-absolute top-1 start-85 translate-middle p-1  rounded-circle">
+                                    <span class="badge bg-danger text-dark rounded-circle">{{ unseen_notifications|length }}</span>
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                            {% endif %}
+                        {% endif %}
+                    </a>
                 </li>
+                                                  
                 {%endif%}
                     
                 <li class="nav-item">

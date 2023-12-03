@@ -14,6 +14,9 @@ from .RankTopObservers import *
 from .PointsCommand import *
 from .UpdateRanksCommand import *
 from .Rank import * 
+from .CompetitionCommand import *
+
+
 
 
 
