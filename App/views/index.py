@@ -8,8 +8,8 @@ index_views = Blueprint('index_views', __name__, template_folder='../templates')
 @index_views.route('/', methods=['GET'])
 def index_page():
     page = request.args.get('page', 1, type=int)
-    competitors = leaderboard_competitors(page)
-    return render_template('leaderboard.html', competitors=competitors, page=page)
+    # competitors = leaderboard_competitors(page)
+    return render_template('leaderboard.html') #, competitors=competitors, page=page)
 
 @index_views.route('/init', methods=['GET'])
 def init():
