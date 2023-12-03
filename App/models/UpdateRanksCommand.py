@@ -5,6 +5,7 @@ from sqlalchemy import desc
 from App.controllers import execute_rank_command
 
 class UpdateRanksCommand(Command):
+    __tablename__ = 'update_ranks_command'
     id = db.Column(db.Integer, primary_key=True)
     # competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
     executed_at = db.Column(db.DateTime, default=datetime.utcnow)

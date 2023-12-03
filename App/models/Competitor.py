@@ -8,9 +8,9 @@ class Competitor(User):
     
     firstname = db.Column(db.String(255), nullable=False)
     lastname = db.Column(db.String(255), nullable=False)      
-    rank = db.relationship('Rank', uselist=False, lazy=True)
-    competitions = db.relationship('Competition', secondary='results', back_populates='participants', viewonly=True)       
-    notifications = db.relationship('Notification', backref='competitor', lazy=True)
+    rank = db.relationship('rank', uselist=False, lazy=True)
+    competitions = db.relationship('competition', secondary='results', back_populates='participants', viewonly=True)       
+    notifications = db.relationship('notification', backref='competitor', lazy=True)
     top_observer_id = db.Column(db.Integer, db.ForeignKey('rank_top_observers.id')) #, nullable=False)
     
     def __init__(self, uwi_id, username,email,password, firstname, lastname):

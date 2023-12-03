@@ -5,6 +5,7 @@ from App.controllers import *
 from App.controllers import get_admin, get_competition_by_id, add_results
 
 class ResultsCommand(Command):
+    __tablename__ = 'results'
     id = db.Column(db.Integer, primary_key=True)
     competition_id = db.Column(db.Integer, db.ForeignKey('competition.id'))
     executed_at = db.Column(db.DateTime, default=datetime.utcnow)

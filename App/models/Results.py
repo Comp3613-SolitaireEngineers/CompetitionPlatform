@@ -10,7 +10,7 @@ class Results(db.Model):
     rank = db.Column(db.Integer, nullable=False)   
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_modified = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
-    competitor = db.relationship('Competitor', uselist=False, lazy=True)
+    competitor = db.relationship('competitor', uselist=False, lazy=True)
     
     def __init__(self, competition_id, competitor_id, points, rank):
         self.competition_id = competition_id

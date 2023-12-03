@@ -7,7 +7,7 @@ class RankTopObservers(db.Model):
     __tablename__ = 'rank_top_observers'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(220))
-    top_subscribers = db.relationship('Competitor', backref='rank_top_observer', lazy=True)
+    top_subscribers = db.relationship('competitor', backref='rank_top_observer', lazy=True)
 
     def __init__(self, name):
         self.name = name

@@ -1,11 +1,12 @@
 from App.database import db
 
 class Host(db.Model):
+    __tablename__ = 'host'
     id = db.Column(db.Integer, primary_key=True)
     name =  db.Column(db.String, nullable=False, unique=True)
     website = db.Column(db.String, nullable=True)
     
-    competitions = db.relationship("CompetitionHost", lazy=True, backref=db.backref("competitions"), cascade="all, delete-orphan")
+    competitions = db.relationship('competition_host', lazy=True, backref=db.backref("competitions"), cascade="all, delete-orphan")
 
     def __init__(self, name, website):
         self.name = name

@@ -4,6 +4,7 @@ from App.models import Command, Results, Rank, Competitor
 from sqlalchemy import func
 
 class PointsCommand(Command):
+    __tablename__ = 'points_command'
     id = db.Column(db.Integer, primary_key=True)
     competitor_id = db.Column(db.Integer, db.ForeignKey('competitor.id'))
     executed_at = db.Column(db.DateTime, default=datetime.utcnow)
