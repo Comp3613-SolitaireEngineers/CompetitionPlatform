@@ -1,7 +1,7 @@
 from App.database import db
 from App.models import User
 from App.models import Results
-from App.models import Rank
+from App.models import Rank, Competition
 
 class Admin(User):
     __tablename__ = 'admin'
@@ -23,16 +23,16 @@ class Admin(User):
         db.session.add(competition)
         db.session.commit()
 
-    # def add_results(self, competition, results):
-    #     # Add results to the competition
-    #     for user_id, rank in results:
-    #         user_competition = UserCompetition.query.filter_by(comp_id=competition.id, user_id=user_id).first()
-    #         if user_competition:
-    #             user_competition.rank = rank
-    #         else:
-    #             user_competition = UserCompetition(comp_id=competition.id, user_id=user_id, rank=rank)
-    #             db.session.add(user_competition)
-    #     db.session.commit()
+    def create_competition(name, location, platform, date): 
+        try:
+            newcomp = Competition(name = name, location = location,platform = platform, date = date)
+            db.session.add(newcomp)
+            db.session.commit()
+            return newcomp
+        except Exception as e:
+            print("Error in competition", e)
+            db.session.rollback()
+            return None
 
     def update_ranks(self):
         # Get all users
