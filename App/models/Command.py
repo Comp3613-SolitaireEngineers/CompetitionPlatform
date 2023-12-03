@@ -3,6 +3,7 @@ from abc import abstractmethod
 
 class Command(db.Model):
     __abstract__ = True
+    __tablename__ = 'command'
     
     @abstractmethod
     def get_json(self):

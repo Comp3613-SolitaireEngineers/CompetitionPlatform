@@ -23,6 +23,9 @@ def leaderboard_competitors(page=None):
         .join(Rank, Rank.competitor_id == Competitor.id) \
         .order_by(asc(Rank.ranking))
     
+    if competitors_pagination.count() == 0:
+        return None
+    
     # Extract top 3 competitors
     top_three = competitors_pagination[:3] 
 
