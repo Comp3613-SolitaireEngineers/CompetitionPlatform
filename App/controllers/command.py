@@ -44,10 +44,10 @@ def execute_results_command(admin_id, competition_id, results_file_path):
             try:
                 command.execute(admin_id, competition_id, results_file_path)
                 print( "Results command executed successfully")
+                return True
             except Exception as e:
                 print( f"Error executing results command: {str(e)}")
-        print ("Results command not executed successfully")
-        
+        print ("Results command not executed successfully")        
     return None
 
 
