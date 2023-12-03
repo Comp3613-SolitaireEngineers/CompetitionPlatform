@@ -34,7 +34,8 @@ def get_all_results_json():
     return [result.get_json() for result in results]
 
 def get_results_by_competition_id(competition_id, page=None):
-    results = Results.query.filter_by(competition_id=competition_id)
+    results = Results.query.filter_by(competition_id=competition_id) \
+        .order_by(Results.rank.asc())
     
     if results.count() == 0:
         return None
