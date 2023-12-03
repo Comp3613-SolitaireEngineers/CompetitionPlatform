@@ -52,15 +52,3 @@ class ResultsCommand(Command):
             return ("Unable to add results")
         
         return ("Results added and ranks updated successfully")
-
-    def getRanks(self):
-        Ranks = Rank.query.all()
-        
-        count = 0
-        for r in Ranks:
-            print(r)
-            count += 1
-            
-        return count
-        
-        
