@@ -38,14 +38,6 @@ class Competitor(User):
             'role' : 'competitor'            
         }
 
-    def update(self, message):
-        print(f'Competitor {self.id} received message: {message}')
-        
-        self.notifications.append(Notification(self.id, message))
-        
-        db.session.add(self)
-        db.session.commit()
-
     def set_rank(self):
         try:
             self.rank = Rank(self.id)
@@ -54,3 +46,12 @@ class Competitor(User):
         except Exception as e:
             print(e)
             return False
+
+    def update_notifications(self, message):
+        try:
+            notification = (Notification(self.id, message))
+            db.session.add(notification)
+            db.session.commit()   
+            print(f'Competitor {self.username} received message: {message}')        
+        except Exception as e:
+            print("Exception when updating notifications " + str(e))

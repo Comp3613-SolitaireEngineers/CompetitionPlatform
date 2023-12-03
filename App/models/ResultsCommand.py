@@ -1,7 +1,7 @@
 from datetime import datetime
 from App.database import db
 from App.models import Command, RankCommand, PointsCommand, UpdateRanksCommand, Competitor, Rank
-from App.controllers import results
+from App.controllers import *
 from App.controllers import get_admin, get_competition_by_id, add_results
 
 class ResultsCommand(Command):
@@ -39,30 +39,16 @@ class ResultsCommand(Command):
                 # update points for each competitor
                 for competitor in competition.participants:
                     print("Participant added: " + str(competitor.username))
-                    updated_points = PointsCommand.PointsCommand(competitor.id)
-                    updated_points.execute() #Update points of a competitor
+                    updated_points = execute_points_command(admin.id, competitor.id)
                     
-                new_ranks = UpdateRanksCommand.UpdateRanksCommand()
-                new_ranks.execute() # Update all ranks
+                new_ranks = execute_update_ranks_command(admin.id)
                 
-                for competitor in Competitor.query.all():                    
-                    command = RankCommand(competitor, competitor.rank.ranking)
-                    command.execute() #Save new rank, can be used to notify subscribers
+                for competitor in Competitor.query.all():  
+                    pass                  
+                    # command = execute_rank_command(admin.id, competitor, competitor.rank.ranking)
             else:
                 return ("Unable to add resultss")
         else:
             return ("Unable to add results")
         
         return ("Results added and ranks updated successfully")
-
-    def getRanks(self):
-        Ranks = Rank.query.all()
-        
-        count = 0
-        for r in Ranks:
-            print(r)
-            count += 1
-            
-        return count
-        
-        

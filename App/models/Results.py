@@ -11,13 +11,13 @@ class Results(db.Model):
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     date_modified = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     competitor = db.relationship('Competitor', uselist=False, lazy=True)
-
-
+    
     def __init__(self, competition_id, competitor_id, points, rank):
         self.competition_id = competition_id
         self.competitor_id = competitor_id
         self.points = points
-        self.rank = rank       
+        self.rank = rank  
+              
 
     def __repr__(self):
         return f'<Results {self.id}, {self.competition_id}, {self.competitor_id}, {self.rank}, {self.points}>'

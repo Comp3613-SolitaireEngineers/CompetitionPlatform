@@ -54,7 +54,18 @@ user_cli = AppGroup('user', help='User object commands')
 #     else:
 #         print(get_all_users_json())
 
-app.cli.add_command(user_cli) # add the group to the cli
+
+admin_cli = AppGroup('admin', help='Admin object commands') 
+
+@admin_cli.command("list", help="Lists admins in the database")
+@click.argument("format", default="string")
+def list_user_command(format):
+    if format == 'string':
+        print(get_all_admins())
+    else:
+        print(get_all_admins_json())
+
+app.cli.add_command(admin_cli) # add the group to the cli
 
 '''
 Test Commands
@@ -385,8 +396,9 @@ notification = AppGroup('notification', help = 'commands for notification')
 @notification.command("create", help = 'create new notification')
 def create_notification_command():
     competitor_id = click.prompt("Enter Competitor ID")
-    message = click.prompt("Enter Message")     
-    notification = create_notification(competitor_id, message)
+    message = click.prompt("Enter Message")  
+    title = click.prompt("Enter Head Message")   
+    notification = create_notification(competitor_id, message, title)
     if notification:
         print("Notification Created Successfully")
     else:
@@ -408,4 +420,6 @@ def get_competitor_notifications_command():
         print(notifications)
     else:
         print("Error getting notifications")
+
+app.cli.add_command(notification)
 

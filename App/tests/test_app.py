@@ -4,27 +4,15 @@ from datetime import datetime, date
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import Host, Admin, Competitor, Competition
-from App.controllers import (
-    create_competitor, 
-    get_competitor_profile, 
-    get_rankings, 
-    create_competition, 
-    get_competition_details, 
-    create_result,
-    get_all_competitions)
-# from App.controllers import (
-    # create_user,
-    # get_all_users_json,
-    # login,
-    # get_user,
-    # get_user_by_username,
-    # update_user,
-    # get_user_competitions,
-    # create_competition,
-    # add_user_to_comp,
-    # get_user_rankings
-# )
+from App.controllers import *
+#     create_competitor, 
+#     get_competitor_profile, 
+#     get_rankings, 
+#     create_competition, 
+#     get_competition_details, 
+#     create_result,
+#     get_all_competitions)
+from App.models import Host, Admin, Competitor, Competition,Rank,Notification,Results,ResultsCommand,CompetitionCommand
 
 LOGGER = logging.getLogger(__name__)
 
@@ -138,6 +126,107 @@ class UserUnitTests(unittest.TestCase):
         admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
         
         assert admin.check_password(password)
+        
+    def test_new_notifcation(self):
+        notification = Notification("10","Congratulations","2023-01-20")
+        assert notification.competitor_id == "10"
+        assert notification.message == "Congratulations"
+        assert notification.timestamp == "2023-01-20"
+            
+    def test_new_notifcation_get_json(self):
+        date = datetime.now()
+        notification = Notification("10","Congratulations",date)
+        notification_json = notification.get_json()
+        self.assertDictEqual(
+            notification_json, 
+            {
+            'id':None, 
+            'competitor_id':"10",
+            'message':"Congratulations",
+            'timestamp':date.strftime("%Y-%m-%d %H:%M:%S")
+            })
+        
+    def test_new_rank(self):
+        #rank = Rank("10","2023-02-05","2023-05-20")
+        rank = Rank("10")
+        assert rank.competitor_id == "10"
+        #assert rank.created_at == "2023-02-05"
+        #assert rank.updated_at == "2023-05-20"
+        
+    def test_new_rank_get_json(self):
+
+        date = datetime.now()
+        #rank = Rank("10",date,date)
+        rank = Rank("10")
+        rank_json = rank.get_json()
+        self.assertDictEqual(
+            rank_json,
+            {
+                'id':None,
+                'competitor_id':"10",
+                'ranking':1,
+                'points':None,
+                'created_at':date.strftime("%Y-%m-%d %H:%M:%S"),
+                'updated_at':date.strftime("%Y-%m-%d %H:%M:%S")
+                #'created_at':None,
+                #'updated_at':None
+            })
+          
+              
+    def test_new_results(self):
+        result = Results("123","12","10","1","2023-02-20","2023-05-20")
+        assert result.competition_id == "123"
+        assert result.competitor_id == "12"
+        assert result.points == "10"
+        assert result.rank == "1"
+        assert result.date_created == "2023-02-20"
+        assert result.date_modified == "2023-05-20"
+        
+    def test_new_results_get_json(self):
+        date = datetime.now()
+        result = Results("123","12","10","1",date,date)
+        result_json = result.get_json()
+        self.assertDictEqual(
+            result_json,
+            {
+                'id':None,
+                'competition_id':"123",
+                'competitor_id':"12",
+                'rank':"1",
+                'points':"10",
+                'date_created':date.strftime("%Y-%m-%d %H:%M:%S"),
+                'date_modified':date.strftime("%Y-%m-%d %H:%M:%S")
+            })
+        
+    def test_new_results_command(self):
+        reCmd = ResultsCommand("10")
+        assert reCmd.competition_id == "10"
+        
+    def test_new_results_command_get_json(self):
+        reCmd = ResultsCommand("10")
+        reCmd_json = reCmd.get_json()
+        self.assertDictEqual(
+            reCmd_json,
+            {
+                'id':None,
+                'competition_id':"10"
+            })
+             
+    def test_new_competition_command(self):
+        compCmd = CompetitionCommand("10")
+        assert compCmd.competition_id == "10"
+    
+    def test_new_competition_command_get_json(self):
+        date = datetime.now()
+        compCmd = CompetitionCommand("10")
+        compCmd_json = compCmd.get_json()
+        self.assertDictEqual(
+             compCmd_json,
+             {
+                 'id':None,
+                 'competition_id':"10",
+                 'executed_at':date.strftime("%Y-%m-%d %H:%M:%S")
+             })
 
     
 '''
@@ -276,7 +365,62 @@ class UsersIntegrationTests(unittest.TestCase):
 
     
 
+    def test_competition_creation(self):
+        competition = create_competition("name", "locations", "platform", datetime.utcnow())
+        assert competition.id is not None, "Failed to create competition"
 
+    def test_competition_command(self):
+        competition = create_competition("New Competition", "Italia", "Online", datetime.utcnow())
+        self.assertIsNotNone(competition)
+        self.assertEqual(competition.name, "New Competition")
+        
+    def test_results_command(self):
+        
+        # Create a competition_id and admin_id for testing
+        admin = create_admin(113242,"emailaas","usernameaqeq","passwordqedqa")   
+        self.assertIsNotNone(admin)
+        
+        competition = create_competition("nameedqd", "location", "online", datetime.utcnow())
+        self.assertIsNotNone(competition)
+
+        # Prepare some results for testing
+        results = 'App/static/tests/results.csv'
+
+        command = execute_results_command(admin.id, competition.id, results)
+        self.assertIsNotNone(command)
+
+        comp_results = get_results_by_competition_id(competition.id)
+        
+        self.assertEqual(len(comp_results), 5)
+
+    def test_notify_subscribers(self):
+        # Create a RankTopObservers instance
+        observers = create_rank_top_observers("Top 20 Observers")
+        self.assertIsNotNone(observers), "Failed to create RankTopObservers"
+
+        # Create a competitor and subscribe
+        competitor = create_competitor(133434, "user", "pass", "email ", "sara", "lara")
+        observers.subscribe(competitor)
+
+        # Test notify_subscribers
+        observers.notify_subscribers()
+
+        # Check if the notifications were created correctly
+        notifications = Notification.query.all()
+        self.assertEqual(len(notifications), 1), "Incorrect number of notifications"
+        
+        competitors = [create_competitor(id, f"user{id}", f"pass{id}", f"email{id}", f"f{id}", f"l{id}") for id in range(1334314, 1334341)]
+        
+        for i in competitors:
+            observers.subscribe(i)
+            
+        # Test notify_subscribers
+        observers.notify_subscribers()
+        assert len(competitors) == 27, "Failed to create competitors"
+        
+        notifications = get_notifications()
+
+        self.assertEqual(len(notifications), 21), "Incorrect number of notifications"
 
 
 

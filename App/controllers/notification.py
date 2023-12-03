@@ -3,9 +3,9 @@ from App.database import db
 from App.models import Notification
 from datetime import datetime
 
-def create_notification(message, competitor_id):
+def create_notification(message, competitor_id, title):
     try:
-        new_notification = Notification(message, competitor_id)
+        new_notification = Notification(message, competitor_id, title)
         db.session.add(new_notification)
         db.session.commit()
         return new_notification
@@ -15,10 +15,14 @@ def create_notification(message, competitor_id):
         return None    
     
 
-def get_notifications():
+def get_notifications_json():
     notifications = Notification.query.all()
     notifications_list = [notification.toDict() for notification in notifications]
     return jsonify({'notifications': notifications_list})
+
+def get_notifications():
+    notifications = Notification.query.all()
+    return notifications
 
 def get_notification(notification_id):
     notification = Notification.query.get_or_404(notification_id)
@@ -40,7 +44,8 @@ def get_competitor_notifications(competitor_id):
     for notification in competitor_notifications:
         info = {
             'id': notification.id,
-            'message': notification.message,            
+            'message': notification.message,  
+            'title': notification.title,          
             'timestamp': notification.timestamp.strftime("%m/%d/%Y, %H:%M:%S")
         }
 

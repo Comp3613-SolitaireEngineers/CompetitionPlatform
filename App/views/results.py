@@ -17,7 +17,6 @@ Page Routes
 def competition_results_page():
     competitions = get_all_competitions()
     competition_id = request.args.get('competition_id')
-   
     competition = get_competition_by_id(competition_id)
     page = request.args.get('page', 1, type=int)
     results = get_results_by_competition_id(competition_id, page=page)
@@ -55,7 +54,7 @@ def add_results_action():
         new_name = secure_filename(results_file.filename)
         results_file.save(f"App/static/{new_name}")
         results_file_path = f"App/static/{new_name}"                
-        response = add_results(competition_id, results_file_path)
+        response = execute_results_command(current_user.id, competition_id, results_file_path)
 
         page = request.args.get('page', 1, type=int)
         results = get_results_by_competition_id(competition.id, page=page)
@@ -94,6 +93,7 @@ API Routes
 '''
 
 @results_views.route('/api/results', methods=['POST'])
+@admin_required
 def api_create_results():
     data = request.json
     competition_id = data['competition_id']
@@ -106,9 +106,10 @@ def api_create_results():
 
     result = create_result(competition_id, competitor_id, points, rank)
     if result:
-        return jsonify(result.get_json()), 200
+        return jsonify({'message': 'Result created successfully'}), 201
+        # return jsonify(result.get_json()), 201
     else:
-        return jsonify({'message': 'Result not created'}), 405
+        return jsonify({'message': 'Result not created'}), 400
 
 
 
@@ -117,7 +118,7 @@ def api_get_results():
     results = get_all_results_json()
     if results:
         return (jsonify(results),200)
-    return jsonify({'message': 'No Results found'}), 405
+    return jsonify({'message': 'No Results found'}), 404
 
 
 @results_views.route('/api/results/<competition_id>', methods=['GET'])
@@ -126,5 +127,18 @@ def api_get_competition_results(competition_id):
     if results:
         return jsonify(results), 200
     else:
-        return jsonify({'message': 'Competition Results not found'}), 405
+        return jsonify({'message': 'Competition Results not found'}), 404
 
+@results_views.route('/api/leaderboard', methods=['GET'])
+def api_get_leaderboard():
+    results = get_all_results_json()
+
+    if results is None:
+        return jsonify({'message': 'Leaderboard not found'})
+
+    if results:
+        top20 = results[:20]
+    else:
+        top20 = results  
+        
+    return jsonify(top20)

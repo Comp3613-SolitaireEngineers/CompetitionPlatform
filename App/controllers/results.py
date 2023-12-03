@@ -34,7 +34,8 @@ def get_all_results_json():
     return [result.get_json() for result in results]
 
 def get_results_by_competition_id(competition_id, page=None):
-    results = Results.query.filter_by(competition_id=competition_id)
+    results = Results.query.filter_by(competition_id=competition_id) \
+        .order_by(Results.rank.asc())
     
     if results.count() == 0:
         return None
@@ -66,6 +67,7 @@ def add_results(competition_id, results_file):
     if competition.results_added == True:
         return None       
 
+    print("adding results to competition")
     with open(results_file, 'r', newline='') as f:
         reader = csv.DictReader(f)
                    
@@ -86,7 +88,10 @@ def add_results(competition_id, results_file):
                     print("Student not created")
                     continue
           
-            result = create_result(competition_id, competitor.id, points, rank)                   
+            if competitor:
+                result = create_result(competition_id, competitor.id, points, rank)  
+                db.session.add(result)
+                print("result created " + str(result.points) + " points " + str(result.competitor.rank.ranking))                
     
     competition.results_added = True
     db.session.commit()
