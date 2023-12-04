@@ -298,6 +298,32 @@ def list_host_command():
 app.cli.add_command(host_cli)
 
 '''
+Competion Host Commands
+''' 
+
+comphost_cli = AppGroup('comphost', help = 'host object commands')
+
+@comphost_cli.command('link', help='Links a host to a competition')
+@click.argument("comp_id", default="1")
+@click.argument("host_id", default="1")
+def create_comphost_command(comp_id, host_id):
+    competitionHost = create_competition_host(comp_id, host_id)
+    if competitionHost:
+        print(f'Host {host_id} linked to competition {comp_id}')
+    else:
+        print(f'Host {host_id} not linked to competition {comp_id}')
+        
+@comphost_cli.command("list", help="Lists competition hosts in the database")
+def list_comphost_command():
+    competition_host = get_all_competition_hosts_json()
+    if competition_host:
+        print(competition_host)
+    else:
+        print("No Competition Hosts Founds")
+    
+app.cli.add_command(comphost_cli)
+
+'''
 Admin Commands
 '''
 

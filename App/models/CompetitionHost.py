@@ -9,3 +9,10 @@ class CompetitionHost(db.Model):
     def __init__(self, comp_id, host_id):
         self.comp_id = comp_id
         self.host_id = host_id
+
+    def get_json(self):
+        return{
+            'id': self.id,
+            'comp_id': self.comp_id,
+            'host_id': self.host_id,
+        }
