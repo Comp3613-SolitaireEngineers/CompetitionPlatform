@@ -23,8 +23,5 @@ def initialize_db():
     competitor5 = create_competitor(uwi_id='816024686', firstname='Jerry', lastname='Smith', username='jerry_berry', password='jerrypass', email= 'jerry.smith@my.uwi.edu')                            
     competitor6 = create_competitor(uwi_id='816024687', firstname='Bird', lastname='Person', username='birdperson', password='birdpass', email='bird.person@my.uwi.edu') 
     competitor7 = create_competitor(uwi_id='816024688', firstname='Squanchy', lastname='Smith', username='squanchy', password='squanchypass', email= 'squanchy.smith@my.uwi.edu') 
-
-    create_notification(competitor1.id, 'Welcome to the UWI Games 2020! We hope you enjoy the competition and good luck!' ,'Welcome to the UWI Games 2020!')
-    create_notification(competitor1.id, 'Welcome to the UWI Games 2020! We hope you enjoy the competition and good luck!' ,'Welcome to the UWI Games 2021!')
-    create_notification(competitor1.id, 'Welcome to the UWI Games 2020! We hope you enjoy the competition and good luck!' ,'Welcome to the UWI Games 2022!')
+   
    
