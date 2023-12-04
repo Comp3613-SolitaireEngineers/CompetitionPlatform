@@ -15,7 +15,7 @@ class Notification(db.Model):
         self.competitor_id = competitor_id
         self.message = message
         self.title = title
-        self.timestamp = datetime.now()
+        
         
     
     def toDict(self):

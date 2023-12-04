@@ -2,8 +2,10 @@ from App.models import Competition,User, Admin
 from App.database import db
 from App.controllers import get_results_by_competition_id
 
-def create_competition(admin_id,name, location, platform, date):   
-    admin = Admin.query.get(admin_id)    
+def create_competition(admin_id,name, location, platform, date):
+   
+    admin = Admin.query.get(admin_id)
+    
     if admin:
         return admin.create_competition(name, location, platform, date)
     return None

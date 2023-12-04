@@ -79,9 +79,19 @@ def user_tests_command(type):
     if type == "unit":
         sys.exit(pytest.main(["-k", "UserUnitTests"]))
     elif type == "int":
-        sys.exit(pytest.main(["-k", "UsersIntegrationTests"]))
+        sys.exit(pytest.main(["-k", "UserIntegrationTests"]))
     else:
         sys.exit(pytest.main(["-k", "App"]))
+
+# @test.command("competition", help = 'Testing Competition commands')
+# @click.argument("type", default="all")
+# def competition_tests_command(type):
+#     if type == "unit":
+#         sys.exit(pytest.main(["-k", "CompUnitTests"]))
+#     elif type == "int":
+#         sys.exit(pytest.main(["-k", "CompIntegrationTests"]))
+#     else:
+#         print("deafult input, no test ran")
 
 app.cli.add_command(test)
 
@@ -412,20 +422,4 @@ def get_competitor_notifications_command():
         print("Error getting notifications")
 
 app.cli.add_command(notification)
-
-
-'''
-Command commands
-'''
-
-command = AppGroup('command', help = 'commands for command')
-
-@command.command("create", help = 'create new command')
-def list_competitions_command():
-    command = list_competition_commands()
-    if command:
-        print(command)
-    else:
-        print("Error getting command")
-
 

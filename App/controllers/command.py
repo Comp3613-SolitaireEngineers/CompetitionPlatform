@@ -1,49 +1,32 @@
-from App.models import Command, ResultsCommand, RankCommand, UpdateRanksCommand, PointsCommand, Admin, Competition
-from App.models.CompetitionCommand import CompetitionCommand
+from App.models import Command, CompetitionCommand, ResultsCommand, RankCommand, UpdateRanksCommand, PointsCommand, Admin, Competition
 from App.database import db
-from App.controllers import  get_admin
+from App.controllers import create_competition
 
-def create_competition_command():
+def create_competition_command(admin_id, name, location, platform, date):
     
-    try:
-        command = CompetitionCommand()
-        db.session.add(command)
-        db.session.commit()
-        return command
-    except Exception as e:
-        print (f"Error creating competition : {str(e)}")    
+    competition = create_competition(admin_id, name, location, platform, date)
+    
+    if competition:
+        command = CompetitionCommand.CompetitionCommand(competition.id)
+    
+        try:
+            db.session.add(command)
+            db.session.commit()
+            return command
+        except Exception as e:
+            print (f"Error creating competition : {str(e)}")
+        
     return None
-
-def list_competition_commands():
-    commands = CompetitionCommand.query.all()
-    return commands
     
 def execute_competition_command(admin_id, name, location, platform, date):
-    if not admin_id:
-        return None
     
-    admin = get_admin(admin_id)
-    if admin is None:
-        return None
-    
-    command = create_competition_command()
-
-    if command is None:
-        return None    
-    
+    command = create_competition_command(admin_id, name, location, platform, date)
     try:
-        response = command.execute(admin_id, name, location, platform, date)
-        if response:
-            return response
-        return None
+        command.execute(admin_id, (Competition.query.get(command.competition_id)))
+        return "Competition command executed successfully"
     except Exception as e:
-        print (f"Error executing competition command: {str(e)}")
-        return None
+        return f"Error executing competition command: {str(e)}"
     
-
-
-
-
 def create_results_command(competition_id):
     command = ResultsCommand.ResultsCommand(competition_id)
     

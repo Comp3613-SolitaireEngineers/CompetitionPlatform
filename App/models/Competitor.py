@@ -47,9 +47,9 @@ class Competitor(User):
             print(e)
             return False
 
-    def update_notifications(self, message, title):
+    def update_notifications(self, message):
         try:
-            notification = (Notification(self.id, message, title))
+            notification = (Notification(self.id, message))
             db.session.add(notification)
             db.session.commit()   
             print(f'Competitor {self.username} received message: {message}')        
