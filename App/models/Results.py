@@ -8,8 +8,8 @@ class Results(db.Model):
     competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
     points = db.Column(db.Integer, nullable=False)
     rank = db.Column(db.Integer, nullable=False)   
-    date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    date_modified = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    date_created = db.Column(db.DateTime, nullable=False, default=datetime.now())
+    date_modified = db.Column(db.DateTime, nullable=False, default=datetime.now(), onupdate=datetime.now())
     competitor = db.relationship('Competitor', uselist=False, lazy=True)
     
     def __init__(self, competition_id, competitor_id, points, rank):

@@ -8,7 +8,7 @@ class ResultsCommand(Command):
     __tablename__ = 'results_command'
     id = db.Column(db.Integer, primary_key=True)
     competition_id = db.Column(db.Integer, db.ForeignKey('competition.id'))
-    executed_at = db.Column(db.DateTime, default=datetime.utcnow)
+    executed_at = db.Column(db.DateTime, default=datetime.now())
 
 
     def __init__(self, competition_id):

@@ -8,8 +8,8 @@ class Rank(db.Model):
     competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'), unique=True)
     ranking = db.Column(db.Integer)
     points = db.Column(db.Integer, default=0, nullable = False)    
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now())
+    updated_at = db.Column(db.DateTime, default=datetime.now(), onupdate=datetime.now())
      
     def __init__(self, competitor_id):
         self.competitor_id = competitor_id
