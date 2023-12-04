@@ -7,7 +7,7 @@ class PointsCommand(Command):
     __tablename__ = 'points_command'
     id = db.Column(db.Integer, primary_key=True)
     competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
-    executed_at = db.Column(db.DateTime, default=datetime.utcnow)
+    executed_at = db.Column(db.DateTime, default=datetime.now())
 
 
     def __init__(self, competitor_id):

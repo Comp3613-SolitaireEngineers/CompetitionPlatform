@@ -9,7 +9,7 @@ class RankCommand(Command):
     competitor_id = db.Column(db.String(220), db.ForeignKey('competitor.id'))
     old_rank = db.Column(db.Integer)
     new_rank = db.Column(db.Integer)
-    executed_at = db.Column(db.DateTime, default=datetime.utcnow)
+    executed_at = db.Column(db.DateTime, default=datetime.now())
 
     def __init__(self, competitor_id, old_rank, new_rank):
         self.competitor_id = competitor_id
