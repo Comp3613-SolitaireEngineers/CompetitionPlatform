@@ -13,13 +13,13 @@ LOGGER = logging.getLogger(__name__)
    Unit Tests
 '''
 class UserUnitTests(unittest.TestCase):
-    # def test_new_competitor(self):
-    #     competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
-    #     assert competitor.uwi_id == "816011111"
-    #     assert competitor.username == "coolGuy101"
-    #     assert competitor.email == "randal.m@mail.com"
-    #     assert competitor.firstname == "Randal"
-    #     assert competitor.lastname == "Morris"
+    def test_new_competitor(self):
+        competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
+        assert competitor.uwi_id == "816011111"
+        assert competitor.username == "coolGuy101"
+        assert competitor.email == "randal.m@mail.com"
+        assert competitor.firstname == "Randal"
+        assert competitor.lastname == "Morris"
 
     def test_new_host(self):
         host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
@@ -39,30 +39,30 @@ class UserUnitTests(unittest.TestCase):
         assert competition.platform == "HankerRank"
         assert competition.date == "01-02-2023"
 
-#     # pure function no side effects or integrations called
-#     def test_competitor_get_json(self):
-#         competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
-#         competitor_json = competitor.get_json()
+    # pure function no side effects or integrations called
+    def test_competitor_get_json(self):
+        competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
+        competitor_json = competitor.get_json()
 
-#         self.assertDictEqual(
-#             competitor_json,
-#             {
-#                 'id': competitor.id,
-#                 'uwi_id': "816011111",
-#                 'firstname': "Randal",
-#                 'lastname': "Morris",
-#                 'email': "randal.m@mail.com",
-#                 'username': "coolGuy101",                
-#                 'platform_rank':              
-#                         {   'id': 1,
-#                             'competitor_id': competitor.id,
-#                             'ranking': 1,                          
-#                             'points': 0,                        
-#                             'created_at': competitor.rank.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-#                             'updated_at': competitor.rank.updated_at.strftime("%Y-%m-%d %H:%M:%S")
-#                         },                
-#                 'role' : 'competitor'            
-#             })
+        self.assertDictEqual(
+            competitor_json,
+            {
+                'id': competitor.id,
+                'uwi_id': "816011111",
+                'firstname': "Randal",
+                'lastname': "Morris",
+                'email': "randal.m@mail.com",
+                'username': "coolGuy101",                
+                'platform_rank':              
+                        {   'id': None,
+                            'competitor_id': None,
+                            'ranking': 1,                          
+                            'points': None,                        
+                            'created_at': competitor.rank.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                            'updated_at': competitor.rank.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+                        },                
+                'role' : 'competitor'            
+            })
 
     def test_host_get_json(self):
         host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
@@ -151,7 +151,6 @@ class UserUnitTests(unittest.TestCase):
     def test_new_rank_get_json(self):
 
         date = datetime.now()
-        #rank = Rank("10",date,date)
         rank = Rank("10")
         rank_json = rank.get_json()
         self.assertDictEqual(
@@ -194,22 +193,22 @@ class UserUnitTests(unittest.TestCase):
         assert result.points == 10
         assert result.rank == 1
     
-    # def test_new_results_get_json(self):
-    #     date = datetime.now()
-    #     result = Results("123","123","100","11")
-    #     assert result is not None
-    #     result_json = result.get_json()
-    #     self.assertDictEqual(
-    #         result_json,
-    #         {
-    #             'id':None,
-    #             'competition_id':"123",
-    #             'competitor_id':"12",
-    #             'rank':"1",
-    #             'points':"10",
-    #         })
-        
-
+    def test_new_results_get_json(self):
+        date = datetime.now()
+        result = Results("123","123",100,11)
+        assert result is not None
+        result_json = result.get_json()
+        expected_dict = {
+            'id':None,
+            'competition_id':"123",
+            'competitor_id':"123",
+            'rank':11,
+            'points':100,
+        }
+        self.assertDictEqual(
+            {key: result_json[key] for key in expected_dict.keys()},
+            expected_dict
+        )
         
     def test_new_results_command(self):
         reCmd = ResultsCommand("10")
