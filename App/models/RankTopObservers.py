@@ -70,7 +70,7 @@ class RankTopObservers(db.Model):
             # elif message == "You are still in the top 20. Your rank is now {}" and latest_rank_command.old_rank > latest_rank_command.new_rank:
             #     competitor.update_notifications(message.format(latest_rank_command.old_rank), "Rank Update1")  
             elif message == "You are still in the top 20. Your rank is now {}": 
-                competitor.update_notifications(message.format(latest_rank_command.new_rank), "Rank Update2")                 
+                competitor.update_notifications(message.format(latest_rank_command.new_rank), "Rank Update")                 
             else:
                 competitor.update_notifications(message.format(latest_rank_command.old_rank, latest_rank_command.new_rank), "Rank Update")
         else:
