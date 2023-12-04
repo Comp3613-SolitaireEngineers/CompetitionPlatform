@@ -15,7 +15,7 @@ from App.controllers import *
 from App.models import Host, Admin, Competitor, Competition,Rank,Notification,Results,ResultsCommand,CompetitionCommand
 
 LOGGER = logging.getLogger(__name__)
-
+#test
 '''
    Unit Tests
 '''
