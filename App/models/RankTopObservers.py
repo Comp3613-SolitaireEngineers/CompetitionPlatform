@@ -66,11 +66,11 @@ class RankTopObservers(db.Model):
         latest_rank_command = RankCommand.query.filter_by(competitor_id=competitor.id).order_by(RankCommand.executed_at.desc()).first()
         if latest_rank_command:
             if latest_rank_command.old_rank == 0:
-                competitor.update_notifications("You are a new competitor and have entered the top 20")
+                competitor.update_notifications("You are a new competitor and have entered the top 20", "Congragtulations")
             else:
-                competitor.update_notifications(message.format(latest_rank_command.old_rank, latest_rank_command.new_rank))
+                competitor.update_notifications(message.format(latest_rank_command.old_rank, latest_rank_command.new_rank), "Rank Update")
         else:
-            competitor.update_notifications("You have entered the top 20")
+            competitor.update_notifications("You have entered the top 20", "Congragtulations")
 
 
     def get_json(self):
