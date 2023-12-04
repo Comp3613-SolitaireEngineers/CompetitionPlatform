@@ -1,6 +1,6 @@
 from App.database import db
 from datetime import datetime
-from sqlalchemy.sql import desc
+from sqlalchemy.sql import desc, asc
 from App.models import Competitor, RankCommand, Rank
 
 class RankTopObservers(db.Model):
@@ -33,7 +33,7 @@ class RankTopObservers(db.Model):
         observers = RankTopObservers.query.first()
         
         # Get all competitors sorted by points in descending order
-        competitors = Competitor.query.join(Rank).order_by(desc(Rank.points)).all()
+        competitors = Competitor.query.join(Rank).order_by(asc(Rank.ranking)).all()
 
         current_top_20 = set(competitors[:20])
         previous_top_20 = set(observers.top_subscribers)
@@ -54,7 +54,7 @@ class RankTopObservers(db.Model):
 
         # Send a notification to the competitors who have remained in the top 20
         for competitor in remained_top_20:
-            self.update_notifications(competitor, "You are still in the top 20. Your rank is {}")
+            self.update_notifications(competitor, "You are still in the top 20. Your rank is now {}")
 
         # Commit the session
         db.session.commit()
@@ -67,6 +67,10 @@ class RankTopObservers(db.Model):
         if latest_rank_command:
             if latest_rank_command.old_rank == 0:
                 competitor.update_notifications("You are a new competitor and have entered the top 20", "Congragtulations")
+            # elif message == "You are still in the top 20. Your rank is now {}" and latest_rank_command.old_rank > latest_rank_command.new_rank:
+            #     competitor.update_notifications(message.format(latest_rank_command.old_rank), "Rank Update1")  
+            elif message == "You are still in the top 20. Your rank is now {}": 
+                competitor.update_notifications(message.format(latest_rank_command.new_rank), "Rank Update")                 
             else:
                 competitor.update_notifications(message.format(latest_rank_command.old_rank, latest_rank_command.new_rank), "Rank Update")
         else:
@@ -76,4 +80,5 @@ class RankTopObservers(db.Model):
     def get_json(self):
         return{
             'id': self.id,
+            'name': self.name,
         }
