@@ -8,5 +8,5 @@ from .results import *
 from .competition import * 
 from .command import *
 from .host import *
+from .competition_host import *
 from .init import *
-
