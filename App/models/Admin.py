@@ -1,7 +1,8 @@
 from App.database import db
 from App.models import User
 from App.models import Results
-from App.models import Rank, Competition
+from App.models import Rank
+from App.models.Competition import Competition
 
 class Admin(User):
     __tablename__ = 'admin'
@@ -19,11 +20,7 @@ class Admin(User):
             'role' : 'admin'
         }
         
-    def add_competition(self, competition):
-        db.session.add(competition)
-        db.session.commit()
-
-    def create_competition(name, location, platform, date): 
+    def create_competition(self, name, location, platform, date): 
         try:
             newcomp = Competition(name = name, location = location,platform = platform, date = date)
             db.session.add(newcomp)
