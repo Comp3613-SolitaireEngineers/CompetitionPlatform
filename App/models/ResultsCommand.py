@@ -45,9 +45,6 @@ class ResultsCommand(Command):
                 new_ranks = execute_update_ranks_command(admin.id)
                 observers = get_rank_top_observer()
                 observers.notify_subscribers()
-                for competitor in Competitor.query.all():  
-                    pass                  
-                    # command = execute_rank_command(admin.id, competitor, competitor.rank.ranking)
             else:
                 return ("Unable to add resultss")
         else:

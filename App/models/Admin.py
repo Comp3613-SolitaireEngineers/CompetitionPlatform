@@ -30,24 +30,3 @@ class Admin(User):
             print("Error in competition", e)
             db.session.rollback()
             return None
-
-    def update_ranks(self):
-        # Get all users
-        users = User.query.all()
-
-        # Calculate the total points for each user
-        for user in users:
-            total_points = 0
-            for user_competition in user.competitions:
-                # Here we're giving 50 points for participation and additional points based on the rank
-                points = 50 + (100 - user_competition.rank)
-                total_points += points
-
-            # Update the user's rank
-            rank = Rank.query.filter_by(user_id=user.id).first()
-            if rank:
-                rank.points = total_points
-            else:
-                rank = Rank(user_id=user.id, points=total_points)
-                db.session.add(rank)
-        db.session.commit()
