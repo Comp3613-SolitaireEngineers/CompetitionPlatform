@@ -1,6 +1,7 @@
 from App.models import Admin
 from App.database import db
 
+#This is a test commit
 def create_admin(uwi_id,email,username,password):
     try:
         newAdmin = Admin(uwi_id=uwi_id, username=username, password=password, email=email)
