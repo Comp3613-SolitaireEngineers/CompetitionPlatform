@@ -6,6 +6,8 @@ from App.controllers import create_admin, create_competition, create_competitor,
 
 def initialize_db():
 
+    rank_top_observer = create_rank_top_observers("Rank Top Observers")
+    
     admin = create_admin(uwi_id='816012345', username='admin', email="bob.burgers@sta.uwi.edu", password="adminpass")
     competition1 = execute_competition_command(admin_id=admin.id,name='UWI Games 2020', date=date(2020, 2, 29), location='UWI SPEC', platform='HackerRank')
     competition2 = execute_competition_command(admin_id=admin.id,name='UWI Games 2021', date=date(2021, 2, 28), location='UWI SPEC', platform='HackerRank')

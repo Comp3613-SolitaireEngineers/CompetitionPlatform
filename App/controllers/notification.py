@@ -53,17 +53,17 @@ def get_competitor_notifications(competitor_id):
         if time_ago < 60:
             info['time_ago'] = f"{int(time_ago)} s"
         elif time_ago < 3600:
-            info['time_ago'] = f"{int(time_ago // 60)} m"
+            info['time_ago'] = f"{int(time_ago // 60)}m"
         elif time_ago < 86400:
-            info['time_ago'] = f"{int(time_ago // 3600)} h"
+            info['time_ago'] = f"{int(time_ago // 3600)}h"
         elif time_ago < 604800:
-            info['time_ago'] = f"{int(time_ago // 86400)} d"
+            info['time_ago'] = f"{int(time_ago // 86400)}d"
         elif time_ago < 2629800:
-            info['time_ago'] = f"{int(time_ago // 604800)} w"
+            info['time_ago'] = f"{int(time_ago // 604800)}w"
         elif time_ago < 31557600:
-            info['time_ago'] = f"{int(time_ago // 2629800)} mo"
+            info['time_ago'] = f"{int(time_ago // 2629800)}mo"
         else:
-            info['time_ago'] = f"{int(time_ago // 31557600)} y"
+            info['time_ago'] = f"{int(time_ago // 31557600)}y"
             
         notification_info.append(info)
     return notification_info

@@ -2,7 +2,7 @@ from App.models import Competitor, Competition, Rank
 from App.database import db
 from .rank import create_rank
 from sqlalchemy import and_, desc, asc
-
+from App.controllers import get_rank_top_observer
 
 def create_competitor(uwi_id, username, email ,password, firstname, lastname):
     try:
@@ -10,6 +10,10 @@ def create_competitor(uwi_id, username, email ,password, firstname, lastname):
         
         db.session.add(competitor)
         db.session.commit()
+
+        if competitor:
+            observers = get_rank_top_observer()
+            observers.subscribe(competitor)
                
         return competitor   
     except Exception as e:
