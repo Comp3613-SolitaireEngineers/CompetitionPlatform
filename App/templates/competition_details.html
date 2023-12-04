@@ -20,6 +20,24 @@
                 <h4>{{competition.name}}</h4>
             </div>
             <ul class="list-group list-group-flush">
+                {%if not competition.hosts %}
+                <small>
+                    <li class="list-group-item">Host Name: N/A</li>
+                </small>
+                <small>
+                    <li class="list-group-item">Website: N/A</li>
+                </small>
+
+                {% else %}
+                <small>
+                    <li class="list-group-item">Host Name:{{competition.hosts[0].name}}</li>
+                </small>
+                <small>
+                    <li class="list-group-item">Website: {{competition.hosts[0].website}}</li>
+                </small>
+                {% endif %}
+
+
                 <small>
                     <li class="list-group-item">Location: {{competition.location}}</li>
                 </small>
@@ -37,31 +55,34 @@
                 <h5>Top Competitors</h5>
             </div>
             <ul class="list-group list-group-flush">
-            {% if not competition.results %}
-            <small>                           
-                <li class="list-group-item"> No competitors yet</li>
-            </small>
-            {% else %}
+                {% if not competition.results %}
+                <small>
+                    <li class="list-group-item"> No competitors yet</li>
+                </small>
+                {% else %}
                 {% for r in competition.results %}
-                    {% for c in competition.participants%}
-                    {% if r.rank == 1 and c.id == r.competitor_id%}
-                    <small>                           
-                        <li class="list-group-item">  <img src="/static/Gold.png" alt="" style="width: 10%; height: 10%;"> {{c.firstname}} {{c.lastname}}</li>
-                    </small>
-                    {% endif %}
-                    {% if r.rank == 2 and c.id == r.competitor_id %}
-                    <small>                           
-                        <li class="list-group-item">  <img src="/static/Silver.png" alt="" style="width: 10%; height: 10%;"> {{c.firstname}} {{c.lastname}}</li>
-                    </small>
-                    {% endif %}
-                    {% if r.rank == 3 and c.id == r.competitor_id%}
-                    <small>                           
-                        <li class="list-group-item">  <img src="/static/Bronze.png" alt="" style="width: 10%; height: 10%;"> {{c.firstname}} {{c.lastname}}</li>
-                    </small>
-                    {% endif %}                                                                                                            
+                {% for c in competition.participants%}
+                {% if r.rank == 1 and c.id == r.competitor_id%}
+                <small>
+                    <li class="list-group-item"> <img src="/static/Gold.png" alt="" style="width: 10%; height: 10%;">
+                        {{c.firstname}} {{c.lastname}}</li>
+                </small>
+                {% endif %}
+                {% if r.rank == 2 and c.id == r.competitor_id %}
+                <small>
+                    <li class="list-group-item"> <img src="/static/Silver.png" alt="" style="width: 10%; height: 10%;">
+                        {{c.firstname}} {{c.lastname}}</li>
+                </small>
+                {% endif %}
+                {% if r.rank == 3 and c.id == r.competitor_id%}
+                <small>
+                    <li class="list-group-item"> <img src="/static/Bronze.png" alt="" style="width: 10%; height: 10%;">
+                        {{c.firstname}} {{c.lastname}}</li>
+                </small>
+                {% endif %}
                 {% endfor %}
                 {% endfor %}
-            {% endif %}              
+                {% endif %}
             </ul>
         </div>
     </div>

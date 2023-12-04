@@ -79,7 +79,7 @@ def user_tests_command(type):
     if type == "unit":
         sys.exit(pytest.main(["-k", "UserUnitTests"]))
     elif type == "int":
-        sys.exit(pytest.main(["-k", "UserIntegrationTests"]))
+        sys.exit(pytest.main(["-k", "UsersIntegrationTests"]))
     else:
         sys.exit(pytest.main(["-k", "App"]))
 
@@ -115,10 +115,11 @@ def create_competition_command(name,location,platform):
         print("Competition not created")
 
 @competition_cli.command("get_competition", help = " get competition")
-def get_competition_by_id_command(id):
+def get_competition_by_id_command():
+    id = click.prompt("Enter id", type=str)
     competition = get_competition_by_id(id)
     if competition :
-        print(competition)
+        print(competition.get_json())
     else: 
         print("No competition Found")
 

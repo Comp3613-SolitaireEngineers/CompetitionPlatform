@@ -8,7 +8,7 @@ class Competition(db.Model):
     date = db.Column(db.DateTime, default=datetime.now())
     location = db.Column(db.String(120), nullable=False)
     platform = db.Column(db.String(120), nullable=False)
-    hosts = db.relationship('CompetitionHost', lazy=True, backref=db.backref("hosts"), cascade="all, delete-orphan")
+    hosts = db.relationship('Host', secondary='competition_host', viewonly=True, back_populates='competitions')
     participants = db.relationship('Competitor', secondary='results', viewonly=True, back_populates='competitions')
     results = db.relationship('Results', backref='competition', viewonly=True, lazy=True)
     results_added = db.Column(db.Boolean, default=False)
