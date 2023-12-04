@@ -4,9 +4,8 @@ class Host(db.Model):
     __tablename__ = 'host'
     id = db.Column(db.Integer, primary_key=True)
     name =  db.Column(db.String, nullable=False, unique=True)
-    website = db.Column(db.String, nullable=True)
-    
-    competitions = db.relationship('CompetitionHost', lazy=True, backref=db.backref("competitions"), cascade="all, delete-orphan")
+    website = db.Column(db.String, nullable=True)    
+    competitions = db.relationship('Competition', secondary='competition_host', viewonly=True, back_populates='hosts')
 
     def __init__(self, name, website):
         self.name = name
