@@ -1,6 +1,6 @@
-student_id,firstname,lastname,email,rank
-1001,John,Doe,johndoe@example.com,1
-1002,Jane,Smith,janesmith@example.com,2
-1003,Jim,Brown,jimbrown@example.com,3
-1004,Jill,Johnson,jilljohnson@example.com,4
-1005,Joe,Williams,joewilliams@example.com,5
+student_id,firstname,lastname,email,points,rank
+1001,John,Doe,johndoe@example.com,100,1
+1002,Jane,Smith,janesmith@example.com,95,2
+1003,Jim,Brown,jimbrown@example.com,90,3
+1004,Jill,Johnson,jilljohnson@example.com,85,4
+1005,Joe,Williams,joewilliams@example.com,80,5
