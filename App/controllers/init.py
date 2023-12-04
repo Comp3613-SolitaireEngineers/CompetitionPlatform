@@ -2,7 +2,7 @@ from App.database import db
 from App.controllers import *
 from App.models import *
 from datetime import datetime, date
-from App.controllers import create_admin, create_competition, create_competitor, execute_competition_command
+from App.controllers import create_admin, create_competition, create_competitor, execute_competition_command, create_host, create_competition_host
 
 def initialize_db():
 
@@ -24,4 +24,14 @@ def initialize_db():
     competitor6 = create_competitor(uwi_id='816024687', firstname='Bird', lastname='Person', username='birdperson', password='birdpass', email='bird.person@my.uwi.edu') 
     competitor7 = create_competitor(uwi_id='816024688', firstname='Squanchy', lastname='Smith', username='squanchy', password='squanchypass', email= 'squanchy.smith@my.uwi.edu') 
    
-   
+
+    host1 = create_host(name="CodeCrafters Club", website="www.codecraftersclub.com")
+    host2 = create_host(name="UWICS Club", website="https://www.instagram.com/uwics_club/?hl=en")
+    host3 = create_host(name="DCIT", website="https://sta.uwi.edu/fst/dcit/")
+
+    comp_host1 = create_competition_host(comp_id=competition1.id, host_id = host1.id)
+    comp_host1 = create_competition_host(comp_id=competition2.id, host_id = host1.id)
+    comp_host1 = create_competition_host(comp_id=competition3.id, host_id = host2.id)
+    comp_host1 = create_competition_host(comp_id=competition4.id, host_id = host3.id)
+    comp_host1 = create_competition_host(comp_id=competition5.id, host_id = host3.id)
+
