@@ -24,22 +24,22 @@ def get_all_hosts_json():
     hosts = [host.toDict() for host in hosts]
     return hosts
 
-def create_competition_host(competition_id, host_id):
-    try:
-        host = get_host(host_id)
-        if not host:
-            return False
-        competition = get_competition_by_id(competition_id)
-        if not competition:
-            return False
+# def create_competition_host(competition_id, host_id):
+#     try:
+#         host = get_host(host_id)
+#         if not host:
+#             return False
+#         competition = get_competition_by_id(competition_id)
+#         if not competition:
+#             return False
     
-        comp_host = CompetitionHost(comp_id=competition_id, host_id=host_id)
-        db.session.add(comp_host)
-        db.session.commit()
+#         comp_host = CompetitionHost(comp_id=competition_id, host_id=host_id)
+#         db.session.add(comp_host)
+#         db.session.commit()
        
         
-        return True
-    except Exception as e:
-        print(e)
-        db.session.rollback()
-    return False
+#         return True
+#     except Exception as e:
+#         print(e)
+#         db.session.rollback()
+#     return False

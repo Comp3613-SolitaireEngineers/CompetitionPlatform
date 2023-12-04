@@ -1,16 +1,25 @@
 from App.models import CompetitionHost
 from App.database import db
 
-def create_competition_host(comp_id,host_id):
+def create_competition_host(competition_id, host_id):
     try:
-        newCompetitionHost = CompetitionHost(comp_id=comp_id, host_id=host_id)
-        db.session.add(newCompetitionHost)
+        host = get_host(host_id)
+        if not host:
+            return False
+        competition = get_competition_by_id(competition_id)
+        if not competition:
+            return False
+    
+        comp_host = CompetitionHost(comp_id=competition_id, host_id=host_id)
+        db.session.add(comp_host)
         db.session.commit()
-        return newCompetitionHost
+       
+        
+        return True
     except Exception as e:
         print(e)
         db.session.rollback()
-    return None
+    return False
 
 def get_competition_host(id):
     return CompetitionHost.query.filter_by(id).first()
