@@ -106,9 +106,9 @@ def create_rank_command(competitor_id, old_rank, new_rank):
         print(f"Error executing rank command: {str(e)}")
         return None
     
-def execute_rank_command(competitor_id, old_rank,  new_rank):
+def execute_rank_command(admin_id, competitor_id, old_rank,  new_rank):
     
-    admin = Admin.query.get(000)
+    admin = Admin.query.get(admin_id)
     
     if admin is None:
         command = create_rank_command(competitor_id, old_rank, new_rank)
