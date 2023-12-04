@@ -20,7 +20,8 @@ def jwt_authenticate(email, password):
 
     user = Competitor.query.filter_by(email=email).first()
     if user and user.check_password(password):
-        login(email, password)
+        # login(email, password)
+        login_user(user)
         return create_access_token(identity=email)
     return None
 
