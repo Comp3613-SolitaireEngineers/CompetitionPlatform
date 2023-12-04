@@ -24,4 +24,8 @@ def initialize_db():
     competitor6 = create_competitor(uwi_id='816024687', firstname='Bird', lastname='Person', username='birdperson', password='birdpass', email='bird.person@my.uwi.edu') 
     competitor7 = create_competitor(uwi_id='816024688', firstname='Squanchy', lastname='Smith', username='squanchy', password='squanchypass', email= 'squanchy.smith@my.uwi.edu') 
    
-   
+
+    host1 = create_host(name="CodeCrafters Club", website="www.codecraftersclub.com")
+    host2 = create_host(name="UWICS Club", website="https://www.instagram.com/uwics_club/?hl=en")
+    host3 = create_host(name="DCIT", website="https://sta.uwi.edu/fst/dcit/")
+
