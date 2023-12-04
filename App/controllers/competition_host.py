@@ -1,6 +1,7 @@
 from App.models import CompetitionHost
 from App.database import db
 from App.controllers.host import get_host
+from App.controllers.competition import get_competition_by_id
 
 def create_competition_host(competition_id, host_id):
     try:
