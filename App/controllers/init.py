@@ -29,9 +29,9 @@ def initialize_db():
     host2 = create_host(name="UWICS Club", website="https://www.instagram.com/uwics_club/?hl=en")
     host3 = create_host(name="DCIT", website="https://sta.uwi.edu/fst/dcit/")
 
-    comp_host1 = create_competition_host(comp_id=competition1.id, host_id = host1.id)
-    comp_host1 = create_competition_host(comp_id=competition2.id, host_id = host1.id)
-    comp_host1 = create_competition_host(comp_id=competition3.id, host_id = host2.id)
-    comp_host1 = create_competition_host(comp_id=competition4.id, host_id = host3.id)
-    comp_host1 = create_competition_host(comp_id=competition5.id, host_id = host3.id)
+    comp_host1 = create_competition_host(competition_id=competition1.id, host_id = host1.id)
+    comp_host1 = create_competition_host(competition_id=competition2.id, host_id = host1.id)
+    comp_host1 = create_competition_host(competition_id=competition3.id, host_id = host2.id)
+    comp_host1 = create_competition_host(competition_id=competition4.id, host_id = host3.id)
+    comp_host1 = create_competition_host(competition_id=competition5.id, host_id = host3.id)
 
