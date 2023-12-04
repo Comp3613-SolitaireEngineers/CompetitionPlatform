@@ -32,14 +32,11 @@ def create_competition_host(competition_id, host_id):
         competition = get_competition_by_id(competition_id)
         if not competition:
             return False
-        try:
-            comp_host = CompetitionHost(comp_id=competition_id, host_id=host_id)
-            db.session.add(comp_host)
-            db.session.commit()
-        except Exception as e:
-            print(e)
-            db.session.rollback()
-            return False
+    
+        comp_host = CompetitionHost(comp_id=competition_id, host_id=host_id)
+        db.session.add(comp_host)
+        db.session.commit()
+       
         
         return True
     except Exception as e:
