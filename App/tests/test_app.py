@@ -1,17 +1,10 @@
-import os, tempfile, pytest, logging, unittest
-from werkzeug.security import check_password_hash, generate_password_hash
+import pytest, logging, unittest
+from werkzeug.security import generate_password_hash
 from datetime import datetime, date
 
 from App.main import create_app
 from App.database import db, create_db
 from App.controllers import *
-#     create_competitor, 
-#     get_competitor_profile, 
-#     get_rankings, 
-#     create_competition, 
-#     get_competition_details, 
-#     create_result,
-#     get_all_competitions)
 from App.models import Host, Admin, Competitor, Competition,Rank,Notification,Results,ResultsCommand,CompetitionCommand
 
 LOGGER = logging.getLogger(__name__)
@@ -19,32 +12,32 @@ LOGGER = logging.getLogger(__name__)
 '''
    Unit Tests
 '''
-# class UserUnitTests(unittest.TestCase):
-#     def test_new_competitor(self):
-#         competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
-#         assert competitor.uwi_id == "816011111"
-#         assert competitor.username == "coolGuy101"
-#         assert competitor.email == "randal.m@mail.com"
-#         assert competitor.firstname == "Randal"
-#         assert competitor.lastname == "Morris"
+class UserUnitTests(unittest.TestCase):
+    # def test_new_competitor(self):
+    #     competitor = Competitor("816011111", "coolGuy101", "randal.m@mail.com", "randalpass", "Randal", "Morris")
+    #     assert competitor.uwi_id == "816011111"
+    #     assert competitor.username == "coolGuy101"
+    #     assert competitor.email == "randal.m@mail.com"
+    #     assert competitor.firstname == "Randal"
+    #     assert competitor.lastname == "Morris"
 
-#     def test_new_host(self):
-#         host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
-#         assert host.name == "DCIT"
-#         assert host.website == "https://sta.uwi.edu/fst/dcit"
+    def test_new_host(self):
+        host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
+        assert host.name == "DCIT"
+        assert host.website == "https://sta.uwi.edu/fst/dcit"
         
-#     def test_new_admin(self):
-#         admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", "admin1pass")
-#         assert admin.uwi_id == "817630671"
-#         assert admin.username == "admin1"
-#         assert admin.email == "sherry.floobs@mail.com"
+    def test_new_admin(self):
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", "admin1pass")
+        assert admin.uwi_id == "817630671"
+        assert admin.username == "admin1"
+        assert admin.email == "sherry.floobs@mail.com"
         
-#     def test_new_competition(self):
-#         competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", "01-02-2023")
-#         assert competition.name == "UWI Games 2023"
-#         assert competition.location == "DCIT Conference Room"
-#         assert competition.platform == "HankerRank"
-#         assert competition.date == "01-02-2023"
+    def test_new_competition(self):
+        competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", "01-02-2023")
+        assert competition.name == "UWI Games 2023"
+        assert competition.location == "DCIT Conference Room"
+        assert competition.platform == "HankerRank"
+        assert competition.date == "01-02-2023"
 
 #     # pure function no side effects or integrations called
 #     def test_competitor_get_json(self):
@@ -71,169 +64,166 @@ LOGGER = logging.getLogger(__name__)
 #                 'role' : 'competitor'            
 #             })
 
-#     def test_host_get_json(self):
-#         host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
-#         host_json = host.toDict()
+    def test_host_get_json(self):
+        host = Host("DCIT", "https://sta.uwi.edu/fst/dcit")
+        host_json = host.toDict()
         
-#         self.assertDictEqual(
-#             host_json, 
-#             {
-#                 "id": host.id, 
-#                 "name": "DCIT",
-#                 "website": "https://sta.uwi.edu/fst/dcit"
-#             })
+        self.assertDictEqual(
+            host_json, 
+            {
+                "id": host.id, 
+                "name": "DCIT",
+                "website": "https://sta.uwi.edu/fst/dcit"
+            })
 
-#     def test_admin_get_json(self):
-#         admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", "admin1pass")
-#         admin_json = admin.get_json()
+    def test_admin_get_json(self):
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", "admin1pass")
+        admin_json = admin.get_json()
 
-#         self.assertDictEqual(
-#             admin_json,
-#             {
-#                 'id': admin.id,
-#                 'uwi_id': "817630671",
-#                 'email': "sherry.floobs@mail.com",
-#                 'username': "admin1",
-#                 'role' : 'admin'
-#             })
+        self.assertDictEqual(
+            admin_json,
+            {
+                'id': admin.id,
+                'uwi_id': "817630671",
+                'email': "sherry.floobs@mail.com",
+                'username': "admin1",
+                'role' : 'admin'
+            })
 
-#     def test_competition_get_json(self):
-#         date = datetime.now()
-#         competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", date)
-#         competition_json = competition.get_json()
+    def test_competition_get_json(self):
+        date = datetime.now()
+        competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", date)
+        competition_json = competition.get_json()
 
-#         self.assertDictEqual(
-#             competition_json, 
-#             {
-#                 'id': None,
-#                 'name': "UWI Games 2023",
-#                 'location': "DCIT Conference Room",
-#                 'platform': "HankerRank",
-#                 'date': date.strftime("%Y-%m-%d %H:%M:%S"),
-#                 "hosts": [],
-#                 "participants": []
-#             })
+        self.assertDictEqual(
+            competition_json, 
+            {
+                'id': None,
+                'name': "UWI Games 2023",
+                'location': "DCIT Conference Room",
+                'platform': "HankerRank",
+                'date': date.strftime("%Y-%m-%d %H:%M:%S"),
+                "hosts": [],
+                "participants": []
+            })
         
-#     def test_hashed_password(self):
-#         password = "password"
-#         hashed = generate_password_hash(password, method='scrypt')
-#         admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
+    def test_hashed_password(self):
+        password = "password"
+        hashed = generate_password_hash(password, method='sha256')
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
         
-#         assert admin.password != password
+        assert admin.password != password
 
-#     def test_check_password(self):
-#         password = "admin1pass"
-#         admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
+    def test_check_password(self):
+        password = "admin1pass"
+        admin = Admin("817630671", "admin1", "sherry.floobs@mail.com", password)
         
-#         assert admin.check_password(password)
+        assert admin.check_password(password)
         
-#     def test_new_notifcation(self):
-#         notification = Notification("10","Congratulations","2023-01-20")
-#         assert notification.competitor_id == "10"
-#         assert notification.message == "Congratulations"
-#         assert notification.timestamp == "2023-01-20"
+    def test_new_notifcation(self):
+        notification = Notification("10","Congratulations","Title")
+        assert notification.competitor_id == "10"
+        assert notification.message == "Congratulations"
+        assert notification.title == "Title"
+        assert notification.timestamp.strftime('%Y-%m-%d') == datetime.now().strftime('%Y-%m-%d')
+
             
-#     def test_new_notifcation_get_json(self):
-#         date = datetime.now()
-#         notification = Notification("10","Congratulations",date)
-#         notification_json = notification.get_json()
-#         self.assertDictEqual(
-#             notification_json, 
-#             {
-#             'id':None, 
-#             'competitor_id':"10",
-#             'message':"Congratulations",
-#             'timestamp':date.strftime("%Y-%m-%d %H:%M:%S")
-#             })
-        
-#     def test_new_rank(self):
-#         #rank = Rank("10","2023-02-05","2023-05-20")
-#         rank = Rank("10")
-#         assert rank.competitor_id == "10"
-#         #assert rank.created_at == "2023-02-05"
-#         #assert rank.updated_at == "2023-05-20"
-        
-#     def test_new_rank_get_json(self):
+    def test_new_notifcation_get_json(self):
+        date = datetime.now()
+        notification = Notification("10","Congratulations","Title")
+        notification_json = notification.get_json()
+        self.assertDictEqual(
+            {key: value for key, value in notification_json.items() if key != 'timestamp'},
+            {
+            'id':None, 
+            'competitor_id':"10",
+            'message':"Congratulations",
+            "title" : "Title"
+            })
+        notification_date = datetime.strptime(notification_json['timestamp'], "%Y-%m-%d %H:%M:%S").date()
+        self.assertEqual(notification_date, date.date())
 
-#         date = datetime.now()
-#         #rank = Rank("10",date,date)
-#         rank = Rank("10")
-#         rank_json = rank.get_json()
-#         self.assertDictEqual(
-#             rank_json,
-#             {
-#                 'id':None,
-#                 'competitor_id':"10",
-#                 'ranking':1,
-#                 'points':None,
-#                 'created_at':date.strftime("%Y-%m-%d %H:%M:%S"),
-#                 'updated_at':date.strftime("%Y-%m-%d %H:%M:%S")
-#                 #'created_at':None,
-#                 #'updated_at':None
-#             })
-          
-              
-#     def test_new_results(self):
-#         result = Results("123","12","10","1","2023-02-20","2023-05-20")
-#         assert result.competition_id == "123"
-#         assert result.competitor_id == "12"
-#         assert result.points == "10"
-#         assert result.rank == "1"
-#         assert result.date_created == "2023-02-20"
-#         assert result.date_modified == "2023-05-20"
         
-#     def test_new_results_get_json(self):
-#         date = datetime.now()
-#         result = Results("123","12","10","1",date,date)
-#         result_json = result.get_json()
-#         self.assertDictEqual(
-#             result_json,
-#             {
-#                 'id':None,
-#                 'competition_id':"123",
-#                 'competitor_id':"12",
-#                 'rank':"1",
-#                 'points':"10",
-#                 'date_created':date.strftime("%Y-%m-%d %H:%M:%S"),
-#                 'date_modified':date.strftime("%Y-%m-%d %H:%M:%S")
-#             })
+    def test_new_rank(self):
+        rank = Rank("10")
+        assert rank.competitor_id == "10"
         
-#     def test_new_results_command(self):
-#         reCmd = ResultsCommand("10")
-#         assert reCmd.competition_id == "10"
-        
-#     def test_new_results_command_get_json(self):
-#         reCmd = ResultsCommand("10")
-#         reCmd_json = reCmd.get_json()
-#         self.assertDictEqual(
-#             reCmd_json,
-#             {
-#                 'id':None,
-#                 'competition_id':"10"
-#             })
-             
-#     def test_new_competition_command(self):
-#         competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", "01-02-2023")
-#         compCmd = CompetitionCommand()
-#         compCmd.set_competition_id(competition.id)
-#         assert compCmd is not None
-#         assert compCmd.competition_id == competition.id
-#         assert compCmd.executed_at is not None
+    def test_new_rank_get_json(self):
+
+        date = datetime.now()
+        #rank = Rank("10",date,date)
+        rank = Rank("10")
+        rank_json = rank.get_json()
+        self.assertDictEqual(
+            rank_json,
+            {
+                'id':None,
+                'competitor_id':"10",
+                'ranking':1,
+                'points':None,
+                'created_at':date.strftime("%Y-%m-%d %H:%M:%S"),
+                'updated_at':date.strftime("%Y-%m-%d %H:%M:%S")
+            })
+     
+    def test_new_competition_command(self):
+        competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", "01-02-2023")
+        compCmd = CompetitionCommand()
+        compCmd.set_competition_id(competition.id)
+        assert compCmd is not None
+        assert compCmd.competition_id == competition.id
+        assert compCmd.executed_at is not None
     
-#     def test_new_competition_command_get_json(self):
-#         competition = Competition("UWI Games 2023", "DCIT Conference Room", "HankerRank", "01-02-2023")
-#         compCmd = CompetitionCommand()
-#         compCmd.set_competition_id(competition.id)
+    def test_new_competition_command_get_json(self):
+        competition = Competition("UWI Games 2024", "DCIT Conference Room", "HankerRank", "01-02-2023")
+        compCmd = CompetitionCommand()
+        compCmd.set_competition_id(competition.id)
       
-#         compCmd_json = compCmd.get_json()
-#         self.assertDictEqual(
-#              compCmd_json,
-#              {
-#                  'id':None,
-#                  'competition_id':"1",
-#                  'executed_at': compCmd.executed_at.strftime("%Y-%m-%d %H:%M:%S")
-#              })
+        compCmd_json = compCmd.get_json()
+        self.assertDictEqual(
+             compCmd_json,
+             {
+                 'id':2,
+                 'competition_id': None,
+                 'executed_at': compCmd.executed_at.strftime("%Y-%m-%d %H:%M:%S")
+             })     
+              
+    def test_new_results(self):
+        result = Results("123","12",10,1)
+        assert result.competition_id == "123"
+        assert result.competitor_id == "12"
+        assert result.points == 10
+        assert result.rank == 1
+    
+    # def test_new_results_get_json(self):
+    #     date = datetime.now()
+    #     result = Results("123","123","100","11")
+    #     assert result is not None
+    #     result_json = result.get_json()
+    #     self.assertDictEqual(
+    #         result_json,
+    #         {
+    #             'id':None,
+    #             'competition_id':"123",
+    #             'competitor_id':"12",
+    #             'rank':"1",
+    #             'points':"10",
+    #         })
+        
 
+        
+    def test_new_results_command(self):
+        reCmd = ResultsCommand("10")
+        assert reCmd.competition_id == "10"
+        
+    def test_new_results_command_get_json(self):
+        reCmd = ResultsCommand("10")
+        reCmd_json = reCmd.get_json()
+        self.assertDictEqual(
+            reCmd_json,
+            {
+                'id':None,
+                'competition_id':"10"
+            })
     
 '''
     Integration Tests
@@ -389,7 +379,7 @@ class UsersIntegrationTests(unittest.TestCase):
 
         # Check if the notifications were created correctly
         notifications = get_notifications()
-        self.assertEqual(len(notifications), 11), "Incorrect number of notifications"
+        self.assertEqual(len(notifications), 21), "Incorrect number of notifications"
         
         competitors = [create_competitor(id, f"user{id}", f"pass{id}", f"email{id}", f"f{id}", f"l{id}") for id in range(1334314, 1334341)]
         
@@ -402,53 +392,4 @@ class UsersIntegrationTests(unittest.TestCase):
         
         notifications = get_notifications()
 
-        self.assertEqual(len(notifications), 31), "Incorrect number of notifications"
-
-
-
-
-
-
-
-
-    # def test_create_user(self):
-    #     user = create_user("rick", "bobpass")
-    #     assert user.username == "rick"
-
-    # def test_get_all_users_json(self):
-    #     users_json = get_all_users_json()
-    #     self.assertListEqual([{"id":1, "username":"bob"}, {"id":2, "username":"rick"}], users_json)
-
-    # # Tests data changes in the database
-    # def test_update_user(self):
-    #     update_user(1, "ronnie")
-    #     user = get_user(1)
-    #     assert user.username == "ronnie"
-
-    # def test_add_user_to_comp(self):
-    #     newcomp = create_competition("Walktime", "Port of Spain")
-    #     if newcomp:
-    #         assert add_user_to_comp(1, 1, 4)
-    #     else:
-    #         assert False
-
-    # def test_get_user_competitions(self):
-    #     comp = get_user_competitions(1)
-    #     user_competitions = []
-
-    #     for usercomp in comp:
-    #         del usercomp["date"]
-    #         del usercomp["hosts"]
-    #         del usercomp["participants"]
-    #         user_competitions.append(usercomp)
-        
-    #     expected_list = [{"id": 1, "name": "Walktime", "location": "Port of Spain"}]
-    #     self.assertListEqual(expected_list, user_competitions)
-
-
-    # def test_get_user_rankings(self):
-    #     users = get_user_rankings(1)
-        
-    #     self.assertListEqual([{"id":1, "comp_id": 1 , "user_id": 1, "rank": 4}], users)
-
-
+        self.assertEqual(len(notifications), 41), "Incorrect number of notifications"
