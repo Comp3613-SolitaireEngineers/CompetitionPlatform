@@ -2,7 +2,7 @@ from App.database import db
 from App.controllers import *
 from App.models import *
 from datetime import datetime, date
-from App.controllers import create_admin, create_competition, create_competitor, execute_competition_command, create_host, create_competition_host
+from App.controllers import create_admin, create_competition, create_competitor, execute_competition_command, create_host, create_competition_host, create_rank_top_observers
 
 def initialize_db():
 
