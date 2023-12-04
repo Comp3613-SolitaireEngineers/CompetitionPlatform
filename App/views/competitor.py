@@ -13,8 +13,7 @@ Page Routes
 '''
 @competitor_views.route('/competitor/profile', methods=['GET'])
 @competitor_required
-def competitor_profile_page():
-    flash('Welcome to your profile')
+def competitor_profile_page():    
     notifications = get_competitor_notifications(current_user.id)
     return render_template('competitor_profile.html', notifications_info=notifications)
 
@@ -65,6 +64,7 @@ def api_add_new_competitor():
         return jsonify({'error': 'Competitor not created'}), 400
     
 @competitor_views.route('/api/competitor/profile/<id>', methods=['GET'])
+@competitor_required
 def api_get_competitor_by_id(id):
     competitor_profile = get_competitor_profile(id)   
     if competitor_profile:                     

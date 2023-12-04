@@ -26,11 +26,6 @@ def health_check():
 def health():
     return jsonify({'status':'healthy'})
 
-
-@index_views.route('/leaderboard', methods=['GET'])
-def leaderboard():
-    return render_template('leaderboard.html')
-
 @index_views.route('/test', methods=['GET'])
 def test():
     return render_template('test.html')
