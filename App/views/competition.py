@@ -42,11 +42,17 @@ def add_competition_action():
     location = request.form.get('location')
     platform = request.form.get('platform')    
     date = request.form.get('date')
+    hostname = request.form.get('hostname')
+    hostwebsite = request.form.get('hostwebsite')
     competition_date = datetime.strptime(date, '%Y-%m-%d')   
     response = execute_competition_command(admin_id=current_user.id, name=competition_name, location=location, platform=platform, date=competition_date)
     if response:
-        flash('Competition created successfully!')
-        return redirect(url_for('results_views.competition_results_page', competition_id=response.id, page=1))
+        host = create_host(name=hostname, website=hostwebsite)
+        if host:
+            if create_competition_host(response.id, host.id):
+                flash('Competition created successfully!')
+                return redirect(url_for('results_views.competition_results_page', competition_id=response.id, page=1))
+        
     flash('Error creating competition')
     return redirect(url_for('competition_views.competition_form_page'))
 
