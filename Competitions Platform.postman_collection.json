@@ -1,0 +1,2737 @@
+{
+	"info": {
+		"_postman_id": "cb9ae9d2-8f45-4462-aeaf-a91f985c903a",
+		"name": "Competitions Platform",
+		"description": "This collection tests the Rest API for the UWI Competitions Platform Project.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30175855",
+		"_collection_link": "https://www.postman.com/martian-eclipse-171491/workspace/swe-group-project/collection/25430025-cb9ae9d2-8f45-4462-aeaf-a91f985c903a?action=share&source=collection_link&creator=30175855"
+	},
+	"item": [
+		{
+			"name": "Login (Non-Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returned Access Token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+							"    pm.environment.set('auth_token', jsonData['access_token']);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"morty.smith@my.uwi.edu\",\r\n    \"password\": \"mortypass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/login",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "﻿Logs in an existing competitor"
+			},
+			"response": [
+				{
+					"name": "Login (Non-Admin) - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"morty.smith@my.uwi.edu\",\r\n    \"password\": \"mortypass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/login",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 00:55:16 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "83001538595f2604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "c685cf92-04f1-4282"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwMTY1MTMxNiwianRpIjoiZmEzOTI2YWUtMmIyMC00MGVhLWFkZDYtNGZkYTVkYjNmNDA2IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjFhNTBhY2JlIiwibmJmIjoxNzAxNjUxMzE2LCJleHAiOjE3MDIyNTYxMTZ9.VRNFU94NXHSDwpq8H7vs--Z0vgPncONGcAo_H8Y4DCg\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returned Access Token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+							"    pm.environment.set('auth_token', jsonData['access_token']);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Returned Admin ID\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(pm.response.text()).to.include(\"admin_id\");\r",
+							"    pm.environment.set('admin_id', jsonData['admin_id']);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"bob.burgers@sta.uwi.edu\",\r\n    \"password\": \"adminpass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/login",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "﻿Logs in an existing admin"
+			},
+			"response": [
+				{
+					"name": "Login (Admin) - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bob.burgers@sta.uwi.edu\",\r\n    \"password\": \"adminpass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/login",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 00:55:56 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8300162e7a602604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=.eJwlzjEOwyAMBdC7MHcAjLF_LhOBbdSuSTNVvXsj9QJP75P2dcT5TNv7uOKR9penLTmLKEqtw7KQDdKqrAgMI-1UF7L22XslMTBrCQ5uaB6zVSptuOfIXYrZkoCJibCvpkwgcRSat9oJiPDGS2CzcK5LbMw2Vroj1xnHfwPAqEDT9weWHzBk.ZW0jnA.AlSOOIZ-gIWab3DL8dZ9vsgI8us; HttpOnly; Path=/"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "077eafba-087c-476a"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwMTY1MTM1NiwianRpIjoiNGZhZGQ1MmMtNGY1Ny00ZTY2LTk1YzYtODAyMTg5YzAyYzQxIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Ijk5OWMzMTk4IiwibmJmIjoxNzAxNjUxMzU2LCJleHAiOjE3MDIyNTYxNTZ9.J3kfLmXKRQg3m1PjUSofV4xXUYOYGZ0cRCSo6vaonYg\",\n    \"admin_id\": \"999c3198\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Competitors",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"    'type': 'array',\r",
+							"    'items': [{\r",
+							"            'type': 'object',\r",
+							"            'properties': {\r",
+							"                'id': { 'type': 'string'},\r",
+							"                'uwi_id': { 'type': 'string' },\r",
+							"                'firstname': { 'type': 'string'},\r",
+							"                'lastname': { 'type': 'string' },\r",
+							"                'email': { 'type': 'string'},\r",
+							"                'username': { 'type': 'string' },\r",
+							"                'platform_rank': { \r",
+							"                    'type': 'object',\r",
+							"                    'properties': {\r",
+							"                        'id': { 'type': 'integer' },\r",
+							"                        'username': { 'type': 'string' }\r",
+							"                    }\r",
+							"                },\r",
+							"                'role': { 'type': 'string' },\r",
+							"            },\r",
+							"            'required': [\r",
+							"                'id',\r",
+							"                'uwi_id',\r",
+							"                'firstname',\r",
+							"                'lastname',\r",
+							"                'email',\r",
+							"                'username',\r",
+							"                'platform_rank',\r",
+							"                'role'\r",
+							"            ]\r",
+							"        }]\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.expect(pm.response.json()).to.have.jsonSchema(schema);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set('competitor_id', jsonData[0].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/competitors",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"competitors"
+					]
+				},
+				"description": "Retrieves all competitors registered regardless of competition participated (or no participated competitions)"
+			},
+			"response": [
+				{
+					"name": "Get Competitors - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/competitors",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"competitors"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 16:54:59 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8305930f1b0467de-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "bb4014c2-f7b4-48ef"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"email\": \"morty.smith@my.uwi.edu\",\n        \"firstname\": \"Morty\",\n        \"id\": \"df7bc30f\",\n        \"lastname\": \"Smith\",\n        \"platform_rank\": {\n            \"competitor_id\": \"df7bc30f\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 1,\n            \"points\": 4000,\n            \"ranking\": 1,\n            \"updated_at\": \"2023-12-04 16:47:39\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"king_morty\",\n        \"uwi_id\": \"816024682\"\n    },\n    {\n        \"email\": \"rick.sanchez@my.uwi.edi\",\n        \"firstname\": \"Rick\",\n        \"id\": \"6d747041\",\n        \"lastname\": \"Sanchez\",\n        \"platform_rank\": {\n            \"competitor_id\": \"6d747041\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 2,\n            \"points\": 0,\n            \"ranking\": 2,\n            \"updated_at\": \"2023-12-04 16:22:11\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"rickety_rick\",\n        \"uwi_id\": \"816024683\"\n    },\n    {\n        \"email\": \"summer.smith@my.uwi.edu\",\n        \"firstname\": \"Summer\",\n        \"id\": \"40371fc4\",\n        \"lastname\": \"Smith\",\n        \"platform_rank\": {\n            \"competitor_id\": \"40371fc4\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 3,\n            \"points\": 0,\n            \"ranking\": 3,\n            \"updated_at\": \"2023-12-04 16:22:11\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"summer_time\",\n        \"uwi_id\": \"816024684\"\n    },\n    {\n        \"email\": \"beth.smith@my.uwi.edu\",\n        \"firstname\": \"Beth\",\n        \"id\": \"cb082b49\",\n        \"lastname\": \"Smith\",\n        \"platform_rank\": {\n            \"competitor_id\": \"cb082b49\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 4,\n            \"points\": 0,\n            \"ranking\": 4,\n            \"updated_at\": \"2023-12-04 16:22:11\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"bethany\",\n        \"uwi_id\": \"816024685\"\n    },\n    {\n        \"email\": \"jerry.smith@my.uwi.edu\",\n        \"firstname\": \"Jerry\",\n        \"id\": \"656a6187\",\n        \"lastname\": \"Smith\",\n        \"platform_rank\": {\n            \"competitor_id\": \"656a6187\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 5,\n            \"points\": 0,\n            \"ranking\": 5,\n            \"updated_at\": \"2023-12-04 16:22:11\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"jerry_berry\",\n        \"uwi_id\": \"816024686\"\n    },\n    {\n        \"email\": \"bird.person@my.uwi.edu\",\n        \"firstname\": \"Bird\",\n        \"id\": \"3bc56a91\",\n        \"lastname\": \"Person\",\n        \"platform_rank\": {\n            \"competitor_id\": \"3bc56a91\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 6,\n            \"points\": 0,\n            \"ranking\": 6,\n            \"updated_at\": \"2023-12-04 16:22:11\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"birdperson\",\n        \"uwi_id\": \"816024687\"\n    },\n    {\n        \"email\": \"squanchy.smith@my.uwi.edu\",\n        \"firstname\": \"Squanchy\",\n        \"id\": \"7f1de286\",\n        \"lastname\": \"Smith\",\n        \"platform_rank\": {\n            \"competitor_id\": \"7f1de286\",\n            \"created_at\": \"2023-12-04 16:22:11\",\n            \"id\": 7,\n            \"points\": 0,\n            \"ranking\": 7,\n            \"updated_at\": \"2023-12-04 16:22:11\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"squanchy\",\n        \"uwi_id\": \"816024688\"\n    },\n    {\n        \"email\": \"Darien_Medhurst54@example.com\",\n        \"firstname\": \"Floy\",\n        \"id\": \"5b085ff4\",\n        \"lastname\": \"Ziemann\",\n        \"platform_rank\": {\n            \"competitor_id\": \"5b085ff4\",\n            \"created_at\": \"2023-12-04 16:52:23\",\n            \"id\": 8,\n            \"points\": 0,\n            \"ranking\": 8,\n            \"updated_at\": \"2023-12-04 16:52:23\"\n        },\n        \"role\": \"competitor\",\n        \"username\": \"Stacy_Boyer22\",\n        \"uwi_id\": \"e5f93b03-c8d8-4281-aa08-580bd157a1e2\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Add Host (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"\tpm.response.to.not.be.error;\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Competition created test\", function () {\r",
+							"\tlet jsonData = pm.response.json();\r",
+							"\tpm.expect(\r",
+							"\t\tjsonData['message'].includes(\"Host created successfully\")\r",
+							"\t).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"admin_id\": \"{{admin_id}}\",\r\n    \"name\": \"{{$randomCompanyName}}\",\r\n    \"website\": \"https://www.hogwartslegacy.com/\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/host",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"host"
+					]
+				},
+				"description": "﻿Creates a new competition host with the name and website details. This action can only be performed by an authed admin"
+			},
+			"response": [
+				{
+					"name": "Add Host (Admin) - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"admin_id\": \"{{admin_id}}\",\r\n    \"name\": \"{{$randomCompanyName}}\",\r\n    \"website\": \"https://www.hogwartslegacy.com/\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/host",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"host"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 00:58:11 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8300197dc9e82604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "0ce10762-9cad-4846"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Host created successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Add Competition (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"\tpm.response.to.not.be.error;\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Competition created test\", function () {\r",
+							"\tlet jsonData = pm.response.json();\r",
+							"\tpm.expect(\r",
+							"\t\tjsonData['message'].includes(\"Competition created\")\r",
+							"\t).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{$randomAbbreviation}}\", // \"Runtime 3\",\r\n    \"location\": \"DCIT\",\r\n    \"platform\": \"HackerRank\",\r\n    \"date\": \"2023-02-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/competition",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"competition"
+					]
+				},
+				"description": "﻿Creates a new competition with the name and location"
+			},
+			"response": [
+				{
+					"name": "Add Competition (Admin) - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomAbbreviation}}\", // \"Runtime 3\",\r\n    \"location\": \"DCIT\",\r\n    \"platform\": \"HackerRank\",\r\n    \"date\": \"2023-02-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/competition",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"competition"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 21:55:11 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "83074ac89df8db19-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "97720cdf-a06f-4ea4"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Competition created\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Add Competitor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status test', function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Competitor created test\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData['message']).to.exist;\r",
+							"});\r",
+							"\r",
+							"// pm.test('Status test', function () {\r",
+							"//     pm.response.to.not.be.error;\r",
+							"//     pm.response.to.have.status(201);\r",
+							"// })\r",
+							"\r",
+							"// pm.test(\"Competitor created test\", function () {\r",
+							"// \tlet jsonData = pm.response.json();\r",
+							"// \tpm.expect(jsonData['message']).to.include(\"Competitor created successfully\");\r",
+							"// });\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"uwi_id\": \"{{$randomUUID}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"first_name\": \"{{$randomFirstName}}\",\r\n    \"last_name\": \"{{$randomLastName}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/competitor",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"competitor"
+					]
+				},
+				"description": "Registers a new competitor"
+			},
+			"response": [
+				{
+					"name": "Add Competitor - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uwi_id\": \"{{$randomUUID}}\",\r\n    \"email\": \"{{$randomExampleEmail}}\",\r\n    \"username\": \"{{$randomUserName}}\",\r\n    \"first_name\": \"{{$randomFirstName}}\",\r\n    \"last_name\": \"{{$randomLastName}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/competitor",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"competitor"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 16:55:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8305944709a267de-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "57fa7b16-1436-486f"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Competitor created successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Add Competition Results (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"\tpm.response.to.not.be.error;\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Result created test\", function () {\r",
+							"\tlet jsonData = pm.response.json();\r",
+							"\tpm.expect(\r",
+							"\t\tjsonData['message'].includes(\"Result created successfully\")\r",
+							"\t).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"competition_id\": \"1\",\r\n    \"competitor_id\": \"{{competitor_id}}\",\r\n    \"points\": 263,\r\n    \"rank\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/results",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"results"
+					]
+				},
+				"description": "﻿Adds a competitor's points and rank for a particular competition"
+			},
+			"response": [
+				{
+					"name": "Add Competition Results (Admin) - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"competition_id\": \"1\",\r\n    \"competitor_id\": \"{{competitor_id}}\",\r\n    \"points\": 263,\r\n    \"rank\": 4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/results",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"results"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:01:44 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "83001eb23c732604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "cb3ec875-6914-4637"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Result created successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Rank (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Rank updated test\", function () {\r",
+							"\tlet jsonData = pm.response.json();\r",
+							"\tpm.expect(\r",
+							"\t\tjsonData['message'].includes(\"Rank updated successfully\")\r",
+							"\t).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"competitor_id\": \"{{competitor_id}}\",\r\n    \"ranking\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/rank/ranking",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"rank",
+						"ranking"
+					]
+				},
+				"description": "Update the overall rank for a particular competitor"
+			},
+			"response": [
+				{
+					"name": "Update Rank (Admin) - Example",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"competitor_id\": \"{{competitor_id}}\",\r\n    \"ranking\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/rank/ranking",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"rank",
+								"ranking"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:02:24 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "83001fa9bbbd2604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "39f3c36d-7243-4d09"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Rank updated successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Update Rank Points (Admin)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Rank points updated test\", function () {\r",
+							"\tlet jsonData = pm.response.json();\r",
+							"\tpm.expect(\r",
+							"\t\tjsonData['message'].includes(\"Rank points updated successfully\")\r",
+							"\t).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"competitor_id\": \"{{competitor_id}}\",\r\n    \"points\": 4000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/rank/points",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"rank",
+						"points"
+					]
+				},
+				"description": "Update the overall score for a particular competitor"
+			},
+			"response": [
+				{
+					"name": "Update Rank Points (Admin) - Example",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"competitor_id\": \"{{competitor_id}}\",\r\n    \"points\": 4000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/rank/points",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"rank",
+								"points"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:02:53 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "830020607fa92604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "04efd86f-91ad-4575"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Rank points updated successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Hosts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"    'type': 'array',\r",
+							"    'items': [{\r",
+							"            'type': 'object',\r",
+							"            'properties': {\r",
+							"                'id': { 'type': 'integer'},\r",
+							"                'name': { 'type': 'string'},\r",
+							"                'website': { 'type': 'string'},\r",
+							"            },\r",
+							"            'required': [\r",
+							"                'website',\r",
+							"                'id',\r",
+							"                'name',\r",
+							"            ]\r",
+							"        }]\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.expect(pm.response.json()).to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/hosts",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"hosts"
+					]
+				},
+				"description": "Gets a list of all the hosts in json format."
+			},
+			"response": [
+				{
+					"name": "Get Hosts - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/hosts",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"hosts"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:03:42 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8300219299df2604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "2c484f60-1d9b-45a0"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Labadie and Sons\",\n        \"website\": \"https://www.hogwartslegacy.com/\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Herman - Cronin\",\n        \"website\": \"https://www.hogwartslegacy.com/\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Schmitt, Becker and Jerde\",\n        \"website\": \"https://www.hogwartslegacy.com/\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Rankings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"    \"type\": \"array\",\r",
+							"    \"items\": [\r",
+							"        {\r",
+							"            \"type\": \"object\",\r",
+							"            \"properties\": {\r",
+							"                \"competitor_id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"points\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"ranking\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"username\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            }\r",
+							"        }\r",
+							"    ],\r",
+							"    \"required\": [\r",
+							"        \"competitor_id\",\r",
+							"        \"name\",\r",
+							"        \"points\",\r",
+							"        \"ranking\",\r",
+							"        \"username\"\r",
+							"    ]\r",
+							"}\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/ranks",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"ranks"
+					]
+				},
+				"description": "﻿Gets the overall rankings of all competitors"
+			},
+			"response": [
+				{
+					"name": "Get Rankings - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/ranks",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"ranks"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:04:27 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "830022acda582604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "3a6d8e67-ccf8-428d"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"competitor_id\": \"1a50acbe\",\n        \"name\": \"Morty Smith\",\n        \"points\": 4000,\n        \"ranking\": 1,\n        \"username\": \"king_morty\"\n    },\n    {\n        \"competitor_id\": \"f5d3df7c\",\n        \"name\": \"Rick Sanchez\",\n        \"points\": 0,\n        \"ranking\": 2,\n        \"username\": \"rickety_rick\"\n    },\n    {\n        \"competitor_id\": \"a53d0e28\",\n        \"name\": \"Summer Smith\",\n        \"points\": 0,\n        \"ranking\": 3,\n        \"username\": \"summer_time\"\n    },\n    {\n        \"competitor_id\": \"b90adeee\",\n        \"name\": \"Beth Smith\",\n        \"points\": 0,\n        \"ranking\": 4,\n        \"username\": \"bethany\"\n    },\n    {\n        \"competitor_id\": \"533fa9ff\",\n        \"name\": \"Jerry Smith\",\n        \"points\": 0,\n        \"ranking\": 5,\n        \"username\": \"jerry_berry\"\n    },\n    {\n        \"competitor_id\": \"a4fc1af1\",\n        \"name\": \"Bird Person\",\n        \"points\": 0,\n        \"ranking\": 6,\n        \"username\": \"birdperson\"\n    },\n    {\n        \"competitor_id\": \"ef266d1b\",\n        \"name\": \"Squanchy Smith\",\n        \"points\": 0,\n        \"ranking\": 7,\n        \"username\": \"squanchy\"\n    },\n    {\n        \"competitor_id\": \"3524ce93\",\n        \"name\": \"j j\",\n        \"points\": 0,\n        \"ranking\": 8,\n        \"username\": \"j@sta.uwi.edu\"\n    },\n    {\n        \"competitor_id\": \"753fa500\",\n        \"name\": \"Loyce Little\",\n        \"points\": 0,\n        \"ranking\": 9,\n        \"username\": \"Polly_Feest\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Ranking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"    \"items\": [\r",
+							"        {\r",
+							"            \"type\": \"object\",\r",
+							"            \"properties\": {\r",
+							"                \"competitor_id\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"name\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                },\r",
+							"                \"points\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"ranking\": {\r",
+							"                    \"type\": \"integer\"\r",
+							"                },\r",
+							"                \"username\": {\r",
+							"                    \"type\": \"string\"\r",
+							"                }\r",
+							"            }\r",
+							"        }\r",
+							"    ],\r",
+							"    \"required\": [\r",
+							"        \"competitor_id\",\r",
+							"        \"points\",\r",
+							"        \"ranking\",\r",
+							"    ]\r",
+							"}\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/rank/{{competitor_id}}",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"rank",
+						"{{competitor_id}}"
+					]
+				},
+				"description": "﻿Gets the overall ranking of a particular competitor"
+			},
+			"response": [
+				{
+					"name": "Get Ranking - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/rank/{{competitor_id}}",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"rank",
+								"{{competitor_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:05:23 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "830024059b582604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "390e6b44-63e6-45ac"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"competitor_id\": \"1a50acbe\",\n    \"created_at\": \"2023-12-03 23:22:12\",\n    \"id\": 1,\n    \"points\": 4000,\n    \"ranking\": 1,\n    \"updated_at\": \"2023-12-04 01:02:53\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Login (Competitor)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returned Access Token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(pm.response.text()).to.include(\"access_token\");\r",
+							"    pm.environment.set('auth_token', jsonData['access_token']);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"morty.smith@my.uwi.edu\",\r\n    \"password\": \"mortypass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{cphost}}/api/login",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "﻿Logs in an existing competitor so that the following test Get Competitor Details can work as a competitor must be logged in in order to get profile details"
+			},
+			"response": [
+				{
+					"name": "Login (Competitor) - Example",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"morty.smith@my.uwi.edu\",\r\n    \"password\": \"mortypass\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{cphost}}/api/login",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 16:54:14 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "830591f4db1367de-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "session=.eJwtzrsRwjAMANBdVFPYlmVJWSZn63PQJqTi2J0ULPDufWDPI84nbO_jigfsL4cNnJhFa2vTCqNNlCYkGjoNZWBLLTLWGA3ZlEhqUFDX7rF6w9qne4kyuJolhxobM3l2IVRk14rrVgeqRninZLVVqbRkm6vPhDtynXH8N8nLsCR8f5rbMRA.ZW4ENg.vebbciZl9TnTzZbVYVbLGsVRkfk; HttpOnly; Path=/"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "c42668e1-9b28-4d5a"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwMTcwODg1NCwianRpIjoiNTU0ZjY2NWItMDUzNS00YjI2LTgzNTctNmE3MzA1ZjEyNjNlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6ImRmN2JjMzBmIiwibmJmIjoxNzAxNzA4ODU0LCJleHAiOjE3MDIzMTM2NTR9.51EedfGEpMaq5zCB3z56bW7k2yoWkT0UrMJ34pC7Vnk\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Competitor Profile (Competitor)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"            'type': 'object',\r",
+							"            'properties': {\r",
+							"                'id': { 'type': 'string'},\r",
+							"                'student_id': { 'type': 'string' },\r",
+							"                'name': { 'type': 'string'},\r",
+							"                'email': { 'type': 'string'},\r",
+							"                'username': { 'type': 'string' },\r",
+							"                'Rank': { \r",
+							"                    'type': 'object',\r",
+							"                    'properties': {\r",
+							"                        'id': { 'type': 'integer' },\r",
+							"                        'competitor_id': { 'type': 'string' },\r",
+							"                        'ranking': { 'type': 'integer' },\r",
+							"                        'points': { 'type': 'integer' },\r",
+							"                        'created_at': { 'type': 'string' },\r",
+							"                        'updated_at': { 'type': 'string' }\r",
+							"                    }\r",
+							"                },\r",
+							"                'competitions': { \r",
+							"                    'properties': {\r",
+							"                        'name': { 'type': 'string' },\r",
+							"                        'location': { 'type': 'string' },\r",
+							"                        'platform': { 'type': 'string' },\r",
+							"                        'date': { 'type': 'string' }\r",
+							"                    }\r",
+							"                },\r",
+							"            },\r",
+							"            'required': [\r",
+							"                'student_id',\r",
+							"                'email',\r",
+							"                'name',\r",
+							"                'username',\r",
+							"                'Rank',\r",
+							"                'competitions'\r",
+							"            ]\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/competitor/profile/{{competitor_id}}",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"competitor",
+						"profile",
+						"{{competitor_id}}"
+					]
+				},
+				"description": "﻿Gets all the details for a particular competitor"
+			},
+			"response": [
+				{
+					"name": "Get Competitor Profile (Competitor) - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/competitor/profile/{{competitor_id}}",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"competitor",
+								"profile",
+								"{{competitor_id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 16:58:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "830598a9b9dc67de-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "ef3a0e0b-0a46-4d6f"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"Rank\": {\n        \"competitor_id\": \"df7bc30f\",\n        \"created_at\": \"2023-12-04 16:22:11\",\n        \"id\": 1,\n        \"points\": 4000,\n        \"ranking\": 1,\n        \"updated_at\": \"2023-12-04 16:47:39\"\n    },\n    \"competitions\": [\n        {\n            \"date\": \"Sat, 29 Feb 2020 00:00:00 GMT\",\n            \"location\": \"UWI SPEC\",\n            \"name\": \"UWI Games 2020\",\n            \"platform\": \"HackerRank\"\n        }\n    ],\n    \"email\": \"morty.smith@my.uwi.edu\",\n    \"name\": \"Morty Smith\",\n    \"notifications\": [],\n    \"student_id\": \"816024682\",\n    \"username\": \"king_morty\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Competitions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"    'type': 'array',\r",
+							"    'items': [{\r",
+							"            'type': 'object',\r",
+							"            'properties': {\r",
+							"                'platform': { 'type': 'string'},\r",
+							"                'date': { 'type': 'string' },\r",
+							"                'hosts': {\r",
+							"                    'type': 'array',\r",
+							"                    'items': [{\r",
+							"                            'type': 'object',\r",
+							"                            'properties': {\r",
+							"                                'id': { 'type': 'integer' },\r",
+							"                                'name': { 'type': 'string' },\r",
+							"                                'website': { 'type': 'string' }\r",
+							"                            }\r",
+							"                        }]\r",
+							"                },\r",
+							"                'id': { 'type': 'integer' },\r",
+							"                'location': { 'type': 'string' },\r",
+							"                'name': { 'type': 'string' },\r",
+							"                'participants': {\r",
+							"                    'type': 'array',\r",
+							"                    'items': [{\r",
+							"                            'type': 'object',\r",
+							"                            'properties': {\r",
+							"                                'id': { 'type': 'string' },\r",
+							"                                'username': { 'type': 'string' }\r",
+							"                            }\r",
+							"                        }]\r",
+							"                }\r",
+							"            },\r",
+							"            'required': [\r",
+							"                'platform',\r",
+							"                'date',\r",
+							"                'hosts',\r",
+							"                'id',\r",
+							"                'location',\r",
+							"                'name',\r",
+							"                'participants'\r",
+							"            ]\r",
+							"        }]\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.expect(pm.response.json()).to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/competitions",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"competitions"
+					]
+				},
+				"description": "Gets a list of all the competitions added in json format."
+			},
+			"response": [
+				{
+					"name": "Get Competitions - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/competitions",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"competitions"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:06:37 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "830025d8ae712604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "71e59349-4934-4173"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"date\": \"2020-02-29 00:00:00\",\n        \"hosts\": [],\n        \"id\": 1,\n        \"location\": \"UWI SPEC\",\n        \"name\": \"UWI Games 2020\",\n        \"participants\": [\n            {\n                \"email\": \"morty.smith@my.uwi.edu\",\n                \"firstname\": \"Morty\",\n                \"id\": \"1a50acbe\",\n                \"lastname\": \"Smith\",\n                \"platform_rank\": {\n                    \"competitor_id\": \"1a50acbe\",\n                    \"created_at\": \"2023-12-03 23:22:12\",\n                    \"id\": 1,\n                    \"points\": 4000,\n                    \"ranking\": 1,\n                    \"updated_at\": \"2023-12-04 01:02:53\"\n                },\n                \"role\": \"competitor\",\n                \"username\": \"king_morty\",\n                \"uwi_id\": \"816024682\"\n            }\n        ],\n        \"platform\": \"HackerRank\"\n    },\n    {\n        \"date\": \"2021-02-28 00:00:00\",\n        \"hosts\": [],\n        \"id\": 2,\n        \"location\": \"UWI SPEC\",\n        \"name\": \"UWI Games 2021\",\n        \"participants\": [],\n        \"platform\": \"HackerRank\"\n    },\n    {\n        \"date\": \"2022-02-27 00:00:00\",\n        \"hosts\": [],\n        \"id\": 3,\n        \"location\": \"UWI SPEC\",\n        \"name\": \"UWI Games 2022\",\n        \"participants\": [],\n        \"platform\": \"HackerRank\"\n    },\n    {\n        \"date\": \"2023-02-26 00:00:00\",\n        \"hosts\": [],\n        \"id\": 4,\n        \"location\": \"UWI SPEC\",\n        \"name\": \"UWI Games 2023\",\n        \"participants\": [],\n        \"platform\": \"HackerRank\"\n    },\n    {\n        \"date\": \"2024-02-25 00:00:00\",\n        \"hosts\": [],\n        \"id\": 5,\n        \"location\": \"UWI SPEC\",\n        \"name\": \"UWI Games 2024\",\n        \"participants\": [],\n        \"platform\": \"HackerRank\"\n    },\n    {\n        \"date\": \"2023-02-01 00:00:00\",\n        \"hosts\": [],\n        \"id\": 6,\n        \"location\": \"DCIT\",\n        \"name\": \"cb411ff2-5ffb-416d-9fb9-9a570d4890fd\",\n        \"participants\": [],\n        \"platform\": \"HackerRank\"\n    },\n    {\n        \"date\": \"2023-02-01 00:00:00\",\n        \"hosts\": [],\n        \"id\": 7,\n        \"location\": \"DCIT\",\n        \"name\": \"b8c1f5f3-bc3f-46a2-9b4d-52ab9108fcd3\",\n        \"participants\": [],\n        \"platform\": \"HackerRank\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Competition Details",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"date\":{\r",
+							"            \"type\": \"string\"\r",
+							"        },\r",
+							"        \"hosts\": {\r",
+							"            \"type\": \"array\", \r",
+							"            \"items\": [\r",
+							"                {\r",
+							"                    \"type\": \"object\", \r",
+							"                    \"properties\": {\r",
+							"                        \"id\": {\r",
+							"                            \"type\": \"integer\"\r",
+							"                        },\r",
+							"                        \"name\": {\r",
+							"                            \"type\": \"string\"\r",
+							"                        },\r",
+							"                        \"website\": {\r",
+							"                            \"type\": \"string\"\r",
+							"                        }\r",
+							"                    }\r",
+							"                }\r",
+							"            ]\r",
+							"        },\r",
+							"        \"id\": {\r",
+							"            \"type\": \"integer\"\r",
+							"        },\r",
+							"        \"location\": {\r",
+							"            \"type\": \"string\"\r",
+							"        },\r",
+							"        \"name\": {\r",
+							"            \"type\": \"string\"\r",
+							"        },\r",
+							"        \"participants\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"items\": [\r",
+							"                {\r",
+							"                    \"type\": \"object\",\r",
+							"                    \"properties\": {\r",
+							"                        \"comp_id\": {\r",
+							"                            \"type\": \"integer\"\r",
+							"                        },\r",
+							"                        \"id\": {\r",
+							"                            \"type\": \"integer\"\r",
+							"                        },\r",
+							"                        \"rank\": {\r",
+							"                            \"type\": \"integer\"\r",
+							"                        },\r",
+							"                        \"user_id\": {\r",
+							"                            \"type\": \"integer\"\r",
+							"                        }\r",
+							"                    }\r",
+							"                }\r",
+							"            ]\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"            \"date\",\r",
+							"            \"platform\",\r",
+							"            \"location\",\r",
+							"            \"name\",\r",
+							"      ]\r",
+							"    }\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/competition/details/1",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"competition",
+						"details",
+						"1"
+					]
+				},
+				"description": "﻿Gets all the details for a particular competition"
+			},
+			"response": [
+				{
+					"name": "Get Competition Details - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/competition/details/1",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"competition",
+								"details",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:07:38 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8300275579692604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "9614db71-b292-4175"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"date\": \"29 February, 2020\",\n    \"location\": \"UWI SPEC\",\n    \"name\": \"UWI Games 2020\",\n    \"platform\": \"HackerRank\",\n    \"results\": [\n        {\n            \"competitor\": {\n                \"email\": \"morty.smith@my.uwi.edu\",\n                \"firstname\": \"Morty\",\n                \"id\": \"1a50acbe\",\n                \"lastname\": \"Smith\",\n                \"platform_rank\": {\n                    \"competitor_id\": \"1a50acbe\",\n                    \"created_at\": \"2023-12-03 23:22:12\",\n                    \"id\": 1,\n                    \"points\": 4000,\n                    \"ranking\": 1,\n                    \"updated_at\": \"2023-12-04 01:02:53\"\n                },\n                \"role\": \"competitor\",\n                \"username\": \"king_morty\",\n                \"uwi_id\": \"816024682\"\n            },\n            \"points\": 263,\n            \"rank\": 4\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "Get Competition Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"    'type': 'array',\r",
+							"    'items': [{\r",
+							"        'type': 'object',\r",
+							"        'properties': {\r",
+							"            'competitor': {\r",
+							"                'type': 'object',\r",
+							"                'properties': {\r",
+							"                    'email': { 'type': 'string' },\r",
+							"                    'firstname': { 'type': 'string' },\r",
+							"                    'id': { 'type': 'string' },\r",
+							"                    'lastname': { 'type': 'string' },\r",
+							"                    'platform_rank': {\r",
+							"                        'type': 'object',\r",
+							"                        'properties': {\r",
+							"                            'competitor_id': { 'type': 'string' },\r",
+							"                            'created_at': { 'type': 'string' },\r",
+							"                            'id': { 'type': 'integer' },\r",
+							"                            'points': { 'type': 'integer' },\r",
+							"                            'ranking': { 'type': 'integer' },\r",
+							"                            'updated_at': { 'type': 'string' }\r",
+							"                        },\r",
+							"                        'required': [\r",
+							"                            'competitor_id',\r",
+							"                            'created_at',\r",
+							"                            'id',\r",
+							"                            'points',\r",
+							"                            'ranking',\r",
+							"                            'updated_at'\r",
+							"                        ]\r",
+							"                    },\r",
+							"                    'role': { 'type': 'string' },\r",
+							"                    'username': { 'type': 'string' },\r",
+							"                    'uwi_id': { 'type': 'string' }\r",
+							"                },\r",
+							"                'required': [\r",
+							"                    'email',\r",
+							"                    'firstname',\r",
+							"                    'id',\r",
+							"                    'lastname',\r",
+							"                    'platform_rank',\r",
+							"                    'role',\r",
+							"                    'username',\r",
+							"                    'uwi_id'\r",
+							"                ]\r",
+							"            },\r",
+							"            'points': { 'type': 'integer' },\r",
+							"            'rank': { 'type': 'integer' }\r",
+							"        },\r",
+							"        'required': [\r",
+							"            'competitor',\r",
+							"            'points',\r",
+							"            'rank'\r",
+							"        ]\r",
+							"    }]\r",
+							"};\r",
+							"\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.expect(pm.response.json()).to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/results/1",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"results",
+						"1"
+					]
+				},
+				"description": "Gets a list of results for a particular competition in json format."
+			},
+			"response": [
+				{
+					"name": "Get Competition Results - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/results/1",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"results",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:08:24 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "83002874093d2604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "f16d2b8f-b3fe-434a"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"competitor\": {\n            \"email\": \"morty.smith@my.uwi.edu\",\n            \"firstname\": \"Morty\",\n            \"id\": \"1a50acbe\",\n            \"lastname\": \"Smith\",\n            \"platform_rank\": {\n                \"competitor_id\": \"1a50acbe\",\n                \"created_at\": \"2023-12-03 23:22:12\",\n                \"id\": 1,\n                \"points\": 4000,\n                \"ranking\": 1,\n                \"updated_at\": \"2023-12-04 01:02:53\"\n            },\n            \"role\": \"competitor\",\n            \"username\": \"king_morty\",\n            \"uwi_id\": \"816024682\"\n        },\n        \"points\": 263,\n        \"rank\": 4\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Results",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"const schema = {\r",
+							"    'type': 'array',\r",
+							"    'items': [{\r",
+							"            'type': 'object',\r",
+							"            'properties': {\r",
+							"                'competition_id': { 'type': 'integer'},\r",
+							"                'competitor_id': { 'type': 'string'},\r",
+							"                'date_created': { 'type': 'string'},\r",
+							"                'date_modified': { 'type': 'string'},\r",
+							"                'id': { 'type': 'integer' },\r",
+							"                'points': { 'type': 'integer' },\r",
+							"                'rank': { 'type': 'integer' },\r",
+							"            },\r",
+							"            'required': [\r",
+							"                'competition_id',\r",
+							"                'competitor_id',\r",
+							"                'date_created',\r",
+							"                'date_modified',\r",
+							"                'id',\r",
+							"                'points',\r",
+							"                'rank'\r",
+							"            ]\r",
+							"        }]\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.expect(pm.response.json()).to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/results",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"results"
+					]
+				},
+				"description": "﻿Gets the overall results of all competitors over all competitions"
+			},
+			"response": [
+				{
+					"name": "Get Results - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/results",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"results"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:08:54 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "8300292fbad22604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "a28fc983-1a1f-492b"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"competition_id\": 1,\n        \"competitor_id\": \"1a50acbe\",\n        \"date_created\": \"2023-12-04 01:01:44\",\n        \"date_modified\": \"2023-12-04 01:01:44\",\n        \"id\": 1,\n        \"points\": 263,\n        \"rank\": 4\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Leaderboard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"  pm.expect(pm.response.code).to.eql(200);\r",
+							"});\r",
+							"\r",
+							"const schema = {\r",
+							"    'type': 'array',\r",
+							"    'items': {\r",
+							"        'type': 'object',\r",
+							"        'properties': {\r",
+							"            'competition_id': { 'type': 'integer' },\r",
+							"            'competitor_id': { 'type': 'string' },\r",
+							"            'date_created': { 'type': 'string' },\r",
+							"            'date_modified': { 'type': 'string' },\r",
+							"            'id': { 'type': 'integer' },\r",
+							"            'points': { 'type': 'integer' },\r",
+							"            'rank': { 'type': 'integer' }\r",
+							"        },\r",
+							"        'required': ['competition_id', 'competitor_id', 'date_created', 'date_modified', 'id', 'points', 'rank']\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.test('Schema is valid', function() {\r",
+							"  pm.expect(pm.response.json()).to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{cphost}}/api/leaderboard",
+					"host": [
+						"{{cphost}}"
+					],
+					"path": [
+						"api",
+						"leaderboard"
+					]
+				},
+				"description": "Gets overall top 20 ranking competitors"
+			},
+			"response": [
+				{
+					"name": "Get Leaderboard - Example",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cphost}}/api/leaderboard",
+							"host": [
+								"{{cphost}}"
+							],
+							"path": [
+								"api",
+								"leaderboard"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 04 Dec 2023 01:09:33 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "CF-Ray",
+							"value": "83002a229f432604-MIA"
+						},
+						{
+							"key": "CF-Cache-Status",
+							"value": "DYNAMIC"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "rndr-id",
+							"value": "2222bdc9-8d43-48a5"
+						},
+						{
+							"key": "x-render-origin-server",
+							"value": "gunicorn"
+						},
+						{
+							"key": "Server",
+							"value": "cloudflare"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "br"
+						},
+						{
+							"key": "alt-svc",
+							"value": "h3=\":443\"; ma=86400"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"competition_id\": 1,\n        \"competitor_id\": \"1a50acbe\",\n        \"date_created\": \"2023-12-04 01:01:44\",\n        \"date_modified\": \"2023-12-04 01:01:44\",\n        \"id\": 1,\n        \"points\": 263,\n        \"rank\": 4\n    }\n]"
+				}
+			]
+		}
+	]
+}
