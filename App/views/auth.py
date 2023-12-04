@@ -64,7 +64,7 @@ def signup_action():
 
   except Exception as e:      
     print("Error in signup: ", e)
-    flash("Username, Email, or UWI ID")  # error message
+    flash("Username, Email, or UWI ID already exist")  # error message
     return redirect(url_for('auth_views.signup_page'))
 
 
@@ -74,17 +74,6 @@ def identify_page():
       return jsonify({'message': f"{current_user.get_json()}"}) 
     return jsonify({'message': "Not Logged In"})
 
-# @auth_views.route('/password-change', methods=['POST'])
-# def password_change_action():
-#     data = request.form
-#     if current_user.update_admin_password(data['newPassword']):
-#       current_user.is_password_changed = True
-#       db.session.commit()
-#       flash("Changed Succesfully")
-#       return redirect('/projects')
-    
-#     flash("Try Again!")
-#     return redirect(request.referrer)
   
 @auth_views.route('/logout', methods=['GET'])
 def logout_action():

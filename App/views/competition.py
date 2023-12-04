@@ -43,7 +43,7 @@ def add_competition_action():
     platform = request.form.get('platform')    
     date = request.form.get('date')
     competition_date = datetime.strptime(date, '%Y-%m-%d')   
-    response = create_competition(name=competition_name, location=location, platform=platform, date=competition_date)
+    response = execute_competition_command(admin_id=current_user.id, name=competition_name, location=location, platform=platform, date=competition_date)
     if response:
         flash('Competition created successfully!')
         return redirect(url_for('results_views.competition_results_page', competition_id=response.id, page=1))
@@ -64,7 +64,6 @@ def api_get_all_competitons():
     return jsonify({'message': 'No Competitions found'}), 404
 
 @competition_views.route('/api/competition', methods=['POST'])
-
 @admin_required
 def api_add_new_competition():
     data = request.json
@@ -75,7 +74,7 @@ def api_add_new_competition():
     if None in (name, location, platform, data['date']):
         return jsonify({'error': 'Missing data in the request'}), 400
   
-    response = create_competition(name=name, location=location, platform=platform, date=datetime.strptime(data['date'], "%Y-%m-%d"))
+    response = execute_competition_command(current_user.id,name=name, location=location, platform=platform, date=datetime.strptime(data['date'], "%Y-%m-%d"))
     
     if response:
         return (jsonify({'message': f"Competition created"}), 201)
