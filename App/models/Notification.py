@@ -31,5 +31,6 @@ class Notification(db.Model):
             'id':self.id,
             'competitor_id': self.competitor_id,
             'message': self.message,
+            'title': self.title,
             'timestamp': self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
         }
