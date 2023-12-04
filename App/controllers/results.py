@@ -69,14 +69,17 @@ def add_results(competition_id, results_file):
 
     print("adding results to competition")
     with open(results_file, 'r', newline='') as f:
-        reader = csv.DictReader(f)
-                   
+        reader = list(csv.DictReader(f))
+        
+        count = 0
+        for i in reader:
+            count += 1
+                    
         for line in reader:
             student_id = line['student_id']
             firstname = line['firstname']
             lastname = line['lastname']
             email = line['email']
-            points = line['points']
             rank = line['rank']            
             competitor = Competitor.query.filter_by(uwi_id=student_id).first()
             if competitor is None:
@@ -89,7 +92,8 @@ def add_results(competition_id, results_file):
                     continue
           
             if competitor:
-                result = create_result(competition_id, competitor.id, points, rank)  
+                rank = int(rank)
+                result = create_result(competition_id, competitor.id, assign_points_reverse_rank(rank, count), rank)  
                 db.session.add(result)
                 print("result created " + str(result.points) + " points " + str(result.competitor.rank.ranking))                
     
@@ -97,6 +101,9 @@ def add_results(competition_id, results_file):
     db.session.commit()
     return True
  
+def assign_points_reverse_rank(rank, total_participants):
+    return total_participants - rank + 5
 
+        
 
     
