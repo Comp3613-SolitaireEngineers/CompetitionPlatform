@@ -18,10 +18,7 @@ class Competitor(User):
         self.firstname = firstname
         self.lastname = lastname
         self.user_type = 'competitor'
-        # Create a new Rank instance and associate it with this Competitor
-        self.set_rank()
-        
-
+        self.rank = Rank(self.id)
 
     def __repr__(self):       
         return f"<Competitor {self.id}, {self.uwi_id} , {self.firstname}, {self.lastname}, {self.username}, {self.rank}>"
@@ -37,15 +34,6 @@ class Competitor(User):
             'platform_rank': self.rank.get_json() if self.rank else "",
             'role' : 'competitor'            
         }
-
-    def set_rank(self):
-        try:
-            self.rank = Rank(self.id)
-            db.session.add(self)
-            db.session.commit()
-        except Exception as e:
-            print(e)
-            return False
 
     def update_notifications(self, message, title):
         try:
