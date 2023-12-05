@@ -392,3 +392,35 @@ class UsersIntegrationTests(unittest.TestCase):
         notifications = get_notifications()
 
         self.assertEqual(len(notifications), 41), "Incorrect number of notifications"
+
+    def test_90_competition_creation_fail(self):
+        admin = create_admin("12345678012","emailaas812","usernameaqeq812","passwordqedqa") 
+        competition = create_competition(admin.id, "name", "", "", datetime.now())
+        assert competition is None, "Competition creation should fail with None Type Admin"
+
+    def test_91_competition_command_fail(self):
+        admin = None
+        competition = execute_competition_command(admin,"", "", "", datetime.now())
+        assert competition is None, "Competition command should fail with None Type Admin"
+
+    def test_92_results_command_fail(self):
+        admin = create_admin("1234567801","emailaas81","usernameaqeq81","passwordqedqa") 
+        assert admin is not None
+        
+        admin1 = create_admin("1234567801","emailaas81","usernameaqeq81","passwordqedqa") 
+        assert admin1 is None, "Admin creation should fail with duplicate id"
+        
+        competition = execute_competition_command(admin.id,"nameedqda", "location", "online", datetime.now())
+        assert competition is not None
+
+        results = 'App/static/tests/non_existent_file.csv'
+        command = execute_results_command(admin.id, competition.id, results)
+        assert command is None, "Results command should fail with non-existent file"
+
+    def test_93_notify_subscribers_fail(self):
+        observers = create_rank_top_observers("Top 20 Observers Welcome")
+        assert observers is not None, "Failed to create RankTopObservers with duplicate name"
+
+        competitor = create_competitor(1334342, "user2", "pass2", "email2 ", "sara2", "lara2")
+        observers.subscribe(competitor)
+        assert len(observers.top_subscribers) == 0, "Subscribe should fail with non-existent observers"
